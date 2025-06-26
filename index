@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Japan Trek 2025 | TransPerfect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      font-family: sans-serif;
+      color: white;
+      height: 100%;
+      overflow: hidden;
+    }
+    .hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+    }
+    .hero video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.25rem;
+      max-width: 600px;
+    }
+    a.btn {
+      margin-top: 2rem;
+      background: white;
+      color: black;
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <video autoplay muted loop>
+      <source src="https://www.youtube.com/embed/2mP9LlpCqj0?autoplay=1&mute=1&controls=0&loop=1&playlist=2mP9LlpCqj0" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="overlay">
+      <h1>Japan Trek 2025</h1>
+      <p>Join us for a meaningful hike up Mt. Takao. Connect, explore, and support a cause.</p>
+      <a class="btn" href="#register">Register Now</a>
+    </div>
+  </section>
+</body>
+</html>
