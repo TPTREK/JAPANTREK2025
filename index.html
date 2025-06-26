@@ -4,24 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Japan Trek 2025 | TransPerfect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    html, body {
-      font-family: sans-serif;
+    body {
+      font-family: 'Inter', sans-serif;
       color: white;
-      height: 100%;
-      overflow: hidden;
+      background: black;
+      overflow-x: hidden;
     }
-    .hero {
+    header {
       position: relative;
       height: 100vh;
       width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
-    .hero video {
+    video.bg-video {
       position: absolute;
       top: 0;
       left: 0;
@@ -31,48 +38,76 @@
       z-index: -1;
     }
     .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 10px;
     }
     h1 {
-      font-size: 3rem;
+      font-size: 4rem;
       margin-bottom: 1rem;
     }
     p {
       font-size: 1.25rem;
       max-width: 600px;
+      margin: 0 auto;
     }
-    a.btn {
+    .btn {
+      display: inline-block;
       margin-top: 2rem;
-      background: white;
-      color: black;
       padding: 1rem 2rem;
+      background-color: white;
+      color: black;
       text-decoration: none;
       font-weight: bold;
       border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #ddd;
+    }
+    section.about {
+      padding: 4rem 2rem;
+      text-align: center;
+      background-color: #f8f8f8;
+      color: #111;
+    }
+    section.about h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    section.about p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    footer {
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 2rem;
     }
   </style>
 </head>
 <body>
-  <section class="hero">
-    <video autoplay muted loop>
-      <source src="https://www.youtube.com/embed/2mP9LlpCqj0?autoplay=1&mute=1&controls=0&loop=1&playlist=2mP9LlpCqj0" type="video/mp4" />
+  <header>
+    <video class="bg-video" autoplay muted loop playsinline>
+      <source src="bg-video.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <div class="overlay">
       <h1>Japan Trek 2025</h1>
-      <p>Join us for a meaningful hike up Mt. Takao. Connect, explore, and support a cause.</p>
-      <a class="btn" href="#register">Register Now</a>
+      <p>TransPerfect returns to Mt. Takao for another year of community, nature, and purpose.</p>
+      <a href="#register" class="btn">Register Now</a>
     </div>
+  </header>
+
+  <section class="about">
+    <h2>About the Event</h2>
+    <p>Join us for a meaningful hike up Mt. Takao. Whether you're hiking for fitness, connection, or a great cause — Japan Trek brings people together under the TransPerfect banner to make a difference. Charity partner announcement coming soon.</p>
   </section>
+
+  <footer>
+    <p>&copy; 2025 TransPerfect. All rights reserved.</p>
+  </footer>
 </body>
 </html>
