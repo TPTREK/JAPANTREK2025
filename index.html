@@ -1,127 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- META -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Japan Trek 2025 | TransPerfect</title>
+  <!-- Fonts & Libs -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.4/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
   <style>
-    :root{--black:#000;--white:#fff;--red:#d30000;--blue:#1e4ea8}
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);scroll-behavior:smooth;overflow-x:hidden}
-    /* NAV */
-    nav{position:fixed;top:0;left:0;width:100%;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);z-index:20}
-    nav img.logo{height:44px}
-    nav .links a{color:var(--white);margin-left:1.5rem;text-decoration:none;font-weight:600;font-size:.9rem;letter-spacing:.1em}
-    nav .links a:hover{opacity:.8}
-    /* HERO */
-    header{height:100vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center}
-    header .bg{position:absolute;inset:0;object-fit:cover;z-index:-2}
-    header .overlay{background:rgba(0,0,0,.55);padding:2rem 3rem;border-radius:10px;max-width:680px}
-    header h1{font-size:4rem;letter-spacing:.12em}
-    header p{font-size:1.25rem;margin-top:1rem}
-    .btn{display:inline-block;margin-top:2rem;padding:1rem 2.25rem;background:var(--white);color:var(--black);border-radius:6px;font-weight:700;text-decoration:none;transition:background .25s}
-    .btn:hover{background:#ddd}
-    /* SLIDESHOW */
-    .slideshow{position:relative;width:100%;overflow:hidden;height:70vh;margin-top:4rem}
-    .slides{display:flex;width:500%;height:100%;animation:slide 40s infinite}
-    .slides img{width:100vw;height:100%;object-fit:cover}
-    @keyframes slide{0%{transform:translateX(0)}20%{transform:translateX(0)}25%{transform:translateX(-100vw)}45%{transform:translateX(-100vw)}50%{transform:translateX(-200vw)}70%{transform:translateX(-200vw)}75%{transform:translateX(-300vw)}95%{transform:translateX(-300vw)}100%{transform:translateX(0)}}
-    /* ABOUT SECTION */
+    :root{--black:#000;--white:#fff;--red:#d30000;--blue:#1e4ea8;--tan:#0a0a0a}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-webkit-font-smoothing:antialiased}
+    /* nav */
+    #nav{position:fixed;top:0;left:0;width:100%;z-index:50;display:flex;align-items:center;justify-content:center;padding:.8rem 1rem;background:rgba(0,0,0,.8);backdrop-filter:blur(6px)}
+    #nav img{height:64px}
+    #nav .links{display:flex;gap:2rem;margin-left:2rem}
+    #nav a{color:var(--white);font-weight:600;font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+    #nav a:hover{opacity:.8}
+    /* hero swiper */
+    .swiper{width:100vw;height:100vh}
+    .swiper-slide img{width:100%;height:100%;object-fit:cover}
+    .hero-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:rgba(0,0,0,.35)}
+    .hero-overlay h1{font-size:3rem;letter-spacing:.12em;margin-bottom:1rem}
+    .hero-overlay p{font-size:1.2rem;max-width:600px;margin-bottom:2rem}
+    .hero-overlay .btn{padding:1rem 2.5rem;background:var(--white);color:var(--black);border-radius:6px;font-weight:700;text-decoration:none}
+    .hero-overlay .btn:hover{background:#ddd}
+    /* hero arrows */
+    .hero-btn{position:absolute;top:50%;transform:translateY(-50%);width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s;z-index:5}
+    .hero-btn:hover{background:#fff}
+    .hero-btn svg{width:26px;height:26px;stroke:var(--black);stroke-width:2}
+    #prev{left:1rem}#next{right:1rem}
+    /* sections */
     section{padding:4rem 2rem;text-align:center}
-    .about{background:#111}
-    .about h2{font-size:2.5rem;margin-bottom:1rem}
-    /* GALLERY */
+    .dark{background:#111}
     .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:2rem}
     .gallery-grid img{width:100%;border-radius:8px}
-    /* FOOTER */
-    footer{background:#000;color:var(--white);padding:2rem;text-align:center;margin-top:4rem}
-    footer img{height:60px;margin-bottom:1rem}
+    /* footer */
+    footer{background:#000;padding:3rem 1rem;text-align:center;font-size:.9rem}
+    footer a{color:var(--blue)}
   </style>
 </head>
 <body>
-  <!-- NAV BAR -->
-  <nav>
-    <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek logo" class="logo" />
+  <!-- NAV -->
+  <nav id="nav">
+    <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek Logo">
     <div class="links">
-      <a href="#about">About</a><a href="#register">Register</a><a href="#gallery">Photos</a><a href="#faq">FAQ</a><a href="#sponsors">Sponsors</a>
+      <a href="#about">About</a>
+      <a href="#register">Register</a>
+      <a href="#gallery">Photos</a>
+      <a href="#faq">FAQ</a>
+      <a href="#sponsors">Sponsors</a>
     </div>
   </nav>
 
-  <!-- HERO WITH VIDEO BG -->
-  <header>
-    <video class="bg" src="bg-video.mp4" autoplay muted loop playsinline></video>
-    <div class="overlay">
-      <h1>Japan Trek 2025</h1>
-      <p>TransPerfect returns to Mt. Takao for another year of community, nature, and purpose.</p>
-      <p id="countdown" style="font-size:1.75rem;margin-top:1rem"></p>
-      <a href="#register" class="btn">Register Now</a>
+  <!-- HERO SLIDESHOW with overlay text -->
+  <section id="hero" class="relative">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt></div>
+        <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt></div>
+        <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt></div>
+        <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt></div>
+        <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt></div>
+      </div>
+      <button id="prev" class="hero-btn" aria-label="Prev"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button id="next" class="hero-btn" aria-label="Next"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6"/></svg></button>
+      <div class="swiper-pagination !bottom-8"></div>
+      <div class="hero-overlay">
+        <h1>Japan Trek 2025</h1>
+        <p>TransPerfect returns to Mt. Takao—hike, connect, and give back.</p>
+        <p id="countdown"></p>
+        <a href="#register" class="btn">Register Now</a>
+      </div>
     </div>
-  </header>
-
-  <!-- AUTO SLIDESHOW SECTION -->
-  <div class="slideshow" id="gallery">
-    <div class="slides">
-      <img src="20241109_c1_100.jpg" alt="Slide 1" />
-      <img src="20241109_c2_024.jpg" alt="Slide 2" />
-      <img src="20241109_c2_031.jpg" alt="Slide 3" />
-      <img src="20241109_c2_041.jpg" alt="Slide 4" />
-      <img src="20241109_c2_052.jpg" alt="Slide 5" />
-    </div>
-  </div>
+  </section>
 
   <!-- ABOUT -->
-  <section id="about" class="about">
-    <h2>About the Event</h2>
-    <p style="max-width:700px;margin:auto">Join us for a meaningful hike up Mt. Takao. Whether you’re hiking for fitness, connection, or a great cause—Japan Trek brings people together under the TransPerfect banner to make a difference. This year’s charity partner will be announced soon.</p>
+  <section id="about" class="dark">
+    <h2 class="text-3xl font-bold mb-3">About the Trek</h2>
+    <p class="max-w-xl mx-auto">Join us on a purposeful hike up Mt. Takao. Whether you’re here for the challenge, the community, or the charity—Japan Trek unites us under the TransPerfect banner to make a difference.</p>
   </section>
 
   <!-- REGISTER -->
   <section id="register">
-    <h2>Register Now</h2>
-    <p>Click the link below to register for the hike. We can’t wait to see you there!</p>
-    <a class="btn" href="https://example.com/registration-form" target="_blank">Go to Registration</a>
+    <h2 class="text-3xl font-bold mb-3">Register</h2>
+    <p>Secure your spot for the 2025 hike.</p>
+    <a class="btn" href="https://example.com/register" target="_blank">Go to Registration</a>
+  </section>
+
+  <!-- GALLERY PLACEHOLDER using same slideshow images -->
+  <section id="gallery" class="dark">
+    <h2 class="text-3xl font-bold mb-6">Photo Highlights</h2>
+    <div class="gallery-grid">
+      <img src="20241109_c2_024.jpg" alt><img src="20241109_c2_031.jpg" alt><img src="20241109_c2_041.jpg" alt>
+    </div>
   </section>
 
   <!-- FAQ -->
-  <section id="faq" class="about" style="background:#070707">
-    <h2>FAQ</h2>
-    <div style="max-width:800px;margin:auto;text-align:left">
-      <h3 style="margin-top:1.5rem">What should I bring?</h3><p>Comfortable hiking shoes, water, sun protection, and a positive attitude.</p>
-      <h3 style="margin-top:1.5rem">Is it family friendly?</h3><p>Yes! All ages are welcome. The trail is beginner‑friendly.</p>
-      <h3 style="margin-top:1.5rem">Rain plan?</h3><p>The trek proceeds in light rain. Severe-weather plan will be emailed day‑prior.</p>
+  <section id="faq">
+    <h2 class="text-3xl font-bold mb-6">FAQ</h2>
+    <div class="max-w-lg mx-auto text-left space-y-6 text-sm">
+      <div><h3 class="font-semibold">What should I bring?</h3><p>Good shoes, water, sun protection, positivity.</p></div>
+      <div><h3 class="font-semibold">Family friendly?</h3><p>Absolutely—beginner trail, all ages welcome.</p></div>
+      <div><h3 class="font-semibold">Rain plan?</h3><p>Light rain: we hike. Severe weather: email update.</p></div>
     </div>
   </section>
 
   <!-- SPONSORS -->
-  <section id="sponsors" style="padding:4rem 2rem;background:#111">
-    <h2>Sponsors</h2>
-    <div style="display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;margin-top:2rem">
-      <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Sponsor sample" style="height:60px" />
-      <!-- Add more sponsor logos here -->
-    </div>
+  <section id="sponsors" class="dark">
+    <h2 class="text-3xl font-bold mb-6">Sponsors</h2>
+    <img src="Logos_TPT_JapanTrek_center_colour-03.png" class="h-16 mx-auto" alt>
   </section>
 
-  <!-- FOOTER -->
   <footer>
-    <img src="Logos_TPT_JapanTrek_center_all_white-06.png" alt="Japan Trek white logo" />
-    <p>© 2025 TransPerfect. All rights reserved.</p>
-    <p><a href="mailto:japantrek@transperfect.com" style="color:#1e90ff;text-decoration:none">japantrek@transperfect.com</a></p>
+    <img src="Logos_TPT_JapanTrek_center_all_white-06.png" class="h-16 mb-4" alt>
+    <p>© 2025 TransPerfect • All rights reserved.</p>
+    <p><a href="mailto:japantrek@transperfect.com">japantrek@transperfect.com</a></p>
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- JS -->
+  <script src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
   <script>
-    // countdown to May 10 2025
-    const target=new Date('2025-05-10T09:00:00');const el=document.getElementById('countdown');
-    function tick(){const now=new Date();const diff=target-now;if(diff<=0){el.textContent='The trek has begun!';return}
-      const d=Math.floor(diff/864e5),h=Math.floor(diff/36e5)%24,m=Math.floor(diff/6e4)%60;el.textContent=`${d}d ${h}h ${m}m remaining`;}
-    tick();setInterval(tick,6e4);
-
-    // nav hide on scroll
-    let last=0;const nav=document.getElementById('nav');addEventListener('scroll',()=>{const y=scrollY;nav.classList.toggle('hide',y>last&&y>150);last=y});
+    const hero=new Swiper('.swiper',{loop:true,autoplay:{delay:5000,disableOnInteraction:false},speed:900,effect:'fade',pagination:{el:'.swiper-pagination',clickable:true},navigation:{nextEl:'#next',prevEl:'#prev'}});
+    // countdown
+    const out=document.getElementById('countdown');const target=new Date('2025-05-10T09:00:00');function tick(){const t=target-new Date;if(t<=0){out.textContent='Trek Day!';return}const d=Math.floor(t/864e5),h=Math.floor(t/36e5)%24,m=Math.floor(t/6e4)%60;out.textContent=`${d}d ${h}h ${m}m`;}tick();setInterval(tick,6e4);
   </script>
 </body>
 </html>
