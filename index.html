@@ -4,190 +4,131 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Japan Trek 2025 | TransPerfect</title>
-
-  <!-- Fonts & Libs -->
+  <!-- Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.4/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
+  <link rel="preconnect" href="https://api.open-meteo.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-  <!-- Styles -->
   <style>
-    :root{--beige:#e8dcc7;--ink:#111;--accent:#c0aa8a;--tan:#0d0d0d;--shadow:0 12px 32px rgba(0,0,0,.14)}
+    :root{--beige:#e8dcc7;--ink:#111;--accent:#d30000;--bg:#000;--shadow:0 12px 32px rgba(0,0,0,.14)}
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{font-family:Inter,sans-serif;background:#000;color:#fff;-webkit-font-smoothing:antialiased}
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+    @media(max-width:640px){body{font-size:1.05rem}}
 
-    /* progress bar */
-    #progress{position:fixed;top:0;left:0;height:4px;background:var(--beige);transform-origin:0 0;z-index:120}
+    /* Progress */
+    #progress{position:fixed;top:0;left:0;height:4px;background:var(--accent);transform-origin:0 0;z-index:120}
 
-    /* nav */
-    #nav{position:fixed;top:0;left:0;width:100%;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:center;gap:2rem;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:110}
-    #nav img{height:70px}
-    #nav a{color:#fff;font-size:.9rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none}
-    #nav a:hover{opacity:.8}
+    /* NAV */
+    #nav{position:fixed;top:0;left:0;width:100%;min-height:88px;padding:1rem 1.5rem;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.2rem;z-index:110}
+    #nav img{height:76px;flex:0 0 auto}
+    .links{display:flex;flex-wrap:wrap;column-gap:clamp(1rem,5vw,3rem);row-gap:.6rem;margin-left:auto}
+    .links a{color:#fff;font-weight:700;letter-spacing:.14em;font-size:clamp(.85rem,2.5vw,.95rem);text-transform:uppercase;text-decoration:none;transition:opacity .25s}
+    .links a:hover{opacity:.8}
 
-    /* hero slideshow */
+    /* HERO SWIPER */
     .swiper{width:100vw;height:100vh}
-    .swiper-slide img{width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.22,1,.36,1)}
-    .swiper-slide:hover img{transform:scale(1.05)}
-    .caption{position:absolute;bottom:0;left:0;width:100%;padding:1rem 2rem;font-size:.9rem;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.75),rgba(0,0,0,0));opacity:0;transition:.3s}
+    .swiper-slide img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+    @media(prefers-reduced-motion:no-preference){.swiper-slide:hover img{transform:scale(1.05)}}
+    .caption{position:absolute;bottom:0;left:0;width:100%;padding:1rem 2rem;font-size:.9rem;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);opacity:0;transition:.3s}
     .swiper-slide:hover .caption{opacity:1}
-
-    /* hero overlay + arrows */
-    .hero-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;background:rgba(0,0,0,.35);text-align:center;z-index:5}
-    .hero-overlay h1{font-size:3.2rem;letter-spacing:.12em;margin-bottom:1rem}
+    .hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5}
+    .hero-overlay h1{font-size:clamp(2.4rem,4vw,3.2rem);letter-spacing:.12em;margin-bottom:1rem}
     .hero-overlay p{max-width:600px;margin-bottom:2rem}
     .btn{padding:1rem 2.5rem;background:#fff;color:#000;border-radius:6px;font-weight:700;text-decoration:none}
     .btn:hover{background:#ddd}
+
     .hero-btn{position:absolute;top:50%;transform:translateY(-50%);width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);transition:.25s;z-index:6}
     .hero-btn svg{width:28px;height:28px;stroke:#000;stroke-width:2}
     #prev{left:1rem}#next{right:1rem}
-    .scrollcue{position:absolute;bottom:1.4rem;left:50%;transform:translateX(-50%);width:30px;height:30px;stroke:#fff;animation:bounce 2s infinite;z-index:7}
-    @keyframes bounce{0%,20%,50%,80%,100%{transform:translate(-50%,0)}40%{transform:translate(-50%,-10px)}60%{transform:translate(-50%,-5px)}}
 
-    /* parallax layers */
-    .mountain-layer{position:absolute;bottom:0;width:300%;height:40vh;background-repeat:repeat-x;background-size:auto 100%;pointer-events:none}
-    .back{background:url('mountains_back.svg') repeat-x}
-    .mid{background:url('mountains_mid.svg') repeat-x}
-    .front{background:url('mountains_front.svg') repeat-x}
+    /* Parallax layers */
+    .mountain-layer{position:absolute;bottom:0;width:200%;height:35vh;background-repeat:repeat-x;background-size:contain;pointer-events:none}
+    .layer-back{background-image:url('mountains_back.svg')}
+    .layer-mid{background-image:url('mountains_mid.svg')}
+    .layer-front{background-image:url('mountains_front.svg')}
+    @media(prefers-reduced-motion:reduce){.mountain-layer{display:none}}
 
-    /* center card */
-    .center{background:#111;border-radius:1.5rem;box-shadow:var(--shadow);max-width:1100px;margin:-6rem auto 0;padding:5rem 3rem;text-align:center}
+    /* Center card */
+    .center{max-width:1100px;margin:-6rem auto 0;padding:5rem 3rem;border-radius:1.5rem;background:#111;box-shadow:var(--shadow)}
     .sep{width:4rem;height:4px;background:var(--beige);margin:2rem auto}
 
-    /* postcards */
-    .postcard{background:#0e0e0e;border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:2rem}
-    .postcard img{width:100%;border-radius:.9rem}
-    @media(min-width:768px){.postcard{grid-template-columns:repeat(2,minmax(0,1fr));align-items:center}}
+    /* Postcards */
+    .postcard{background:#0e0e0e;border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:2.4rem}
+    .postcard img{width:100%;border-radius:.9rem;loading:lazy}
+    @media(min-width:768px){.postcard{grid-template-columns:repeat(2,1fr);align-items:center}}
 
-    /* elevation + weather sections */
+    /* Sections */
     #elevation,#weather{padding:4rem 2rem;text-align:center}
     #elevation{background:#0b0b0b}
-    #weather{background:#070707}
-    #weatherCard{display:inline-block;background:#111;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:300px;color:#eee}
-    #weatherCard h3{font-weight:700;margin-bottom:.3rem}
+    #weather{background:#080808}
     canvas{max-width:800px;margin:auto}
+    #weatherCard{display:inline-block;background:#111;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:300px}
+    #weatherCard .temp{font-size:2.5rem;font-weight:700;line-height:1}
 
+    /* Footer */
     footer{background:#000;color:#999;text-align:center;padding:3rem 1rem;font-size:.85rem;font-style:italic}
   </style>
 </head>
-
 <body>
 <div id="progress"></div>
 
 <!-- NAV -->
-<nav id="nav">
-  <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="logo">
-  <div class="links">
-    <a href="#aboutcard">About</a><a href="#gallery">Highlights</a>
-    <a href="#elevation">Elevation</a><a href="#weather">Weather</a>
-    <a href="#contact">Register</a>
-  </div>
-</nav>
+<nav id="nav"><img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek logo"><div class="links"><a href="#aboutcard">About</a><a href="#gallery">Highlights</a><a href="#elevation">Elevation</a><a href="#weather">Weather</a><a href="#contact">Register</a></div></nav>
 
 <!-- HERO -->
 <section id="hero" class="relative overflow-hidden">
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt><div class="caption">Starting the trail</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt><div class="caption">Team camaraderie</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt><div class="caption">Mid-mountain shrine</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt><div class="caption">Forest switchbacks</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt><div class="caption">Summit victory</div></div>
-    </div>
-    <button id="prev" class="hero-btn" aria-label="Prev"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6"/></svg></button>
-    <button id="next" class="hero-btn" aria-label="Next"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6"/></svg></button>
-    <div class="swiper-pagination !bottom-8"></div>
-
-    <div class="hero-overlay">
-      <h1>Japan Trek 2025</h1>
-      <p>TransPerfect heads back to Mt. Takao—hike, connect, give back.</p>
-      <p id="countdown"></p>
-      <a href="#contact" class="btn">Register Now</a>
-    </div>
+  <div class="swiper"><div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt="Start trail" loading="lazy"><div class="caption">Trailhead gathering</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Camaraderie" loading="lazy"><div class="caption">Camaraderie in action</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine" loading="lazy"><div class="caption">Yakuō‑in shrine stop</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Switchbacks" loading="lazy"><div class="caption">Forest switchbacks</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit" loading="lazy"><div class="caption">Summit victory</div></div>
   </div>
-
-  <!-- parallax layers -->
-  <div class="mountain-layer back"  data-speed="0.15"></div>
-  <div class="mountain-layer mid"   data-speed="0.25"></div>
-  <div class="mountain-layer front" data-speed="0.4"></div>
-
-  <svg class="scrollcue" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7" stroke="white" stroke-linecap="round"/></svg>
+    <button id="prev" class="hero-btn" aria-label="Previous slide" aria-controls="hero">‹</button>
+    <button id="next" class="hero-btn" aria-label="Next slide" aria-controls="hero">›</button>
+    <div class="swiper-pagination !bottom-8"></div>
+    <div class="hero-overlay"><h1>Japan Trek 2025</h1><p>TransPerfect returns to Mt. Takao—hike, connect, give back.</p><p id="countdown"></p><a class="btn" href="#contact">Register Now</a></div>
+  </div>
+  <div class="mountain-layer layer-back" data-speed="0.15"></div>
+  <div class="mountain-layer layer-mid" data-speed="0.25"></div>
+  <div class="mountain-layer layer-front" data-speed="0.4"></div>
 </section>
 
 <!-- INTRO -->
-<section id="aboutcard" class="center reveal mt-72">
-  <h2 class="text-4xl font-bold uppercase mb-4">Modern Luxury Meets Nature</h2>
-  <div class="sep"></div>
-  <p class="max-w-[60ch] mx-auto text-lg">
-    Strip views, salt-water pool, 630-SF casita, putting green, basketball court—crafted to inspire. Now swap city lights for cedar forests and find purpose on Mt. Takao.
-  </p>
-</section>
+<section id="aboutcard" class="center mt-72"><h2 class="text-4xl font-bold uppercase mb-4">Reconnect in Nature</h2><div class="sep"></div><p class="max-w-[60ch] mx-auto text-lg">Challenge yourself on Mt. Takao’s scenic trail, forge new friendships, and raise funds for charity.</p></section>
 
-<!-- HIGHLIGHT CARDS -->
+<!-- HIGHLIGHTS -->
 <section id="gallery" class="py-32 space-y-28">
-  <div class="postcard fly-l reveal max-w-6xl mx-auto"><img src="20241109_c2_024.jpg" alt><div><h3 class="text-3xl font-bold mb-3">Trail camaraderie</h3><p>Share the climb with colleagues, friends, and family.</p></div></div>
-  <div class="postcard fly-r reveal max-w-6xl mx-auto"><img src="20241109_c2_041.jpg" class="md:order-2" alt><div><h3 class="text-3xl font-bold mb-3">Stunning vistas</h3><p>Lookouts unveil sweeping Tokyo skylines.</p></div></div>
+  <div class="postcard max-w-6xl mx-auto"><img src="20241109_c2_024.jpg" alt><div><h3 class="text-3xl font-bold mb-3">Trail camaraderie</h3><p>Walk side-by-side with colleagues, friends, and family.</p></div></div>
+  <div class="postcard max-w-6xl mx-auto"><img src="20241109_c2_041.jpg" alt class="md:order-2"><div><h3 class="text-3xl font-bold mb-3">Stunning vistas</h3><p>Lookouts reveal sweeping Tokyo skylines.</p></div></div>
 </section>
 
 <!-- ELEVATION -->
-<section id="elevation" class="reveal">
-  <h2 class="text-3xl font-bold mb-6">Elevation Profile</h2>
-  <canvas id="elevChart"></canvas>
-</section>
+<section id="elevation"><h2 class="text-3xl font-bold mb-6">Elevation Profile</h2><canvas id="elevChart" aria-label="Elevation in meters" role="img"></canvas></section>
 
 <!-- WEATHER -->
-<section id="weather" class="reveal">
-  <h2 class="text-3xl font-bold mb-6">Mt. Takao Weather</h2>
-  <div id="weatherCard"><h3>Loading…</h3></div>
-</section>
+<section id="weather"><h2 class="text-3xl font-bold mb-6">Live Weather · Mt. Takao</h2><div id="weatherCard"><h3>Loading…</h3></div></section>
 
 <!-- CONTACT -->
-<section id="contact" class="center reveal text-center mt-40 rounded-3xl shadow-xl contact-card">
-  <h2 class="text-4xl font-bold mb-6">Register for the Trek</h2>
-  <form class="grid gap-6 md:grid-cols-2">
-    <input placeholder="Name"><input placeholder="Email">
-    <input placeholder="Phone" class="md:col-span-2">
-    <textarea rows="4" placeholder="Preferred date & time" class="md:col-span-2"></textarea>
-    <button class="rounded bg-white text-black py-4 font-bold uppercase tracking-wide shadow-md hover:opacity-90 md:col-span-2">Submit</button>
-  </form>
-</section>
+<section id="contact" class="center text-center mt-40 rounded-3xl shadow-xl contact-card"><h2 class="text-3xl font-bold mb-6">Register</h2><form action="https://formspree.io/f/your-id" method="POST" class="grid gap-6 md:grid-cols-2"><label class="sr-only">Name<input name="name" placeholder="Full Name" required></label><label class="sr-only">Email<input type="email" name="email" placeholder="Email" required></label><label class="sr-only md:col-span-2">Phone<input name="phone" placeholder="Phone" class="md:col-span-2"></label><textarea rows="4" name="note" placeholder="Preferred date & time" class="md:col-span-2"></textarea><button type="submit" class="rounded bg-white text-black py-4 font-bold uppercase tracking-wide shadow-md hover:opacity-90 md:col-span-2">Submit</button></form></section>
 
-<footer class="mt-40">
-  <img src="Logos_TPT_JapanTrek_center_all_white-06.png" alt="logo" class="h-16 mb-3">
-  <p>© 2025 TransPerfect · Japan Trek.</p>
-  <p><a href="mailto:japantrek@transperfect.com">japantrek@transperfect.com</a></p>
-</footer>
+<footer class="mt-40"><img src="Logos_TPT_JapanTrek_center_all_white-06.png" alt="Japan Trek" class="h-16 mb-3"><p>© 2025 TransPerfect · Japan Trek.</p><p><a href="mailto:japantrek@transperfect.com">japantrek@transperfect.com</a></p></footer>
 
-<!-- SCRIPTS -->
 <script src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
-<script>
-// swiper
-new Swiper('.swiper',{loop:true,autoplay:{delay:5200,disableOnInteraction:false},speed:900,effect:'fade',pagination:{el:'.swiper-pagination',clickable:true},navigation:{nextEl:'#next',prevEl:'#prev'}});
-// progress bar
-const pb=document.getElementById('progress');addEventListener('scroll',()=>{pb.style.transform=`scaleX(${scrollY/(document.body.scrollHeight-innerHeight)})`});
-// parallax
-const layers=document.querySelectorAll('.mountain-layer');addEventListener('scroll',()=>{const y=scrollY;layers.forEach(l=>{l.style.transform=`translateX(${-y*l.dataset.speed}px)`})});
-// countdown
-const cd=document.getElementById('countdown'),eventDate=new Date('2025-05-10T09:00:00');function tick(){const d=eventDate-new Date;if(d<=0){cd.textContent='Trek Day!';return}const days=Math.floor(d/864e5),h=Math.floor(d/36e5)%24,m=Math.floor(d/6e4)%60;cd.textContent=`${days}d ${h}h ${m}m`;}tick();setInterval(tick,6e4);
-
-// elevation chart
-new Chart(document.getElementById('elevChart'),{
-  type:'line',
-  data:{labels:['Trailhead','Mid-point','Yakuō-in','Summit'],datasets:[{label:'Elevation (m)',data:[200,360,480,599],borderColor:('#d30000'),backgroundColor:'rgba(211,0,0,.2)',fill:true,tension:.4}]},
-  options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#888'}},y:{ticks:{color:'#888'}}}}
-});
-
-// weather fetch
-fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true')
- .then(r=>r.json())
- .then(d=>{const w=d.current_weather;document.getElementById('weatherCard').innerHTML=`<h3>${w.temperature}°C · ${code(w.weathercode)}</h3><p>${new Date(w.time).toLocaleTimeString()}</p>`});
-function code(c){const m={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorm'};return m[c]||'Weather';}
+<script>/* Swiper */const hero=new Swiper('.swiper',{loop:true,preloadImages:false,lazy:{loadPrevNext:true},autoplay:{delay:5200,disableOnInteraction:false},speed:900,effect:'fade',pagination:{el:'.swiper-pagination',clickable:true},navigation:{nextEl:'#next',prevEl:'#prev'}});
+/* progress */const pb=document.getElementById('progress');addEventListener('scroll',()=>pb.style.transform=`scaleX(${scrollY/(document.body.scrollHeight-innerHeight)})`);
+/* parallax */const layers=document.querySelectorAll('.mountain-layer');addEventListener('scroll',()=>{const y=scrollY;layers.forEach(l=>{l.style.transform=`translateX(${-y*l.dataset.speed}px)`})},{passive:true});
+/* countdown */const cd=document.getElementById('countdown');const eventDate=new Date('2025-05-10T09:00:00');function tick(){const diff=eventDate-new Date;if(diff<=0){cd.textContent='Trek day!';return}const d=Math.floor(diff/864e5),h=Math.floor(diff/36e5)%24,m=Math.floor(diff/6e4)%60;cd.textContent=`${d}d ${h}h ${m}m`; }tick();setInterval(tick,60000);
+/* elevation chart */new Chart('elevChart',{type:'line',data:{labels:['Start','Halfway','Yakuō-in','Summit'],datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.4}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#ccc'}},y:{ticks:{color:'#ccc'}}}}});
+/* weather */fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true')
+  .then(r=>r.json()).then(d=>{const w=d.current_weather;document.getElementById('weatherCard').innerHTML=`<h3 class=\"temp\">${w.temperature}°C</h3><p>${new Date(w.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</p><p>${code(w.weathercode)}</p>`});
+function code(c){return{0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorm'}[c]||'Weather'}
 </script>
 </body>
 </html>
