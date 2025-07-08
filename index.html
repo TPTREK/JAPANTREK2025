@@ -12,7 +12,11 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
   <link rel="preconnect" href="https://api.open-meteo.com">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">// top countdown Nov 3 2025
+const topBox=document.getElementById('topCountdown');topBox.innerHTML='<h4>開催まであと</h4><span id="d">0</span> Days <span id="h">0</span> Hours <span id="m">0</span> Min <span id="s">0</span> Sec';
+const dE=document.getElementById('d'),hE=document.getElementById('h'),mE=document.getElementById('m'),sE=document.getElementById('s');
+const tgt=new Date('2025-11-03T09:00:00');function topTick(){const t=tgt-new Date;if(t<=0){topBox.innerHTML='<h4>Event Day!</h4>';return}dE.textContent=Math.floor(t/864e5);hE.textContent=Math.floor(t/36e5)%24;mE.textContent=Math.floor(t/6e4)%60;sE.textContent=Math.floor(t/1e3)%60;}topTick();setInterval(topTick,1000);
+</script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root{--beige:#e8dcc7;--ink:#111;--accent:#d30000;--bg:#000;--shadow:0 12px 32px rgba(0,0,0,.14)}
@@ -27,7 +31,7 @@
     /* NAV */
     #nav{position:fixed;top:0;left:0;width:100%;min-height:88px;padding:1rem 1.5rem;background:rgba(14,26,43,.9);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.2rem;z-index:110}
     #nav img{height:76px;flex:0 0 auto}
-    .links{display:flex;flex-wrap:wrap;column-gap:clamp(1rem,5vw,3rem);row-gap:.6rem;margin-left:auto}
+    .links{flex:1;display:flex;flex-wrap:wrap;justify-content:center;column-gap:clamp(1rem,4.5vw,2.5rem);row-gap:.6rem;font-size:clamp(.85rem,2.3vw,1rem);margin-left:0} /* centered links */
     .links a{color:#fff;font-weight:700;letter-spacing:.14em;font-size:clamp(.85rem,2.5vw,.95rem);text-transform:uppercase;text-decoration:none;transition:opacity .25s}
     .links a:hover{opacity:.8}
 
@@ -72,14 +76,20 @@
     #weatherCard .temp{font-size:2.5rem;font-weight:700;line-height:1}
 
     /* Footer */
-    footer{background:#0e1a2b;color:#999;text-align:center;padding:3rem 1rem;font-size:.85rem;font-style:italic}
+    
+/* Countdown */
+.count-box{color:#fff;font-weight:700;font-size:clamp(1.1rem,2.5vw,1.35rem);line-height:1.2;border:2px solid #fff;padding:.6rem 1.2rem;border-radius:8px;min-width:200px}
+.count-box h4{font-size:1rem;font-weight:700;margin-bottom:.25rem}
+.count-box span{display:inline-block;min-width:3rem}
+
+footer{background:#0e1a2b;color:#999;text-align:center;padding:3rem 1rem;font-size:.85rem;font-style:italic}
   </style>
 </head>
 <body>
 <div id="progress"></div>
 
 <!-- NAV -->
-<nav id="nav"><img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek logo"><div class="links"><a href="#aboutcard">About</a><a href="#gallery">Highlights</a><a href="#elevation">Elevation</a><a href="#weather">Weather</a><a href="#contact">Register</a></div></nav>
+<nav id="nav"><img src="Logos_TPT_JapanTrek_center_colour-03.png" style="width:350px;height:auto" alt="Japan Trek logo"><div class="links"><a href="#aboutcard">About</a><a href="#gallery">Highlights</a><a href="#elevation">Elevation</a><a href="#weather">Weather</a><a href="#contact">Register</a></div><div id="topCountdown" class="count-box text-right"></div></nav>
 
 <!-- HERO -->
 <section id="hero" class="relative overflow-hidden">
