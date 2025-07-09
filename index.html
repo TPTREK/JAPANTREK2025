@@ -12,10 +12,26 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
   <link rel="preconnect" href="https://api.open-meteo.com">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">// top countdown Nov 3 2025
-const topBox=document.getElementById('topCountdown');topBox.innerHTML='<h4>開催まであと</h4><span id="d">0</span> Days <span id="h">0</span> Hours <span id="m">0</span> Min <span id="s">0</span> Sec';
-const dE=document.getElementById('d'),hE=document.getElementById('h'),mE=document.getElementById('m'),sE=document.getElementById('s');
-const tgt=new Date('2025-11-03T09:00:00');function topTick(){const t=tgt-new Date;if(t<=0){topBox.innerHTML='<h4>Event Day!</h4>';return}dE.textContent=Math.floor(t/864e5);hE.textContent=Math.floor(t/36e5)%24;mE.textContent=Math.floor(t/6e4)%60;sE.textContent=Math.floor(t/1e3)%60;}topTick();setInterval(topTick,1000);
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">// top countdown Nov 3 2024
+const topBox=document.getElementById('topCountdown');
+if(topBox){
+  topBox.innerHTML=`<h4 class="mb-1">開催まであと</h4>
+    <span id="d">0</span> Days 
+    <span id="h">0</span> Hours 
+    <span id="m">0</span> Min 
+    <span id="s">0</span> Sec`;
+  const dE=document.getElementById('d'),hE=document.getElementById('h'),mE=document.getElementById('m'),sE=document.getElementById('s');
+  const target=new Date('2024-11-03T09:00:00');
+  function updateTop(){
+    const diff=target-new Date();
+    if(diff<=0){topBox.innerHTML='<h4 class="mb-0">Event Day!</h4>';return;}
+    dE.textContent=Math.floor(diff/864e5);
+    hE.textContent=Math.floor(diff/36e5)%24;
+    mE.textContent=Math.floor(diff/6e4)%60;
+    sE.textContent=Math.floor(diff/1000)%60;
+  }
+  updateTop();setInterval(updateTop,1000);
+}
 </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
