@@ -20,7 +20,7 @@
   <!-- Critical styles (purged / no Tailwind bloat) -->
   <style>
     :root{
-      --bg:#0e1a2b;--ink:#fff;--accent:#d30000;--beige:#e8dcc7;--shadow:0 12px 28px rgba(0,0,0,.15)
+      --bg:#0e1a2b;--ink:#fff;--accent:#d30000;--beige:#e8dcc7;--muted:#a5b4d4;--shadow:0 12px 28px rgba(0,0,0,.15)
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
@@ -103,6 +103,19 @@
     }
     .btn-secondary:hover{opacity:.9}
 
+    /* Event Information */
+    .eventWrap{max-width:1100px;margin:4rem auto;background:#172742;border-radius:1.25rem;box-shadow:var(--shadow);padding:3rem}
+    .eventHeader{font-size:clamp(1.6rem,3.4vw,2.2rem);text-transform:uppercase;margin-bottom:.35rem}
+    .eventDate{color:var(--beige);font-size:1.1rem;margin-bottom:1rem}
+    .eventGrid{display:grid;gap:2rem}
+    @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
+    .eventCol h3{color:#8db1ff;font-size:1.15rem;margin:1.25rem 0 .5rem 0;letter-spacing:.02em}
+    .eventCol p,.eventCol li{line-height:1.65}
+    .eventCol ul{padding-left:1.1rem}
+    .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
+    .changed{color:#ff7a7a;font-weight:700}
+    #meetMap{width:100%;height:220px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
+
     /* Footer */
     footer{background:#081425;color:#a5b4d4;text-align:center;padding:2.5rem 1rem;font-size:.85rem;font-style:italic}
   </style>
@@ -117,6 +130,7 @@
   <div class="links">
     <a href="#about">About</a>
     <a href="#mission">Mission</a>
+    <a href="#event">Event Info</a>
     <a href="#gallery">Highlights</a>
     <a href="#elevation">Elevation</a>
     <a href="#weather">Weather</a>
@@ -131,7 +145,7 @@
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt="Trailhead" loading="lazy"><div class="caption">Trailhead meetup</div></div>
       <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Camaraderie" loading="lazy"><div class="caption">Camaraderie on the climb</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine" loading="lazy"><div class="caption">Yakuō-in shrine respite</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine" loading="lazy"><div class="caption">Yakuo-in shrine respite</div></div>
       <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Switchbacks" loading="lazy"><div class="caption">Forest switchbacks</div></div>
       <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit" loading="lazy"><div class="caption">Summit celebration</div></div>
     </div>
@@ -174,6 +188,56 @@
         This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life
         for cancer patients. <a class="btn-secondary" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a>.
       </p>
+    </div>
+  </section>
+
+  <!-- EVENT INFORMATION -->
+  <section id="event" class="eventWrap" aria-labelledby="event-title">
+    <h2 id="event-title" class="eventHeader">Event Information</h2>
+    <p class="eventDate">Saturday, November 9, 2024</p> <!-- update if needed -->
+    <div class="eventGrid">
+      <!-- Left column -->
+      <div class="eventCol">
+        <ul>
+          <li>Time: 10:00 am to 5:00 pm. (Meeting Time: 9:30 am)</li>
+          <li>Place: Mt. Takao (Tokyo)</li>
+          <li>Participation Conditions: TransPerfect employee, employee’s family or friends</li>
+        </ul>
+        <p class="note">*Please bring water and some snacks!</p>
+        <p class="note">*Please kindly understand that attendees need to cover transportation costs to and from the event.</p>
+
+        <h3 id="after-party">After-Party</h3>
+        <p>We will have an after-party this year. Please move to the restaurant after hiking. Details are below <a href="#after-party">#after-party</a>.</p>
+
+        <h3>Registration Fee</h3>
+        <ul>
+          <li>TransPerfect employees: 1,000 JPY per person</li>
+          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself; feel free to join with all your interested family members - the fee will stay the same! A common-law partner is considered as family.</li>
+          <li>Non-TransPerfect members: 1,000 JPY. If you plan to participate with your friends, the fee amount is set at 1,000 JPY per participant.</li>
+        </ul>
+        <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
+      </div>
+
+      <!-- Right column -->
+      <div class="eventCol">
+        <h3>Meeting Point</h3>
+        <p class="changed">[Oct 30] Changed! Sakura Park</p>
+        <div id="meetMap" aria-label="Map to Sakura Park near Mt. Takao"></div>
+
+        <h3>Hiking Trail</h3>
+        <ul>
+          <li>Ascending - Inariyama Trail, Descending - Trail 1 <em>*read more</em></li>
+        </ul>
+        <p>Please feel free to ride the cable car if you or your family and friends are not able to take the trail. We will meet up at the top of the mountain.</p>
+
+        <h3>Prizes</h3>
+        <p>We are having prizes this year. The top three participants who reach the summit the fastest will win the following prizes. Details about the competition rules will be shared on the event day!</p>
+        <ul>
+          <li>1st - Amazon Gift Card: 3,000 yen</li>
+          <li>2nd - Amazon Gift Card: 2,000 yen</li>
+          <li>3rd - Amazon Gift Card: 1,000 yen</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -222,7 +286,7 @@ const dT=document.createElement('span'),hT=document.createElement('span'),mT=doc
 dT.id='d';hT.id='h';mT.id='m';sT.id='s';
 cb.innerHTML='<strong class="sr-only">Countdown</strong>';
 cb.append(dT,document.createTextNode('D '),hT,document.createTextNode('H '),mT,document.createTextNode('M '),sT,document.createTextNode('S'));
-const deadline=new Date('2025-11-03T09:00:00+09:00');
+const deadline=new Date('2025-11-03T09:00:00+09:00'); // update if needed
 function diffParts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60}}
 function countdown(){
   const remaining=deadline-Date.now();
@@ -251,6 +315,15 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
 function label(c){
   return{0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'}[c]||'Weather'
 }
+
+/* Meeting point map (Leaflet) */
+(function(){
+  const el=document.getElementById('meetMap');
+  if(!el) return;
+  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([35.6339,139.2434],15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
+  L.marker([35.6339,139.2434],{title:'Sakura Park - Meeting Point'}).addTo(map).bindPopup('Sakura Park - Meeting Point');
+})();
 </script>
 </body>
 </html>
