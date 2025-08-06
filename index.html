@@ -1,5 +1,3 @@
-Done. Added a TREK NEWS section at the top, cleaned the nav, set all dates to November 8, and made the countdown bold, larger, and minimal.
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,6 +122,11 @@ Done. Added a TREK NEWS section at the top, cleaned the nav, set all dates to No
     #meetMap{width:100%;height:220px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
     .iconStrip{display:block;max-width:780px;width:100%;margin:.75rem auto 1.5rem;opacity:.95;filter:drop-shadow(0 2px 8px rgba(0,0,0,.2))}
 
+    /* GitHub banner (under main) */
+    .repoBanner{max-width:1100px;margin:1.5rem auto 0;padding:0 1rem}
+    .repoBanner a{display:block;background:#0f203a;border:1px solid rgba(255,255,255,.12);border-radius:.9rem;overflow:hidden;box-shadow:var(--shadow)}
+    .repoBanner img{display:block;width:100%;height:auto}
+
     /* After-party */
     .afterpartyWrap{max-width:1100px;margin:4rem auto;background:#12213a;border-radius:1.25rem;box-shadow:var(--shadow);padding:3rem}
     .afterpartyWrap h2{font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:.02em;margin-bottom:.75rem}
@@ -202,6 +205,13 @@ Done. Added a TREK NEWS section at the top, cleaned the nav, set all dates to No
 <div class="spacer"></div>
 
 <main id="main">
+  <!-- GITHUB BANNER UNDER MAIN -->
+  <section class="repoBanner" aria-label="Repository banner">
+    <a href="https://github.com/TPTREK/TPTREK/blob/main/54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" target="_blank" rel="noopener">
+      <img src="https://raw.githubusercontent.com/TPTREK/TPTREK/main/54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="TPTREK repository graphic">
+    </a>
+  </section>
+
   <!-- ABOUT -->
   <section id="about" class="card">
     <h2>Reconnect in Nature</h2>
@@ -256,7 +266,7 @@ Done. Added a TREK NEWS section at the top, cleaned the nav, set all dates to No
           <li>Place: Mt. Takao (Tokyo)</li>
           <li>Participation Conditions: TransPerfect employee, employee’s family or friends</li>
         </ul>
-        <p class="note">*Please bring water and some snacks!</p>
+        <p class="note">*Please bring water and some snacks.</p>
         <p class="note">*Please kindly understand that attendees need to cover transportation costs to and from the event.</p>
 
         <h3 id="after-party">After-Party</h3>
@@ -265,7 +275,7 @@ Done. Added a TREK NEWS section at the top, cleaned the nav, set all dates to No
         <h3>Registration Fee</h3>
         <ul>
           <li>TransPerfect employees: 1,000 JPY per person</li>
-          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself; feel free to join with all your interested family members - the fee will stay the same! A common-law partner is considered as family.</li>
+          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself; feel free to join with all your interested family members - the fee will stay the same. A common-law partner is considered as family.</li>
           <li>Non-TransPerfect members: 1,000 JPY. If you plan to participate with your friends, the fee amount is set at 1,000 JPY per participant.</li>
         </ul>
         <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
@@ -297,7 +307,7 @@ Done. Added a TREK NEWS section at the top, cleaned the nav, set all dates to No
   <!-- AFTER-PARTY (full details) -->
   <section id="afterparty" class="afterpartyWrap" aria-labelledby="afterparty-title">
     <h2 id="afterparty-title">Get together for an after-party!</h2>
-    <p>Join our after-party!</p>
+    <p>Join our after-party.</p>
     <p>
       The company will cover the expense of food and drinks for employees. For non-TPT employees, we will
       collect the money on-site. The price per person will be: Adults: 5,500 JPY, Kids over 3 years old:
