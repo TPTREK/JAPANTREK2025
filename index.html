@@ -26,7 +26,9 @@
     html{scroll-behavior:smooth}
     body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
     a{color:inherit;text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
     .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    section{scroll-margin-top:88px}
 
     /* Skip-link */
     #skip{position:absolute;top:-40px;left:0;background:var(--accent);padding:.5rem 1rem;font-weight:700;z-index:200}
@@ -36,40 +38,58 @@
     #progress{position:fixed;top:0;left:0;height:4px;background:var(--accent);transform-origin:0 0;z-index:120}
 
     /* Navigation - cleaner */
-    nav{position:fixed;top:0;left:0;width:100%;min-height:64px;padding:.6rem 1.25rem;background:rgba(0,0,0,.9);backdrop-filter:blur(6px);display:flex;align-items:center;gap:1rem;z-index:110}
+    nav{
+      position:fixed;top:0;left:0;width:100%;min-height:64px;padding:.55rem 1rem;
+      background:rgba(0,0,0,.9);backdrop-filter:blur(6px);display:flex;align-items:center;gap:.75rem;z-index:110
+    }
     nav .brand{display:flex;align-items:center;gap:.6rem}
-    nav .brand img{width:220px;height:auto}
-    nav .links{flex:1;display:flex;justify-content:center;gap:clamp(.6rem,2vw,1.25rem);font-size:.92rem;letter-spacing:.12em}
-    nav .links a{font-weight:700;text-transform:uppercase;opacity:.92;transition:opacity .2s}
+    nav .brand img{width:190px;height:auto}
+    nav .links{flex:1;display:flex;justify-content:center;gap:clamp(.6rem,2vw,1.1rem);font-size:.92rem;letter-spacing:.12em}
+    nav .links a{font-weight:700;text-transform:uppercase;opacity:.9;transition:opacity .2s}
     nav .links a:hover{opacity:1}
     #countBox{
       display:flex;align-items:center;gap:.25rem;border:none;padding:0 .25rem;border-radius:8px;
       font-variant-numeric:tabular-nums;min-width:auto
     }
-    #countBox .num{font-weight:800;font-size:clamp(1.1rem,3vw,1.6rem);line-height:1}
+    #countBox .num{font-weight:800;font-size:clamp(1.2rem,3.2vw,1.7rem);line-height:1}
     #countBox .sep{opacity:.6;margin:0 .1rem}
 
-    /* Hero */
-    header{height:100vh;position:relative;overflow:hidden}
+    /* Hero - reduced height */
+    header{height:min(78vh,680px);position:relative;overflow:hidden}
+    @media(max-width:640px){header{height:60vh}}
     .swiper{width:100%;height:100%}
     .swiper-slide img{width:100%;height:100%;object-fit:cover}
-    .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:10}
-    .heroBtn svg{width:26px;height:26px;stroke:#000;stroke-width:2}
+    .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:10}
+    .heroBtn svg{width:24px;height:24px;stroke:#000;stroke-width:2}
     #prev{left:1rem}#next{right:1rem}
-    .heroOverlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5}
-    .heroOverlay h1{font-size:clamp(2.2rem,5vw,3.2rem);letter-spacing:.1em;margin-bottom:1rem}
-    .heroOverlay p{max-width:600px;margin-bottom:2rem}
-    .btn{display:inline-block;padding:1rem 2.4rem;background:var(--ink);color:var(--bg);font-weight:700;border-radius:6px}
+    .heroOverlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.45));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding:0 1rem}
+    .heroOverlay h1{font-size:clamp(2rem,4.5vw,3rem);letter-spacing:.08em;margin-bottom:.75rem}
+    .heroOverlay p{max-width:620px;margin-bottom:1.6rem}
+    .btn{display:inline-block;padding:.9rem 2.1rem;background:var(--ink);color:var(--bg);font-weight:700;border-radius:6px}
     .btn:hover{opacity:.88}
     .caption{position:absolute;bottom:0;left:0;width:100%;padding:1rem 2rem;font-size:.9rem;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);opacity:0;color:#fff;transition:.3s}
     .swiper-slide:hover .caption{opacity:1}
 
-    /* Spacer */
+    /* Spacer under fixed nav */
     .spacer{height:120px;background:var(--bg)}
 
+    /* GitHub banner under main - half size */
+    .repoBanner{max-width:1100px;margin:1.2rem auto 0;padding:0 1rem}
+    .repoBanner a{
+      display:block;margin:0 auto;background:#0f203a;border:1px solid rgba(255,255,255,.12);
+      border-radius:.9rem;overflow:hidden;box-shadow:var(--shadow);max-width:560px /* about half of content width */
+    }
+
     /* Center card */
-    .card{max-width:1100px;margin:auto;background:#12213a;border-radius:1.5rem;box-shadow:var(--shadow);padding:5rem 3rem;text-align:center}
+    .card{max-width:1100px;margin:2rem auto;background:#12213a;border-radius:1.5rem;box-shadow:var(--shadow);padding:3.5rem 2.5rem;text-align:center}
     .card h2{font-size:clamp(1.8rem,4vw,2.5rem);margin-bottom:1rem;text-transform:uppercase}
+
+    /* Trek News (moved under hero) */
+    .news{max-width:1100px;margin:2rem auto 0;background:#12213a;border-radius:1.25rem;box-shadow:var(--shadow);padding:2rem}
+    .news .badge{display:inline-block;background:#1f3b64;color:#cfe0ff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.75rem}
+    .news h2{font-size:clamp(1.4rem,3.4vw,2rem);margin-bottom:.4rem}
+    .news p{line-height:1.75;margin:.4rem 0}
+    .news a{color:#8db1ff;text-decoration:underline}
 
     /* Postcards */
     .postcard{display:grid;gap:2rem;background:#172742;border-radius:1rem;box-shadow:var(--shadow);padding:3rem;margin-bottom:4.5rem;max-width:1100px;margin-inline:auto}
@@ -82,7 +102,7 @@
     #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
     #weatherCard .t{font-size:2.4rem;font-weight:700}
 
-    /* Contact */
+    /* Forms */
     .formCard{max-width:1100px;margin:5rem auto;background:#12213a;border-radius:1.5rem;box-shadow:var(--shadow);padding:4rem 3rem;text-align:center}
     .formCard input,.formCard textarea{width:100%;padding:1rem;border:none;border-radius:.5rem;margin-top:.8rem;background:#172742;color:#fff}
     .formCard button{margin-top:1rem;background:var(--accent);color:#fff;border:none;padding:1rem 2rem;border-radius:.5rem;font-weight:700;width:100%}
@@ -101,13 +121,6 @@
     .btn-secondary{display:inline-block;border:2px solid var(--beige);color:var(--beige);padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.6rem}
     .btn-secondary:hover{opacity:.9}
 
-    /* Trek News */
-    .news{max-width:1100px;margin:7rem auto 2rem;background:#12213a;border-radius:1.25rem;box-shadow:var(--shadow);padding:2rem 2rem 2.2rem}
-    .news .badge{display:inline-block;background:#1f3b64;color:#cfe0ff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.75rem}
-    .news h2{font-size:clamp(1.4rem,3.4vw,2rem);margin-bottom:.4rem}
-    .news p{line-height:1.75;margin:.4rem 0}
-    .news a{color:#8db1ff;text-decoration:underline}
-
     /* Event Information */
     .eventWrap{max-width:1100px;margin:4rem auto;background:#172742;border-radius:1.25rem;box-shadow:var(--shadow);padding:3rem}
     .eventHeader{font-size:clamp(1.6rem,3.4vw,2.2rem);text-transform:uppercase;margin-bottom:.35rem}
@@ -121,11 +134,6 @@
     .changed{color:#ff7a7a;font-weight:700}
     #meetMap{width:100%;height:220px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
     .iconStrip{display:block;max-width:780px;width:100%;margin:.75rem auto 1.5rem;opacity:.95;filter:drop-shadow(0 2px 8px rgba(0,0,0,.2))}
-
-    /* GitHub banner (under main) */
-    .repoBanner{max-width:1100px;margin:1.5rem auto 0;padding:0 1rem}
-    .repoBanner a{display:block;background:#0f203a;border:1px solid rgba(255,255,255,.12);border-radius:.9rem;overflow:hidden;box-shadow:var(--shadow)}
-    .repoBanner img{display:block;width:100%;height:auto}
 
     /* After-party */
     .afterpartyWrap{max-width:1100px;margin:4rem auto;background:#12213a;border-radius:1.25rem;box-shadow:var(--shadow);padding:3rem}
@@ -167,45 +175,50 @@
     <a href="#donate">Donate</a>
     <a href="#register">Register</a>
   </div>
+  <!-- Countdown - bold and minimal -->
   <div id="countBox" aria-live="polite"></div>
 </nav>
 
-<!-- TREK NEWS -->
-<section id="news" class="news" aria-labelledby="news-title">
-  <span class="badge">Trek News</span>
-  <h2 id="news-title">TransPerfect Japan Charity Hike - Saturday, November 8</h2>
-  <p>We’re excited to announce that TransPerfect Japan will be hosting a charity hiking event on <strong>Saturday, November 8</strong>!</p>
-  <p><strong>Where are we going?</strong> Stay tuned. We’ll reveal the location soon. Not an extreme mountain, promise.</p>
-  <p>Over the past three years, we’ve welcomed more than <strong>80 participants</strong> each year, and the event keeps getting better. We’ve added fun new activities annually, including last year’s popular after-party, and we’ve also increased our <strong>donation</strong> contributions.</p>
-  <p>The trail we choose is always beginner-friendly. It’s a fun and rewarding challenge for everyone, and a great opportunity to connect with colleagues, invite family and friends, and even bring along overseas managers.</p>
-  <p>We hope you’ll join us for this meaningful and memorable day. Registration will open later. Thanks for bearing with us while we finalize details.</p>
-  <p>Questions? Email <a href="mailto:TransPerfectJapanTrek@transperfect.com">TransPerfectJapanTrek@transperfect.com</a>.</p>
-  <p>You, your family, and your friends are all welcome. See you there.</p>
-  <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
-</section>
-
 <!-- HERO -->
-<header id="hero">
+<header id="hero" aria-label="Slideshow">
   <div class="swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt="Trailhead" loading="lazy"><div class="caption">Trailhead meetup</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Camaraderie" loading="lazy"><div class="caption">Camaraderie on the climb</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine" loading="lazy"><div class="caption">Yakuo-in shrine respite</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Switchbacks" loading="lazy"><div class="caption">Forest switchbacks</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit" loading="lazy"><div class="caption">Summit celebration</div></div>
+      <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt="Trailhead"><div class="caption">Trailhead meetup</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Camaraderie"><div class="caption">Camaraderie on the climb</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine"><div class="caption">Shrine respite</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Switchbacks"><div class="caption">Forest switchbacks</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit"><div class="caption">Summit celebration</div></div>
     </div>
     <button id="prev" class="heroBtn" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6"/></svg></button>
     <button id="next" class="heroBtn" aria-label="Next"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6"/></svg></button>
     <div class="swiper-pagination !bottom-8"></div>
-    <div class="heroOverlay"><h1>Japan Trek 2025</h1><p>TransPerfect conquers Mt. Takao - hike, connect, give back.</p><a href="#register" class="btn">Register Now</a></div>
+    <div class="heroOverlay">
+      <h1>TransPerfect Charity Trek 2025</h1>
+      <p>Hike, connect, give back.</p>
+      <a href="#register" class="btn">Register Soon</a>
+    </div>
   </div>
 </header>
 
-<!-- SPACER -->
+<!-- SPACER under fixed nav -->
 <div class="spacer"></div>
 
 <main id="main">
-  <!-- GITHUB BANNER UNDER MAIN -->
+  <!-- TREK NEWS moved under hero -->
+  <section id="news" class="news" aria-labelledby="news-title">
+    <span class="badge">Trek News</span>
+    <h2 id="news-title">TransPerfect Japan Charity Hike - Saturday, November 8</h2>
+    <p>We’re excited to announce that TransPerfect Japan will be hosting a charity hiking event on <strong>Saturday, November 8</strong>.</p>
+    <p><strong>Where are we going?</strong> Stay tuned. We will reveal the location soon. Not an extreme mountain.</p>
+    <p>Over the past three years, we have welcomed more than <strong>80 participants</strong> each year, and the event keeps getting better. We add fun new activities annually, including last year’s popular after-party, and we continue to increase our <strong>donation</strong> contributions.</p>
+    <p>The trail we choose is beginner-friendly. It is a fun challenge for everyone and a chance to connect with colleagues, invite family and friends, and even bring overseas managers.</p>
+    <p>We hope you will join us for this meaningful day. Registration will open later. Thanks for bearing with us while we finalize details.</p>
+    <p>Questions? Email <a href="mailto:TransPerfectJapanTrek@transperfect.com">TransPerfectJapanTrek@transperfect.com</a>.</p>
+    <p>You, your family, and your friends are welcome. See you there.</p>
+    <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
+  </section>
+
+  <!-- GITHUB BANNER under main - half size -->
   <section class="repoBanner" aria-label="Repository banner">
     <a href="https://github.com/TPTREK/TPTREK/blob/main/54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" target="_blank" rel="noopener">
       <img src="https://raw.githubusercontent.com/TPTREK/TPTREK/main/54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="TPTREK repository graphic">
@@ -215,8 +228,7 @@
   <!-- ABOUT -->
   <section id="about" class="card">
     <h2>Reconnect in Nature</h2>
-    <p>Challenge yourself on Mt. Takao’s scenic trail, forge
-    new friendships, and raise funds for a worthy cause.</p>
+    <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
   </section>
 
   <!-- OUR MISSION -->
@@ -226,19 +238,16 @@
       <h2 id="mission-title">Giving Back, Together</h2>
       <p class="lede">
         One of the privileges of being a successful business is having the opportunity to give back.
-        TransPerfect’s commitment to good corporate citizenship has played a key role in shaping our culture
-        and the way we conduct our business every day.
+        TransPerfect’s commitment to good corporate citizenship guides how we work every day.
       </p>
     </div>
     <div class="mission-body">
       <p>
-        At TransPerfect, we are involved in a variety of causes, including supporting local communities and a
-        diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts
-        to make a difference in the world.
+        We support local communities and a diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts to make a difference.
       </p>
       <p>
-        This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life
-        for cancer patients. <a class="btn-secondary" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a>.
+        This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life for cancer patients.
+        <a class="btn-secondary" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a>.
       </p>
     </div>
   </section>
@@ -252,10 +261,7 @@
     <img
       src="https://events.transperfect.com/wp-content/uploads/2024/09/icons-insert.png"
       alt="Event essentials icons"
-      class="iconStrip"
-      loading="lazy"
-      width="780"
-      height="120"
+      class="iconStrip" loading="lazy" width="780" height="120"
     >
 
     <div class="eventGrid">
@@ -266,8 +272,8 @@
           <li>Place: Mt. Takao (Tokyo)</li>
           <li>Participation Conditions: TransPerfect employee, employee’s family or friends</li>
         </ul>
-        <p class="note">*Please bring water and some snacks.</p>
-        <p class="note">*Please kindly understand that attendees need to cover transportation costs to and from the event.</p>
+        <p class="note">* Please bring water and some snacks.</p>
+        <p class="note">* Transportation costs to and from the event are self covered.</p>
 
         <h3 id="after-party">After-Party</h3>
         <p>We will have an after-party this year. Please move to the restaurant after hiking. Details are below <a href="#afterparty">#afterparty</a>.</p>
@@ -275,8 +281,8 @@
         <h3>Registration Fee</h3>
         <ul>
           <li>TransPerfect employees: 1,000 JPY per person</li>
-          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself; feel free to join with all your interested family members - the fee will stay the same. A common-law partner is considered as family.</li>
-          <li>Non-TransPerfect members: 1,000 JPY. If you plan to participate with your friends, the fee amount is set at 1,000 JPY per participant.</li>
+          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself. A common-law partner is considered as family.</li>
+          <li>Non-TransPerfect members: 1,000 JPY per participant</li>
         </ul>
         <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
       </div>
@@ -284,17 +290,15 @@
       <!-- Right column -->
       <div class="eventCol">
         <h3>Meeting Point</h3>
-        <p class="changed">[Oct 30] Changed! Sakura Park</p>
-        <div id="meetMap" aria-label="Map to Sakura Park near Mt. Takao"></div>
+        <p class="changed">[Oct 30] Changed. Sakura Park</p>
+        <div id="meetMap" aria-label="Map to Sakura Park"></div>
 
         <h3>Hiking Trail</h3>
-        <ul>
-          <li>Ascending - Inariyama Trail, Descending - Trail 1 <em>*read more</em></li>
-        </ul>
-        <p>Please feel free to ride the cable car if you or your family and friends are not able to take the trail. We will meet up at the top of the mountain.</p>
+        <ul><li>Ascending - Inariyama Trail, Descending - Trail 1 <em>* read more</em></li></ul>
+        <p>Please feel free to ride the cable car if needed. We will meet up at the top of the mountain.</p>
 
         <h3>Prizes</h3>
-        <p>We are having prizes this year. The top three participants who reach the summit the fastest will win the following prizes. Details about the competition rules will be shared on the event day.</p>
+        <p>Top three to the summit win:</p>
         <ul>
           <li>1st - Amazon Gift Card: 3,000 yen</li>
           <li>2nd - Amazon Gift Card: 2,000 yen</li>
@@ -306,14 +310,9 @@
 
   <!-- AFTER-PARTY (full details) -->
   <section id="afterparty" class="afterpartyWrap" aria-labelledby="afterparty-title">
-    <h2 id="afterparty-title">Get together for an after-party!</h2>
+    <h2 id="afterparty-title">Get together for an after-party</h2>
     <p>Join our after-party.</p>
-    <p>
-      The company will cover the expense of food and drinks for employees. For non-TPT employees, we will
-      collect the money on-site. The price per person will be: Adults: 5,500 JPY, Kids over 3 years old:
-      3,000 JPY. <span class="badgeUpdate">[Nov 1] The fee for kids is revised.</span>
-    </p>
-
+    <p>The company will cover food and drinks for employees. For non-TPT employees, we will collect the money on-site. Adults: 5,500 JPY. Kids over 3: 3,000 JPY. <span class="badgeUpdate">[Nov 1] Fee for kids is revised.</span></p>
     <dl class="dl">
       <dt>Restaurant</dt><dd>バーガーズカフェ シュシュ</dd>
       <dt>Time</dt><dd>2:00 pm to 5:00 pm</dd>
@@ -329,33 +328,30 @@
   <section id="donate" class="donateWrap" aria-labelledby="donate-title">
     <h2 id="donate-title">Donation Only</h2>
     <p>Charity-only participation is welcome.</p>
-    <p>Please input the amount you are willing to donate from the organization’s page.</p>
-    <p>You may change the language setting from the top-right corner.</p>
+    <p>Please input the amount you are willing to donate from the organization’s page. Language can be changed from the top-right corner.</p>
     <p>
-      <a class="btnWide btnDonate"
-         href="https://www.cancer.org/involved/fundraise/relay-for-life.html"
-         target="_blank" rel="noopener">Donate now</a>
+      <a class="btnWide btnDonate" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Donate now</a>
     </p>
   </section>
 
   <!-- HIGHLIGHT CARDS -->
   <section id="gallery">
-    <article class="postcard"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h3>Camaraderie</h3><p>Walk shoulder-to-shoulder with colleagues, friends, and family.</p></div></article>
-    <article class="postcard"><img src="20241109_c2_041.jpg" alt="Vista"><div><h3>Vistas</h3><p>Lookouts unveil sweeping Tokyo skylines.</p></div></article>
+    <article class="postcard"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h3>Camaraderie</h3><p>Walk shoulder to shoulder with colleagues, friends, and family.</p></div></article>
+    <article class="postcard"><img src="20241109_c2_041.jpg" alt="Vista"><div><h3>Vistas</h3><p>Lookouts reveal sweeping skylines.</p></div></article>
   </section>
 
   <!-- ELEVATION -->
   <section id="elevation" data-dark><h2>Elevation Profile</h2><canvas id="chart" role="img" aria-label="Elevation graph"></canvas></section>
 
   <!-- WEATHER -->
-  <section id="weather" data-dark><h2>Live Weather · Mt. Takao</h2><div id="weatherCard"><p>Loading…</p></div></section>
+  <section id="weather" data-dark><h2>Live Weather</h2><div id="weatherCard"><p>Loading…</p></div></section>
 
   <!-- REGISTER -->
   <section id="register" class="formCard"><h2>Register</h2>
     <form action="https://formspree.io/f/your-id" method="POST">
       <label class="sr-only">Name<input name="name" placeholder="Full Name" required></label>
       <label class="sr-only">Email<input type="email" name="email" placeholder="Email" required></label>
-      <textarea rows="4" name="note" placeholder="Preferred date & time"></textarea>
+      <textarea rows="4" name="note" placeholder="Preferred date and time"></textarea>
       <button>Submit</button>
     </form>
   </section>
@@ -370,14 +366,16 @@ const bar=document.getElementById('progress');
 addEventListener('scroll',()=>bar.style.transform=`scaleX(${scrollY/(document.body.scrollHeight-innerHeight)})`);
 
 /* Swiper */
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hero=new Swiper('.swiper',{
   loop:true,preloadImages:false,lazy:{loadPrevNext:true},
-  autoplay:{delay:5200,disableOnInteraction:false},speed:900,effect:'fade',
+  autoplay: prefersReduced ? false : {delay:5200,disableOnInteraction:false},
+  speed: prefersReduced ? 0 : 900,effect: prefersReduced ? 'slide' : 'fade',
   navigation:{nextEl:'#next',prevEl:'#prev'},
   pagination:{el:'.swiper-pagination',clickable:true}
 });
 
-/* Countdown (Nov 8, 2025 - 09:30 JST) */
+/* Countdown - Nov 8, 2025 09:30 JST */
 const cb=document.getElementById('countBox');
 cb.innerHTML='<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
 const deadline=new Date('2025-11-08T09:30:00+09:00');
@@ -399,8 +397,7 @@ new Chart('chart',{
   type:'line',
   data:{labels:['Start','Mid','Shrine','Summit'],
     datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
-  options:{plugins:{legend:{display:false}},
-    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}
+  options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}
 });
 
 /* Weather */
