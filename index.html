@@ -1,3 +1,5 @@
+Done. Added a TREK NEWS section at the top, cleaned the nav, set all dates to November 8, and made the countdown bold, larger, and minimal.
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +19,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-  <!-- Critical styles (purged / no Tailwind bloat) -->
+  <!-- Critical styles -->
   <style>
     :root{
       --bg:#0e1a2b;--ink:#fff;--accent:#d30000;--beige:#e8dcc7;--muted:#a5b4d4;--shadow:0 12px 28px rgba(0,0,0,.15)
@@ -35,12 +37,19 @@
     /* Progress */
     #progress{position:fixed;top:0;left:0;height:4px;background:var(--accent);transform-origin:0 0;z-index:120}
 
-    /* Navigation */
-    nav{position:fixed;top:0;left:0;width:100%;min-height:64px;padding:.75rem 1.5rem;background:rgba(0,0,0,.9);backdrop-filter:blur(6px);display:flex;align-items:center;gap:1.25rem;z-index:110}
-    nav .links{flex:1;display:flex;flex-wrap:wrap;justify-content:center;column-gap:clamp(1rem,4vw,2.5rem);font-size:clamp(.85rem,2.4vw,.95rem);letter-spacing:.14em}
-    nav .links a{font-weight:700;text-transform:uppercase;transition:opacity .25s}
-    nav .links a:hover{opacity:.82}
-    #countBox{display:flex;flex-direction:column;align-items:flex-end;border:2px solid var(--ink);padding:.5rem 1rem;border-radius:8px;font-size:clamp(.85rem,2.4vw,1rem);line-height:1.25;min-width:200px}
+    /* Navigation - cleaner */
+    nav{position:fixed;top:0;left:0;width:100%;min-height:64px;padding:.6rem 1.25rem;background:rgba(0,0,0,.9);backdrop-filter:blur(6px);display:flex;align-items:center;gap:1rem;z-index:110}
+    nav .brand{display:flex;align-items:center;gap:.6rem}
+    nav .brand img{width:220px;height:auto}
+    nav .links{flex:1;display:flex;justify-content:center;gap:clamp(.6rem,2vw,1.25rem);font-size:.92rem;letter-spacing:.12em}
+    nav .links a{font-weight:700;text-transform:uppercase;opacity:.92;transition:opacity .2s}
+    nav .links a:hover{opacity:1}
+    #countBox{
+      display:flex;align-items:center;gap:.25rem;border:none;padding:0 .25rem;border-radius:8px;
+      font-variant-numeric:tabular-nums;min-width:auto
+    }
+    #countBox .num{font-weight:800;font-size:clamp(1.1rem,3vw,1.6rem);line-height:1}
+    #countBox .sep{opacity:.6;margin:0 .1rem}
 
     /* Hero */
     header{height:100vh;position:relative;overflow:hidden}
@@ -58,7 +67,7 @@
     .swiper-slide:hover .caption{opacity:1}
 
     /* Spacer */
-    .spacer{height:180px;background:var(--bg)}
+    .spacer{height:120px;background:var(--bg)}
 
     /* Center card */
     .card{max-width:1100px;margin:auto;background:#12213a;border-radius:1.5rem;box-shadow:var(--shadow);padding:5rem 3rem;text-align:center}
@@ -86,22 +95,20 @@
       max-width:1100px;margin:4rem auto;background:#172742;border-radius:1.25rem;
       box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem
     }
-    @media(min-width:900px){
-      .mission{grid-template-columns:1.05fr 1fr;align-items:start}
-    }
-    .mission .badge{
-      display:inline-block;background:var(--accent);color:#fff;font-weight:700;
-      padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;
-      text-transform:uppercase;font-size:.75rem
-    }
+    @media(min-width:900px){.mission{grid-template-columns:1.05fr 1fr;align-items:start}}
+    .mission .badge{display:inline-block;background:var(--accent);color:#fff;font-weight:700;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
     .mission h2{font-size:clamp(1.6rem,3.4vw,2.2rem);margin-bottom:.4rem;text-transform:uppercase}
     .mission .lede{color:var(--beige);font-size:1.05rem;line-height:1.6}
     .mission p{line-height:1.65}
-    .btn-secondary{
-      display:inline-block;border:2px solid var(--beige);color:var(--beige);
-      padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.6rem
-    }
+    .btn-secondary{display:inline-block;border:2px solid var(--beige);color:var(--beige);padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.6rem}
     .btn-secondary:hover{opacity:.9}
+
+    /* Trek News */
+    .news{max-width:1100px;margin:7rem auto 2rem;background:#12213a;border-radius:1.25rem;box-shadow:var(--shadow);padding:2rem 2rem 2.2rem}
+    .news .badge{display:inline-block;background:#1f3b64;color:#cfe0ff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.75rem}
+    .news h2{font-size:clamp(1.4rem,3.4vw,2rem);margin-bottom:.4rem}
+    .news p{line-height:1.75;margin:.4rem 0}
+    .news a{color:#8db1ff;text-decoration:underline}
 
     /* Event Information */
     .eventWrap{max-width:1100px;margin:4rem auto;background:#172742;border-radius:1.25rem;box-shadow:var(--shadow);padding:3rem}
@@ -115,6 +122,26 @@
     .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
     .changed{color:#ff7a7a;font-weight:700}
     #meetMap{width:100%;height:220px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
+    .iconStrip{display:block;max-width:780px;width:100%;margin:.75rem auto 1.5rem;opacity:.95;filter:drop-shadow(0 2px 8px rgba(0,0,0,.2))}
+
+    /* After-party */
+    .afterpartyWrap{max-width:1100px;margin:4rem auto;background:#12213a;border-radius:1.25rem;box-shadow:var(--shadow);padding:3rem}
+    .afterpartyWrap h2{font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:.02em;margin-bottom:.75rem}
+    .afterpartyWrap p{line-height:1.7}
+    .badgeUpdate{color:#ff6a6a;font-weight:800;margin-left:.5rem}
+    .dl{margin-top:1.25rem;display:grid;grid-template-columns:110px 1fr;gap:.5rem 1.25rem}
+    .dl dt{font-weight:700;color:#d1ddff}
+    .dl dd{margin:0}
+    .afterpartyLinks a{color:#8db1ff;text-decoration:underline}
+    .afterpartyLinks a:hover{opacity:.9}
+
+    /* Donation */
+    .donateWrap{max-width:1100px;margin:4rem auto;background:#1a2e50;border-radius:1.25rem;box-shadow:var(--shadow);padding:3rem;display:grid;grid-template-columns:1fr;gap:1rem}
+    .donateWrap h2{font-size:clamp(1.8rem,4vw,2.4rem);letter-spacing:.02em;margin-bottom:.25rem}
+    .donateWrap p{line-height:1.7}
+    .btnWide{display:inline-block;padding:1.1rem 2.4rem;border-radius:.75rem;font-size:1.05rem;font-weight:800}
+    .btnDonate{background:#6faefb;color:#061321}
+    .btnDonate:hover{opacity:.92}
 
     /* Footer */
     footer{background:#081425;color:#a5b4d4;text-align:center;padding:2.5rem 1rem;font-size:.85rem;font-style:italic}
@@ -126,18 +153,33 @@
 
 <!-- NAVIGATION -->
 <nav>
-  <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek logo" style="width:350px;height:auto">
+  <div class="brand">
+    <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek logo">
+  </div>
   <div class="links">
-    <a href="#about">About</a>
+    <a href="#news">News</a>
     <a href="#mission">Mission</a>
-    <a href="#event">Event Info</a>
-    <a href="#gallery">Highlights</a>
-    <a href="#elevation">Elevation</a>
-    <a href="#weather">Weather</a>
+    <a href="#event">Event</a>
+    <a href="#afterparty">After-Party</a>
+    <a href="#donate">Donate</a>
     <a href="#register">Register</a>
   </div>
   <div id="countBox" aria-live="polite"></div>
 </nav>
+
+<!-- TREK NEWS -->
+<section id="news" class="news" aria-labelledby="news-title">
+  <span class="badge">Trek News</span>
+  <h2 id="news-title">TransPerfect Japan Charity Hike - Saturday, November 8</h2>
+  <p>We’re excited to announce that TransPerfect Japan will be hosting a charity hiking event on <strong>Saturday, November 8</strong>!</p>
+  <p><strong>Where are we going?</strong> Stay tuned. We’ll reveal the location soon. Not an extreme mountain, promise.</p>
+  <p>Over the past three years, we’ve welcomed more than <strong>80 participants</strong> each year, and the event keeps getting better. We’ve added fun new activities annually, including last year’s popular after-party, and we’ve also increased our <strong>donation</strong> contributions.</p>
+  <p>The trail we choose is always beginner-friendly. It’s a fun and rewarding challenge for everyone, and a great opportunity to connect with colleagues, invite family and friends, and even bring along overseas managers.</p>
+  <p>We hope you’ll join us for this meaningful and memorable day. Registration will open later. Thanks for bearing with us while we finalize details.</p>
+  <p>Questions? Email <a href="mailto:TransPerfectJapanTrek@transperfect.com">TransPerfectJapanTrek@transperfect.com</a>.</p>
+  <p>You, your family, and your friends are all welcome. See you there.</p>
+  <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
+</section>
 
 <!-- HERO -->
 <header id="hero">
@@ -194,7 +236,18 @@
   <!-- EVENT INFORMATION -->
   <section id="event" class="eventWrap" aria-labelledby="event-title">
     <h2 id="event-title" class="eventHeader">Event Information</h2>
-    <p class="eventDate">Saturday, November 9, 2024</p> <!-- update if needed -->
+    <p class="eventDate">Saturday, November 8, 2025</p>
+
+    <!-- Decorative icon strip -->
+    <img
+      src="https://events.transperfect.com/wp-content/uploads/2024/09/icons-insert.png"
+      alt="Event essentials icons"
+      class="iconStrip"
+      loading="lazy"
+      width="780"
+      height="120"
+    >
+
     <div class="eventGrid">
       <!-- Left column -->
       <div class="eventCol">
@@ -207,7 +260,7 @@
         <p class="note">*Please kindly understand that attendees need to cover transportation costs to and from the event.</p>
 
         <h3 id="after-party">After-Party</h3>
-        <p>We will have an after-party this year. Please move to the restaurant after hiking. Details are below <a href="#after-party">#after-party</a>.</p>
+        <p>We will have an after-party this year. Please move to the restaurant after hiking. Details are below <a href="#afterparty">#afterparty</a>.</p>
 
         <h3>Registration Fee</h3>
         <ul>
@@ -231,7 +284,7 @@
         <p>Please feel free to ride the cable car if you or your family and friends are not able to take the trail. We will meet up at the top of the mountain.</p>
 
         <h3>Prizes</h3>
-        <p>We are having prizes this year. The top three participants who reach the summit the fastest will win the following prizes. Details about the competition rules will be shared on the event day!</p>
+        <p>We are having prizes this year. The top three participants who reach the summit the fastest will win the following prizes. Details about the competition rules will be shared on the event day.</p>
         <ul>
           <li>1st - Amazon Gift Card: 3,000 yen</li>
           <li>2nd - Amazon Gift Card: 2,000 yen</li>
@@ -239,6 +292,40 @@
         </ul>
       </div>
     </div>
+  </section>
+
+  <!-- AFTER-PARTY (full details) -->
+  <section id="afterparty" class="afterpartyWrap" aria-labelledby="afterparty-title">
+    <h2 id="afterparty-title">Get together for an after-party!</h2>
+    <p>Join our after-party!</p>
+    <p>
+      The company will cover the expense of food and drinks for employees. For non-TPT employees, we will
+      collect the money on-site. The price per person will be: Adults: 5,500 JPY, Kids over 3 years old:
+      3,000 JPY. <span class="badgeUpdate">[Nov 1] The fee for kids is revised.</span>
+    </p>
+
+    <dl class="dl">
+      <dt>Restaurant</dt><dd>バーガーズカフェ シュシュ</dd>
+      <dt>Time</dt><dd>2:00 pm to 5:00 pm</dd>
+      <dt>Phone</dt><dd><a class="afterpartyLinks" href="tel:0426733917">042-673-3917</a></dd>
+      <dt>Address</dt><dd>1912 Takaomachi, Hachioji, Tokyo 193-0844</dd>
+    </dl>
+    <p class="afterpartyLinks" style="margin-top:.75rem">
+      <a href="https://maps.app.goo.gl/3hZjhvUUbRsP5kPbW8" target="_blank" rel="noopener">Open in Google Maps</a>
+    </p>
+  </section>
+
+  <!-- DONATION ONLY -->
+  <section id="donate" class="donateWrap" aria-labelledby="donate-title">
+    <h2 id="donate-title">Donation Only</h2>
+    <p>Charity-only participation is welcome.</p>
+    <p>Please input the amount you are willing to donate from the organization’s page.</p>
+    <p>You may change the language setting from the top-right corner.</p>
+    <p>
+      <a class="btnWide btnDonate"
+         href="https://www.cancer.org/involved/fundraise/relay-for-life.html"
+         target="_blank" rel="noopener">Donate now</a>
+    </p>
   </section>
 
   <!-- HIGHLIGHT CARDS -->
@@ -280,19 +367,20 @@ const hero=new Swiper('.swiper',{
   pagination:{el:'.swiper-pagination',clickable:true}
 });
 
-/* Countdown */
+/* Countdown (Nov 8, 2025 - 09:30 JST) */
 const cb=document.getElementById('countBox');
-const dT=document.createElement('span'),hT=document.createElement('span'),mT=document.createElement('span'),sT=document.createElement('span');
-dT.id='d';hT.id='h';mT.id='m';sT.id='s';
-cb.innerHTML='<strong class="sr-only">Countdown</strong>';
-cb.append(dT,document.createTextNode('D '),hT,document.createTextNode('H '),mT,document.createTextNode('M '),sT,document.createTextNode('S'));
-const deadline=new Date('2025-11-03T09:00:00+09:00'); // update if needed
+cb.innerHTML='<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
+const deadline=new Date('2025-11-08T09:30:00+09:00');
 function diffParts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60}}
+function pad(n){return String(n).padStart(2,'0')}
 function countdown(){
   const remaining=deadline-Date.now();
   if(remaining<=0){cb.textContent='Event Day!';return}
-  const{d,h,m,s}=diffParts(remaining);
-  dT.textContent=d;hT.textContent=h;mT.textContent=m;sT.textContent=s
+  const {d,h,m,s}=diffParts(remaining);
+  document.getElementById('d').textContent=pad(d);
+  document.getElementById('h').textContent=pad(h);
+  document.getElementById('m').textContent=pad(m);
+  document.getElementById('s').textContent=pad(s);
 }
 countdown();setInterval(countdown,1000);
 
@@ -312,9 +400,7 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
    document.getElementById('weatherCard').innerHTML=
    `<div class="t">${t.temperature}°C</div><p>${label(t.weathercode)}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
  });
-function label(c){
-  return{0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'}[c]||'Weather'
-}
+function label(c){return{0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'}[c]||'Weather'}
 
 /* Meeting point map (Leaflet) */
 (function(){
