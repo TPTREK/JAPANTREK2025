@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Japan Trek 2025 | TransPerfect</title>
+  <title>Japan Trek 2025 | TransPerfect</title>
 
-  <!-- Pre‑connect & fonts -->
+  <!-- Pre-connect & fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
     a{color:inherit;text-decoration:none}
     .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
-    /* Skip‑link */
+    /* Skip-link */
     #skip{position:absolute;top:-40px;left:0;background:var(--accent);padding:.5rem 1rem;font-weight:700;z-index:200}
     #skip:focus{top:0}
 
@@ -81,6 +81,28 @@
     .formCard button{margin-top:1rem;background:var(--accent);color:#fff;border:none;padding:1rem 2rem;border-radius:.5rem;font-weight:700;width:100%}
     .formCard button:hover{opacity:.88}
 
+    /* Mission */
+    .mission{
+      max-width:1100px;margin:4rem auto;background:#172742;border-radius:1.25rem;
+      box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem
+    }
+    @media(min-width:900px){
+      .mission{grid-template-columns:1.05fr 1fr;align-items:start}
+    }
+    .mission .badge{
+      display:inline-block;background:var(--accent);color:#fff;font-weight:700;
+      padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;
+      text-transform:uppercase;font-size:.75rem
+    }
+    .mission h2{font-size:clamp(1.6rem,3.4vw,2.2rem);margin-bottom:.4rem;text-transform:uppercase}
+    .mission .lede{color:var(--beige);font-size:1.05rem;line-height:1.6}
+    .mission p{line-height:1.65}
+    .btn-secondary{
+      display:inline-block;border:2px solid var(--beige);color:var(--beige);
+      padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.6rem
+    }
+    .btn-secondary:hover{opacity:.9}
+
     /* Footer */
     footer{background:#081425;color:#a5b4d4;text-align:center;padding:2.5rem 1rem;font-size:.85rem;font-style:italic}
   </style>
@@ -94,6 +116,7 @@
   <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek logo" style="width:350px;height:auto">
   <div class="links">
     <a href="#about">About</a>
+    <a href="#mission">Mission</a>
     <a href="#gallery">Highlights</a>
     <a href="#elevation">Elevation</a>
     <a href="#weather">Weather</a>
@@ -108,57 +131,126 @@
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt="Trailhead" loading="lazy"><div class="caption">Trailhead meetup</div></div>
       <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Camaraderie" loading="lazy"><div class="caption">Camaraderie on the climb</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine" loading="lazy"><div class="caption">Yakuō‑in shrine respite</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine" loading="lazy"><div class="caption">Yakuō-in shrine respite</div></div>
       <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Switchbacks" loading="lazy"><div class="caption">Forest switchbacks</div></div>
       <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit" loading="lazy"><div class="caption">Summit celebration</div></div>
     </div>
     <button id="prev" class="heroBtn" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6"/></svg></button>
     <button id="next" class="heroBtn" aria-label="Next"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6"/></svg></button>
     <div class="swiper-pagination !bottom-8"></div>
-    <div class="heroOverlay"><h1>Japan Trek 2025</h1><p>TransPerfect conquers Mt. Takao—hike, connect, give back.</p><a href="#register" class="btn">Register Now</a></div>
+    <div class="heroOverlay"><h1>Japan Trek 2025</h1><p>TransPerfect conquers Mt. Takao - hike, connect, give back.</p><a href="#register" class="btn">Register Now</a></div>
   </div>
 </header>
 
 <!-- SPACER -->
 <div class="spacer"></div>
 
-<!-- ABOUT -->
-<section id="about" class="card"><h2>Reconnect in Nature</h2><p>Challenge yourself on Mt. Takao’s scenic trail, forge
-new friendships, and raise funds for a worthy cause.</p></section>
+<main id="main">
+  <!-- ABOUT -->
+  <section id="about" class="card">
+    <h2>Reconnect in Nature</h2>
+    <p>Challenge yourself on Mt. Takao’s scenic trail, forge
+    new friendships, and raise funds for a worthy cause.</p>
+  </section>
 
-<!-- HIGHLIGHT CARDS -->
-<section id="gallery">
-  <article class="postcard"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h3>Camaraderie</h3><p>Walk shoulder‑to‑shoulder with colleagues, friends, and family.</p></div></article>
-  <article class="postcard"><img src="20241109_c2_041.jpg" alt="Vista"><div><h3>Vistas</h3><p>Lookouts unveil sweeping Tokyo skylines.</p></div></article>
-</section>
+  <!-- OUR MISSION -->
+  <section id="mission" class="mission" aria-labelledby="mission-title">
+    <div class="mission-head">
+      <span class="badge">Our Mission</span>
+      <h2 id="mission-title">Giving Back, Together</h2>
+      <p class="lede">
+        One of the privileges of being a successful business is having the opportunity to give back.
+        TransPerfect’s commitment to good corporate citizenship has played a key role in shaping our culture
+        and the way we conduct our business every day.
+      </p>
+    </div>
+    <div class="mission-body">
+      <p>
+        At TransPerfect, we are involved in a variety of causes, including supporting local communities and a
+        diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts
+        to make a difference in the world.
+      </p>
+      <p>
+        This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life
+        for cancer patients. <a class="btn-secondary" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a>.
+      </p>
+    </div>
+  </section>
 
-<!-- ELEVATION -->
-<section id="elevation" data-dark><h2>Elevation Profile</h2><canvas id="chart" role="img" aria-label="Elevation graph"></canvas></section>
+  <!-- HIGHLIGHT CARDS -->
+  <section id="gallery">
+    <article class="postcard"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h3>Camaraderie</h3><p>Walk shoulder-to-shoulder with colleagues, friends, and family.</p></div></article>
+    <article class="postcard"><img src="20241109_c2_041.jpg" alt="Vista"><div><h3>Vistas</h3><p>Lookouts unveil sweeping Tokyo skylines.</p></div></article>
+  </section>
 
-<!-- WEATHER -->
-<section id="weather" data-dark><h2>Live Weather · Mt. Takao</h2><div id="weatherCard"><p>Loading…</p></div></section>
+  <!-- ELEVATION -->
+  <section id="elevation" data-dark><h2>Elevation Profile</h2><canvas id="chart" role="img" aria-label="Elevation graph"></canvas></section>
 
-<!-- REGISTER -->
-<section id="register" class="formCard"><h2>Register</h2><form action="https://formspree.io/f/your-id" method="POST"> <label class="sr-only">Name<input name="name" placeholder="Full Name" required></label><label class="sr-only">Email<input type="email" name="email" placeholder="Email" required></label><textarea rows="4" name="note" placeholder="Preferred date & time"></textarea><button>Submit</button></form></section>
+  <!-- WEATHER -->
+  <section id="weather" data-dark><h2>Live Weather · Mt. Takao</h2><div id="weatherCard"><p>Loading…</p></div></section>
 
-<footer>© 2025 TransPerfect · Japan Trek — Built with ✨ & ☕</footer>
+  <!-- REGISTER -->
+  <section id="register" class="formCard"><h2>Register</h2>
+    <form action="https://formspree.io/f/your-id" method="POST">
+      <label class="sr-only">Name<input name="name" placeholder="Full Name" required></label>
+      <label class="sr-only">Email<input type="email" name="email" placeholder="Email" required></label>
+      <textarea rows="4" name="note" placeholder="Preferred date & time"></textarea>
+      <button>Submit</button>
+    </form>
+  </section>
+</main>
+
+<footer>© 2025 TransPerfect · Japan Trek - Built with ✨ & ☕</footer>
 
 <!-- Scripts -->
 <script>
-/* Progress */const bar=document.getElementById('progress');addEventListener('scroll',()=>bar.style.transform=`scaleX(${scrollY/(document.body.scrollHeight-innerHeight)})`);
+/* Progress */
+const bar=document.getElementById('progress');
+addEventListener('scroll',()=>bar.style.transform=`scaleX(${scrollY/(document.body.scrollHeight-innerHeight)})`);
 
-/* Swiper */const hero=new Swiper('.swiper',{loop:true,preloadImages:false,lazy:{loadPrevNext:true},autoplay:{delay:5200,disableOnInteraction:false},speed:900,effect:'fade',navigation:{nextEl:'#next',prevEl:'#prev'},pagination:{el:'.swiper-pagination',clickable:true}});
+/* Swiper */
+const hero=new Swiper('.swiper',{
+  loop:true,preloadImages:false,lazy:{loadPrevNext:true},
+  autoplay:{delay:5200,disableOnInteraction:false},speed:900,effect:'fade',
+  navigation:{nextEl:'#next',prevEl:'#prev'},
+  pagination:{el:'.swiper-pagination',clickable:true}
+});
 
-/* Countdown */const cb=document.getElementById('countBox');const dT=document.createElement('span'),hT=document.createElement('span'),mT=document.createElement('span'),sT=document.createElement('span');dT.id='d';hT.id='h';mT.id='m';sT.id='s';cb.innerHTML='<strong class="sr-only">Countdown</strong>';cb.append(dT,document.createTextNode('D '),hT,document.createTextNode('H '),mT,document.createTextNode('M '),sT,document.createTextNode('S'));
-const deadline=new Date('2025-11-03T09:00:00+09:00');function diffParts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60}}
-function countdown(){const remaining=deadline-Date.now();if(remaining<=0){cb.textContent='Event Day!';return}const{d,h,m,s}=diffParts(remaining);dT.textContent=d;hT.textContent=h;mT.textContent=m;sT.textContent=s}
+/* Countdown */
+const cb=document.getElementById('countBox');
+const dT=document.createElement('span'),hT=document.createElement('span'),mT=document.createElement('span'),sT=document.createElement('span');
+dT.id='d';hT.id='h';mT.id='m';sT.id='s';
+cb.innerHTML='<strong class="sr-only">Countdown</strong>';
+cb.append(dT,document.createTextNode('D '),hT,document.createTextNode('H '),mT,document.createTextNode('M '),sT,document.createTextNode('S'));
+const deadline=new Date('2025-11-03T09:00:00+09:00');
+function diffParts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60}}
+function countdown(){
+  const remaining=deadline-Date.now();
+  if(remaining<=0){cb.textContent='Event Day!';return}
+  const{d,h,m,s}=diffParts(remaining);
+  dT.textContent=d;hT.textContent=h;mT.textContent=m;sT.textContent=s
+}
 countdown();setInterval(countdown,1000);
 
-/* Elevation chart */new Chart('chart',{type:'line',data:{labels:['Start','Mid','Shrine','Summit'],datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}});
+/* Elevation chart */
+new Chart('chart',{
+  type:'line',
+  data:{labels:['Start','Mid','Shrine','Summit'],
+    datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
+  options:{plugins:{legend:{display:false}},
+    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}
+});
 
-/* Weather */fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true&timezone=Asia%2FTokyo')
- .then(r=>r.json()).then(({current_weather:t})=>{document.getElementById('weatherCard').innerHTML=`<div class="t">${t.temperature}°C</div><p>${label(t.weathercode)}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`});
-function label(c){return{0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'}[c]||'Weather'}
+/* Weather */
+fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true&timezone=Asia%2FTokyo')
+ .then(r=>r.json())
+ .then(({current_weather:t})=>{
+   document.getElementById('weatherCard').innerHTML=
+   `<div class="t">${t.temperature}°C</div><p>${label(t.weathercode)}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
+ });
+function label(c){
+  return{0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'}[c]||'Weather'
+}
 </script>
 </body>
 </html>
