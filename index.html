@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Japan Trek 2025 | TransPerfect</title>
+<title>Japan Trek 2025 | TransPerfect</title>
 
-<!-- Fonts & libs -->
+<!-- Fonts & libraries -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
@@ -16,102 +16,82 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <style>
-/* ===== Palette & tokens ===== */
+/* ---------- Core palette ---------- */
 :root{
   --orange:#f36f21;
   --bg:#0e1a2b;
-  --card:#142336;
+  --card:#12213a;
   --ink:#fff;
   --muted:#9fb2c9;
-  --shadow:0 8px 18px rgba(0,0,0,.18);
   --radius:.9rem;
-  --wrap: min(92%, 1100px);
-  --nav-h:64px;              /* default, updated by JS */
-  --gap:clamp(1.5rem,4vw,2.5rem);
-  font-size:clamp(.9rem,.24vw + .85rem,1rem);
-  font-family:Inter,system-ui,sans-serif;
+  --shadow:0 12px 28px rgba(0,0,0,.18);
+  --nav-h:64px;
 }
-@media (max-width:480px){:root{--nav-h:56px}}
+@media(max-width:560px){:root{--nav-h:56px}}
+
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-
-/* ===== Helpers ===== */
-.section{width:var(--wrap);margin-inline:auto}
-h2{font-size:clamp(1.6rem,3.4vw,2.2rem);letter-spacing:.03em}
+body{background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+[id]{scroll-margin-top:calc(var(--nav-h)+8px)}
+
+.wrap{max-width:1100px;margin-inline:auto}
+.gap{height:32px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:2.5rem 2rem}
+.badge{display:inline-block;background:var(--orange);padding:.3rem .65rem;border-radius:.4rem;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .btn{display:inline-block;padding:.9rem 2rem;border-radius:var(--radius);font-weight:700;transition:opacity .25s}
-.btn:hover{opacity:.9}
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow)}
-.badge{display:inline-block;background:var(--orange);padding:.3rem .65rem;border-radius:.4rem;font-size:.67rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
-[id]{scroll-margin-top:calc(var(--nav-h)+8px)} /* anchor offset */
+.btn:hover{opacity:.88}
 
-/* ===== Progress bar ===== */
-#progress{position:fixed;top:0;left:0;height:3px;background:var(--orange);transform-origin:0 0;z-index:10000}
+/* ---------- Progress ---------- */
+#progress{position:fixed;inset-block-start:0;inset-inline-start:0;height:3px;background:var(--orange);transform-origin:0 0;z-index:10000}
 
-/* ===== Nav ===== */
+/* ---------- Nav ---------- */
 nav{
-  position:fixed;inset-block-start:0;inset-inline:0;height:var(--nav-h);
-  display:flex;align-items:center;gap:1.2rem;padding-inline:1rem;
-  background:rgba(0,0,0,.85);backdrop-filter:blur(6px);
-  z-index:9999;transition:height .25s,padding .25s;
+  position:fixed;inset-block-start:0;inset-inline:0;
+  height:var(--nav-h);display:flex;align-items:center;gap:1rem;padding-inline:1rem;
+  background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:9999;transition:.18s;
 }
-nav.compact{--nav-h:48px;padding-inline:.75rem}
-.logo{width:140px;transition:width .25s}
+.logo{width:150px;transition:.18s}
+nav.compact{--nav-h:48px;padding-inline:.8rem}
 nav.compact .logo{width:110px}
-nav ul{display:flex;gap:clamp(.6rem,2vw,1.2rem);margin-inline:auto;list-style:none;font-size:.85rem;letter-spacing:.08em}
-nav a{font-weight:700;opacity:.85;text-transform:uppercase;position:relative}
+nav ul{display:flex;gap:clamp(.5rem,2vw,1.1rem);margin-inline:auto;font-size:.85rem;letter-spacing:.08em;list-style:none}
+nav a{font-weight:700;text-transform:uppercase;opacity:.85;position:relative}
 nav a:hover{opacity:1}
-nav a.active::after{
-  content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--orange);border-radius:2px
-}
+nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--orange);border-radius:2px}
 #count{display:flex;gap:.25rem;font-variant-numeric:tabular-nums;font-weight:800}
 
-/* ===== Hero ===== */
-header{margin-top:var(--nav-h);height:calc(100svh - var(--nav-h));position:relative}
+/* ---------- Hero ---------- */
+header{margin-top:var(--nav-h);height:calc(100svh - var(--nav-h));position:relative;overflow:hidden}
 .swiper,.swiper-slide img{height:100%;width:100%}.swiper-slide img{object-fit:cover}
-.heroBtn{
-  position:absolute;top:50%;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;
-  background:#fff;display:grid;place-content:center;cursor:pointer;box-shadow:var(--shadow)
-}
+.heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:54px;height:54px;border-radius:50%;background:#fff;display:grid;place-content:center;box-shadow:var(--shadow);cursor:pointer}
 .heroBtn svg{width:22px;height:22px;stroke:#000;stroke-width:2}
 #prev{left:1rem}#next{right:1rem}
-.heroOverlay{
-  position:absolute;inset:0;display:grid;place-content:center;text-align:center;
-  background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.55))
-}
-.heroOverlay h1{font-size:clamp(2rem,5vw,3rem);line-height:1.2;margin-block-end:.6rem}
-.heroOverlay p{max-width:640px;margin-block-end:1.1rem}
+.heroOverlay{position:absolute;inset:0;display:grid;place-content:center;text-align:center;background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.55))}
+.heroOverlay h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:.6rem}
 .heroOverlay .btn{background:var(--orange);color:#fff}
 
-/* ===== Sections ===== */
-#news .card,#about .card,#mission .card,#event .card,#afterparty .card,
-#donate .card,#register .card{padding:var(--gap);margin-block:var(--gap)}
-#news h2{margin-block:.4rem 1rem}
-#mission .card{display:grid;gap:var(--gap)}@media(min-width:900px){#mission .card{grid-template-columns:1fr 1fr}}
-#event .grid{display:grid;gap:var(--gap)}@media(min-width:900px){#event .grid{grid-template-columns:1fr 1fr}}
-#afterparty .grid{display:grid;gap:var(--gap)}@media(min-width:900px){#afterparty .grid{grid-template-columns:1fr 380px}}
+/* ---------- Sections ---------- */
+.sectionTitle{font-size:clamp(1.6rem,3.4vw,2.2rem);letter-spacing:.03em;margin-bottom:1rem}
+.note{color:var(--muted);font-size:.9rem;margin-top:.6rem}
 
-.note{color:var(--muted);font-size:.9rem}
+/* Donate fix */
+#donate .card{display:flex;flex-direction:column;align-items:center;text-align:center}
+#donate .btn{background:var(--orange);color:#fff;margin-top:1.2rem;width:max-content}
 
-#donate .card{text-align:center}
-#donate .btn{background:var(--orange);color:#fff;margin-top:1.1rem}
+/* Form */
+form input,form textarea{width:100%;padding:1rem;border:none;border-radius:.55rem;margin-top:1rem;background:#1d2e46;color:#fff}
+form button{width:100%;margin-top:1.2rem;background:var(--orange);color:#fff;border:none;border-radius:.55rem;padding:1rem 2rem;font-weight:700}
 
+/* Footer */
 footer{padding:2rem 1rem;text-align:center;font-size:.8rem;color:var(--muted)}
-
-/* ===== data-dark areas ===== */
-[data-dark]{background:#15284a;padding:4rem 1rem;text-align:center}
-canvas{max-width:800px;width:100%;height:300px;margin:auto}
-
-/* responsive form */
-form input,form textarea{width:100%;padding:1rem;border:none;border-radius:.55rem;margin-top:.9rem;background:#1d2e46;color:#fff}
-form button{width:100%;margin-top:1rem;background:var(--orange);color:#fff;border:none;border-radius:.55rem;padding:1rem 2rem;font-weight:700}
 </style>
 </head>
 <body>
 
 <div id="progress"></div>
 
+<!-- NAV -->
 <nav>
   <img src="Logos_TPT_JapanTrek_center_colour-03.png" class="logo" alt="Japan Trek logo">
   <ul>
@@ -122,9 +102,10 @@ form button{width:100%;margin-top:1rem;background:var(--orange);color:#fff;borde
     <li><a href="#donate">Donate</a></li>
     <li><a href="#register">Register</a></li>
   </ul>
-  <div id="count" aria-live="polite"></div>
+  <div id="count"></div>
 </nav>
 
+<!-- HERO -->
 <header>
   <div class="swiper">
     <div class="swiper-wrapper">
@@ -145,153 +126,97 @@ form button{width:100%;margin-top:1rem;background:var(--orange);color:#fff;borde
   </div>
 </header>
 
+<div class="gap"></div>
+
 <!-- NEWS -->
-<section id="news" class="section">
-  <article class="card">
+<section id="news" class="wrap">
+  <article class="card" style="text-align:center">
     <span class="badge">Trek News</span>
-    <h2>Charity Hike · Sat Nov 8</h2>
-    <p>TransPerfect Japan hosts a beginner-friendly trek each autumn — over 80 participants
-       join every year. Registration opens soon.</p>
+    <h2 class="sectionTitle">Charity Hike – 8 Nov 2025</h2>
+    <p>Beginner-friendly trek. 80+ participants every year. Location reveal soon.</p>
     <p class="note">Questions? <a href="mailto:TransPerfectJapanTrek@transperfect.com" style="color:var(--orange)">Email us</a></p>
   </article>
 </section>
 
-<!-- ABOUT -->
-<section id="about" class="section">
-  <article class="card" style="text-align:center">
-    <h2>Reconnect in Nature</h2>
-    <p>Challenge yourself, forge friendships and raise funds for a worthy cause.</p>
-  </article>
-</section>
+<div class="gap"></div>
 
 <!-- MISSION -->
-<section id="mission" class="section">
+<section id="mission" class="wrap">
   <article class="card">
-    <div>
-      <span class="badge">Our Mission</span>
-      <h2>Giving Back, Together</h2>
-      <p>We support diverse non-profits and empower employees to make a difference.</p>
-    </div>
-    <div>
-      <p>This year we partner with <strong>Relay For Life</strong>. All proceeds will aid cancer patients.</p>
-      <a href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" class="btn" style="background:transparent;border:2px solid var(--beige);color:var(--beige)">Relay for Life</a>
-    </div>
+    <span class="badge">Our Mission</span>
+    <h2 class="sectionTitle">Giving Back, Together</h2>
+    <p>We support local communities and diverse non-profits. This year all proceeds go to <strong>Relay For Life</strong>.</p>
   </article>
 </section>
+
+<div class="gap"></div>
 
 <!-- EVENT -->
-<section id="event" class="section">
+<section id="event" class="wrap">
   <article class="card">
-    <h2>Event Information</h2>
-    <p class="note">Saturday · 8 Nov 2025 · Mt Takao (Tokyo)</p>
-    <div class="grid">
-      <div>
-        <ul style="line-height:1.65">
-          <li>10 AM – 5 PM (meet 09 : 30)</li>
-          <li>Employees, family & friends welcome</li>
-          <li>Bring water & snacks • travel costs not covered</li>
-        </ul>
-      </div>
-      <div>
-        <h3 style="margin:.8rem 0 .4rem;color:var(--orange)">Meeting Point</h3>
-        <p>Sakura Park</p>
-        <div id="meetMap" style="height:220px;border-radius:var(--radius);margin-top:.6rem"></div>
-      </div>
-    </div>
+    <h2 class="sectionTitle">Event Info</h2>
+    <ul style="line-height:1.6">
+      <li>Sat · 8 Nov 2025</li>
+      <li>10:00 – 17:00 (meet 09 : 30)</li>
+      <li>Mt. Takao, Tokyo</li>
+      <li>Employees, family & friends welcome</li>
+    </ul>
   </article>
 </section>
+
+<div class="gap"></div>
 
 <!-- AFTER-PARTY -->
-<section id="afterparty" class="section">
-  <article class="card grid" style="gap:var(--gap)">
-    <div>
-      <h2>After-Party</h2>
-      <p>Adults ¥5 500 • Kids ¥3 000 <span style="color:var(--orange);font-weight:700">[updated]</span></p>
-      <p class="note">Food & drinks covered for employees.</p>
-    </div>
-    <img src="https://raw.githubusercontent.com/TPTREK/TPTREK/main/image.jpeg" alt="Venue preview" style="border-radius:var(--radius);box-shadow:var(--shadow)">
-  </article>
-</section>
-
-<!-- DONATE -->
-<section id="donate" class="section">
+<section id="afterparty" class="wrap">
   <article class="card" style="text-align:center">
-    <h2>Donation Only</h2>
-    <p>Want to support without hiking? Donate directly.</p>
-    <a href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" class="btn" style="background:var(--orange);color:#fff;margin-top:1rem">Donate now</a>
+    <h2 class="sectionTitle">After-Party</h2>
+    <p>Adults ¥5 500 • Kids ¥3 000 <span style="color:var(--orange);font-weight:700">[updated]</span></p>
   </article>
 </section>
 
-<!-- ELEVATION -->
-<section id="elevation" data-dark>
-  <h2>Elevation Profile</h2>
-  <canvas id="chart"></canvas>
+<div class="gap"></div>
+
+<!-- DONATE (fixed) -->
+<section id="donate" class="wrap">
+  <article class="card">
+    <h2 class="sectionTitle">Donation Only</h2>
+    <p>Want to support without hiking? Donate directly.</p>
+    <a href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" class="btn">Donate now</a>
+  </article>
 </section>
 
-<!-- WEATHER -->
-<section id="weather" data-dark>
-  <h2>Live Weather</h2>
-  <div id="weatherCard" style="margin-top:1rem">Loading…</div>
-</section>
+<div class="gap"></div>
 
 <!-- REGISTER -->
-<section id="register" class="section">
+<section id="register" class="wrap">
   <article class="card" style="text-align:center">
-    <h2>Register</h2>
-    <form action="#" method="POST" style="margin-top:1.2rem">
-      <input type="text" name="name" placeholder="Full Name" required>
-      <input type="email" name="email" placeholder="Email" required>
-      <textarea rows="4" name="note" placeholder="Preferred date & time"></textarea>
+    <h2 class="sectionTitle">Register</h2>
+    <form>
+      <input placeholder="Full Name" required>
+      <input type="email" placeholder="Email" required>
       <button>Submit</button>
     </form>
   </article>
 </section>
 
-<footer>© 2025 TransPerfect • Japan Trek</footer>
+<footer>© 2025 TransPerfect · Japan Trek</footer>
 
-<!-- ===== JS ===== -->
+<!-- JS (progress, nav-compact, active-link, countdown, swiper) -->
 <script>
-/* --- progress & nav behaviour --- */
 const prog=document.getElementById('progress'),nav=document.querySelector('nav'),
-      links=[...nav.querySelectorAll('a[href^="#"]')],sections=links.map(a=>document.getElementById(a.hash.slice(1)));
-function setProgress(){prog.style.transform=`scaleX(${scrollY/(document.body.scrollHeight-innerHeight)})`}
-function setActive(){
-  const pos=scrollY+parseFloat(getComputedStyle(nav).height)+10;
-  let id=sections[0].id;sections.forEach(s=>{if(s.offsetTop<=pos)id=s.id});
-  links.forEach(a=>a.classList.toggle('active',a.hash.slice(1)===id));
-}
-addEventListener('scroll',()=>{setProgress();setActive();nav.classList.toggle('compact',scrollY>120)},{passive:true});
-setActive();
+      links=[...nav.querySelectorAll('ul a')],secs=links.map(a=>document.getElementById(a.hash.slice(1)));
+function setProg(){prog.style.transform=`scaleX(${scrollY/(document.body.scrollHeight-innerHeight)})`}
+function setAct(){const y=scrollY+parseFloat(getComputedStyle(nav).height)+10;let id=secs[0].id;secs.forEach(s=>{if(s.offsetTop<=y)id=s.id});
+  links.forEach(a=>a.classList.toggle('active',a.hash.slice(1)===id))}
+addEventListener('scroll',()=>{setProg();setAct();nav.classList.toggle('compact',scrollY>100)},{passive:true});setAct();
 
-/* --- swiper hero --- */
-new Swiper('.swiper',{loop:true,autoplay:{delay:5000,disableOnInteraction:false},speed:900,effect:'fade',
-  navigation:{nextEl:'#next',prevEl:'#prev'},lazy:{loadPrevNext:true}});
+new Swiper('.swiper',{loop:true,autoplay:{delay:5000,disableOnInteraction:false},speed:900,effect:'fade',navigation:{nextEl:'#next',prevEl:'#prev'}});
 
-/* --- countdown --- */
 const cnt=document.getElementById('count');cnt.innerHTML='<span id="d"></span>:<span id="h"></span>:<span id="m"></span>:<span id="s"></span>';
-const dl=new Date('2025-11-08T09:30:00+09:00'),pad=n=>String(n).padStart(2,'0');
-setInterval(()=>{
-  const t=dl-Date.now();if(t<0){cnt.textContent='Event Day!';return}
+const end=new Date('2025-11-08T09:30:00+09:00'),pad=n=>String(n).padStart(2,'0');
+setInterval(()=>{const t=end-Date.now();if(t<0){cnt.textContent='Event Day!';return}
   const d=Math.floor(t/864e5),h=Math.floor(t/36e5)%24,m=Math.floor(t/6e4)%60,s=Math.floor(t/1e3)%60;
-  ['d','h','m','s'].forEach((k,i)=>document.getElementById(k).textContent=pad([d,h,m,s][i]));
-},1000);
-
-/* --- chart --- */
-new Chart('chart',{type:'line',data:{labels:['Start','Mid','Shrine','Summit'],
-  datasets:[{data:[200,360,480,599],borderColor:'#f36f21',backgroundColor:'rgba(243,111,33,.25)',fill:true,tension:.35}]},
-  options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}});
-
-/* --- weather --- */
-fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true&timezone=Asia%2FTokyo')
-.then(r=>r.json()).then(({current_weather:t})=>{
-  const w={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunder'};
-  weatherCard.innerHTML=`<strong style="font-size:2rem">${t.temperature}°C</strong><p>${w[t.weathercode]||'Weather'}</p>`;
-});
-
-/* --- map --- */
-(L=>{const map=L.map('meetMap',{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([35.6339,139.2434],15);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-  L.marker([35.6339,139.2434]).addTo(map).bindPopup('Sakura Park');})(window.L);
+  ['d','h','m','s'].forEach((k,i)=>document.getElementById(k).textContent=pad([d,h,m,s][i]));},1000);
 </script>
 </body>
 </html>
