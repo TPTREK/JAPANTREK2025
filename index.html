@@ -10,13 +10,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Swiper / Leaflet / Chart.js / Confetti (CDN) -->
+  <!-- Swiper / Leaflet / Chart.js (CDN) -->
   <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
     :root{
@@ -32,7 +31,7 @@
       --card:#15284a;
       --shadow:0 12px 28px rgba(0,0,0,.15);
       --h2:clamp(1.6rem,3.6vw,2.2rem); /* unified section headings */
-      --scroll-offset:64px;            /* set live from JS = nav height */
+      --scroll-offset:56px;            /* set live from JS = nav height */
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -46,7 +45,7 @@
     [id]{scroll-margin-top:var(--scroll-offset)}
 
     /* Focus styles */
-    :focus-visible{outline:3px solid rgba(243,111,33,.85);outline-offset:2px;border-radius:6px}
+    :focus-visible{outline:3px solid rgba(243,112,33,.85);outline-offset:2px;border-radius:6px}
 
     /* Skip link */
     #skip{position:absolute;top:-40px;left:0;background:var(--accent);padding:.5rem 1rem;font-weight:700;z-index:200}
@@ -55,83 +54,97 @@
     /* Progress bar */
     #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:120}
 
-    /* ========================== NAV (larger + centered links) ========================== */
+    /* ========================== NAV (polished glass) ========================== */
     nav{
       position:fixed;top:0;left:0;width:100%;
-      padding:.6rem 1rem;                 /* larger */
-      background:rgba(0,0,0,.75);backdrop-filter:blur(8px) saturate(120%);
+      padding:.5rem .9rem;                 /* a bit taller */
+      background:rgba(7,14,25,.78);backdrop-filter:blur(8px) saturate(120%);
       border-bottom:1px solid rgba(255,255,255,.08);
-      display:flex;align-items:center;gap:.9rem;z-index:110;
-      transition:padding .18s ease, background .18s ease, box-shadow .18s ease;
+      display:flex;align-items:center;gap:.75rem;z-index:110;
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+      transition:padding .18s ease, background .18s ease;
     }
     nav .brand{display:flex;align-items:center;gap:.5rem}
-    nav .brand img{height:1.4rem;width:auto;display:block}  /* logo scales but doesn’t dictate nav height */
-
-    /* Centered page links */
+    nav .brand img{height:1.1rem;width:auto;display:block}  /* logo never grows nav */
     nav .links{
       flex:1;display:flex;justify-content:center;align-items:center;
-      gap:clamp(.7rem,2.6vw,1.2rem);font-size:.98rem;letter-spacing:.12em;
+      gap:clamp(.6rem,2.4vw,1rem);font-size:.88rem;letter-spacing:.12em;
       text-transform:uppercase;
     }
-    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.5rem .25rem;border-radius:.25rem}
-    nav .links a:hover{opacity:1}
-    nav .links a.is-active{position:relative}
+    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.4rem .2rem;border-radius:.25rem;position:relative;transition:opacity .2s,transform .2s}
+    nav .links a:hover{opacity:1;transform:translateY(-1px)}
     nav .links a.is-active::after{
-      content:"";position:absolute;left:12%;right:12%;bottom:-8px;height:2px;background:var(--orange);border-radius:2px
+      content:"";
+      position:absolute; left:12%; right:12%; bottom:-8px; height:2px;
+      background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);
+      border-radius:999px;
     }
 
-    /* Right side actions: countdown + donate/register */
-    .actions{display:flex;align-items:center;gap:.55rem;flex-wrap:nowrap}
-    #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums;margin-right:.2rem}
-    #countBox .num{font-weight:800;font-size:clamp(1rem,2.2vw,1.15rem);line-height:1}
+    /* Header buttons in nav */
+    .btn-nav{
+      padding:.5rem .85rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.15);
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+      box-shadow:0 6px 18px rgba(0,0,0,.22);
+      transition:transform .18s ease, box-shadow .18s ease, filter .2s ease;
+    }
+    .btn-nav.primary{background:linear-gradient(180deg,var(--orange),#ff8f42);color:#20140a;border-color:transparent}
+    .btn-nav.primary:hover{filter:brightness(.95);transform:translateY(-1px)}
+    .btn-nav.secondary:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
+
+    /* Countdown — pill styling */
+    #countBox{
+      display:flex;align-items:center;gap:.35rem;font-variant-numeric:tabular-nums;
+      padding:.2rem .45rem;border-radius:.6rem;background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);
+    }
+    #countBox .num{
+      min-width:1.8ch;text-align:center;padding:.2rem .35rem;border-radius:.35rem;font-weight:900;
+      background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+      font-size:clamp(.95rem,2.2vw,1.1rem);line-height:1;
+    }
     #countBox .sep{opacity:.6;margin:0 .1rem}
 
-    .btn-nav{
-      padding:.6rem .95rem;border-radius:.6rem;border:1px solid rgba(255,255,255,.15);
-      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-      transform:translateZ(0); transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
-      will-change: transform;
-    }
-    .btn-nav:hover{transform:translateY(-1px)}
-    .btn-nav.primary{background:var(--orange);color:#1b120a;border-color:transparent;box-shadow:0 6px 18px rgba(243,112,33,.25)}
-    .btn-nav.primary:hover{filter:brightness(.95)}
-    .btn-nav.secondary:hover{background:rgba(255,255,255,.12)}
-
     /* Compact-on-scroll */
-    nav.compact{padding:.35rem .8rem;box-shadow:0 8px 18px rgba(0,0,0,.18)}
-    nav.compact .brand img{height:1.2rem}
-    nav.compact .links{gap:.7rem;font-size:.92rem}
-    nav.compact #countBox .num{font-size:clamp(.95rem,2vw,1.05rem)}
+    nav.compact{padding:.35rem .7rem}
+    nav.compact .brand img{height:1rem}
+    nav.compact .links{gap:.6rem;font-size:.84rem}
+    nav.compact #countBox .num{font-size:clamp(.9rem,2vw,1rem)}
 
     /* ============================ HERO ============================ */
     header{
       position:relative;overflow:hidden;
       margin-top:var(--scroll-offset);
       height:calc(100svh - var(--scroll-offset));
-      perspective: 1000px;
     }
     .swiper{width:100%;height:100%}
-    .swiper-slide img{width:100%;height:100%;object-fit:cover;transform: translateZ(0)}
+    .swiper-slide img{width:100%;height:100%;object-fit:cover}
     .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:10}
     .heroBtn svg{width:22px;height:22px;stroke:#000;stroke-width:2;fill:none}
     #prev{left:1rem} #next{right:1rem}
-    .heroOverlay{
-      position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.5));
-      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding:0 1rem;
-      will-change: transform, opacity;
-    }
-    .heroOverlay h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:.08em;margin-bottom:.6rem}
+    .heroOverlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.5));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding:0 1rem}
+    .heroOverlay h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:.08em;margin-bottom:.6rem;text-shadow:0 10px 40px rgba(0,0,0,.45);animation:breath 8s ease-in-out infinite}
     .heroOverlay p{max-width:640px;margin-bottom:1.1rem}
-    .btn{display:inline-block;padding:.9rem 2rem;background:var(--ink);color:var(--bg);font-weight:700;border-radius:6px}
+    .btn{display:inline-block;padding:.9rem 2rem;background:var(--ink);color:var(--bg);font-weight:700;border-radius:6px;box-shadow:0 12px 28px rgba(0,0,0,.25)}
     .btn:hover{opacity:.88}
     .caption{position:absolute;bottom:0;left:0;width:100%;padding:.75rem 1rem;font-size:.85rem;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);opacity:0;color:#fff;transition:.3s}
     .swiper-slide:hover .caption{opacity:1}
 
+    /* Cinematic grain + warm radial glow */
+    header::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(1200px 600px at 50% -20%, rgba(243,112,33,.22), transparent 60%),
+                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence baseFrequency="0.7" numOctaves="2" seed="2" type="fractalNoise"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".035"/></svg>');
+      mix-blend-mode:overlay;
+    }
+    @keyframes breath{
+      0%,100%{ transform:translateY(0) scale(1) }
+      50%    { transform:translateY(-2px) scale(1.01) }
+    }
+
     .spacer{height:32px}
 
     /* ============================ CARDS & SECTIONS ============================ */
-    .card,.news,.mission,.eventWrap,.afterpartyWrap,.donateWrap,.staffWrap{position:relative}
-    .card{max-width:1100px;margin:2rem auto;background:var(--surface);border-radius:1.2rem;box-shadow:var(--shadow);padding:3.2rem 2.4rem;text-align:center;overflow:hidden}
+    .card{max-width:1100px;margin:2rem auto;background:var(--surface);border-radius:1.2rem;box-shadow:var(--shadow);padding:3.2rem 2.4rem;text-align:center;position:relative;overflow:hidden}
     .card h2,
     .news h2,
     .mission h2,
@@ -143,7 +156,7 @@
     #weather h2,
     .formCard h2{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em}
 
-    .news{max-width:1100px;margin:2rem auto 0;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
+    .news{max-width:1100px;margin:2rem auto 0;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem;position:relative;border:1px solid rgba(255,255,255,.08)}
     .news .badge{display:inline-block;background:#1f3b64;color:#cfe0ff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.75rem}
     .news p{line-height:1.75;margin:.4rem 0}
     .news a{color:#8db1ff;text-decoration:underline}
@@ -153,19 +166,9 @@
     .deco.leaf{width:60px;top:-12px;right:-12px;transform:rotate(-12deg)}
     .deco.mountain{width:70px;top:-16px;right:-16px}
 
-    .postcard{display:grid;gap:2rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;margin-bottom:4.5rem;max-width:1100px;margin-inline:auto}
+    .postcard{display:grid;gap:2rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;margin-bottom:4.5rem;max-width:1100px;margin-inline:auto;border:1px solid rgba(255,255,255,.08)}
     .postcard img{width:100%;border-radius:.9rem}
     @media(min-width:768px){.postcard{grid-template-columns:repeat(2,1fr);align-items:center}}
-
-    /* Reveal animation (progressive enhancement) */
-    .reveal{ /* visible by default; JS will enhance on capable browsers */ }
-    .js .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease}
-    .js .reveal.visible{opacity:1;transform:none}
-
-    /* Tilt */
-    .tilt{transform-style:preserve-3d;will-change:transform}
-    .tilt:hover{transition:transform .12s ease}
-    .tilt .pop{transform:translateZ(20px)}
 
     section[data-dark]{padding:4rem 2rem;text-align:center;background:#15284a}
     canvas{max-width:800px;width:100%;height:300px;margin:auto}
@@ -173,7 +176,7 @@
     #weatherCard .t{font-size:2.4rem;font-weight:700}
 
     /* Mission */
-    .mission{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem}
+    .mission{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem;position:relative;border:1px solid rgba(255,255,255,.08)}
     @media(min-width:900px){.mission{grid-template-columns:1.05fr 1fr;align-items:start}}
     .mission .badge{display:inline-block;background:var(--orange);color:#1b120a;font-weight:800;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
     .mission .lede{color:var(--beige);font-size:1.05rem;line-height:1.6}
@@ -182,7 +185,7 @@
     .btn-secondary:hover{opacity:.9}
 
     /* Event info */
-    .eventWrap{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem}
+    .eventWrap{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;position:relative;border:1px solid rgba(255,255,255,.08)}
     .eventDate{color:var(--beige);font-size:1.05rem;margin:.5rem 0 1.25rem}
     .eventGrid{display:grid;gap:2rem}
     @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
@@ -190,18 +193,11 @@
     .eventCol p,.eventCol li{line-height:1.65}
     .eventCol ul{padding-left:1.1rem}
     .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
-    .changed{color:#ff7a7a;font-weight:700}
+    .changed{color:#ff6a7a;font-weight:700}
     #meetMap{width:100%;height:220px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
 
-    /* Add-to-calendar buttons */
-    .calGroup{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
-    .btnCal{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:.55rem .8rem;border-radius:.55rem;font-weight:700}
-    .btnCal:hover{background:rgba(255,255,255,.12)}
-    .btnCal.primary{background:var(--orange);border-color:transparent;color:#1b120a}
-    .btnCal svg{width:16px;height:16px;opacity:.9}
-
     /* After-party */
-    .afterpartyWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem}
+    .afterpartyWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem;border:1px solid rgba(255,255,255,.08)}
     @media(min-width:900px){.afterpartyWrap{grid-template-columns:1fr 420px;align-items:start}}
     .badgeUpdate{color:#ff6a6a;font-weight:800;margin-left:.5rem}
     .dl{margin-top:1.25rem;display:grid;grid-template-columns:110px 1fr;gap:.5rem 1.25rem}
@@ -213,41 +209,55 @@
     .afterMedia figcaption{color:#a5b4d4;font-size:.85rem;margin-top:.5rem}
 
     /* Donation */
-    .donateWrap{max-width:1100px;margin:4rem auto;background:#1a2e50;border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1rem}
+    .donateWrap{max-width:1100px;margin:4rem auto;background:#1a2e50;border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1rem;position:relative;border:1px solid rgba(255,255,255,.08)}
     .donateWrap p{line-height:1.7}
     .btnWide{display:inline-block;padding:1.1rem 2.4rem;border-radius:.75rem;font-size:1.05rem;font-weight:800}
-    .btnDonate{background:var(--orange);color:#1b120a}
+    .btnDonate{background:linear-gradient(180deg,var(--orange),#ff8f42);color:#1b120a;box-shadow:0 10px 24px rgba(243,112,33,.25)}
     .btnDonate:hover{filter:brightness(.95)}
 
     /* Staff */
-    .staffWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.2rem}
+    .staffWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.2rem;border:1px solid rgba(255,255,255,.08)}
     .staffGrid{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:1.5rem;margin-top:1.2rem}
     @media(min-width:640px){.staffGrid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:900px){.staffGrid{grid-template-columns:repeat(4,1fr)}}
-    .cardStaff{background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.9rem;overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease, box-shadow .18s ease}
-    .cardStaff:hover{transform:translateY(-3px)}
-    .cardStaff img{aspect-ratio:4/3;object-fit:cover;width:100%}
-    .cardStaff .info{padding:.9rem 1rem}
-    .cardStaff .name{font-weight:800}
+    .cardStaff{background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.9rem;overflow:hidden;display:flex;flex-direction:column;transition:transform .22s ease, box-shadow .22s ease, border-color .22s}
+    .cardStaff:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(0,0,0,.28);border-color:rgba(255,255,255,.14)}
+    .cardStaff img{aspect-ratio:4/3;object-fit:cover;width:100%;filter:grayscale(.3) contrast(1.05);transition:filter .25s ease, transform .25s ease, box-shadow .25s ease;border-bottom:1px solid rgba(255,255,255,.06)}
+    .cardStaff:hover img{filter:none;transform:scale(1.02)}
+    .cardStaff .info{padding:.9rem 1rem;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);border-top:1px solid rgba(255,255,255,.06)}
+    .cardStaff .name{font-weight:900;letter-spacing:.02em}
     .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
 
-    /* Packing list */
-    .packWrap{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
-    .packGrid{display:grid;gap:1rem;margin-top:1rem}
-    @media(min-width:700px){.packGrid{grid-template-columns:repeat(2,1fr)}}
-    .packItem{display:flex;align-items:flex-start;gap:.75rem;background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.8rem 1rem}
-    .packItem input{margin-top:.2rem;transform:scale(1.1)}
-    .packActions{display:flex;gap:.6rem;margin-top:1rem}
-    .btnTiny{padding:.5rem .8rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);font-weight:700}
-    .btnTiny:hover{background:rgba(255,255,255,.1)}
-    .btnTiny.danger{border-color:transparent;background:#ff6a6a;color:#210b0b}
-
     /* Register */
-    .formCard{max-width:1100px;margin:5rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;text-align:center}
+    .formCard{max-width:1100px;margin:5rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;text-align:center;border:1px solid rgba(255,255,255,.08)}
     .formCard form{max-width:680px;margin:auto}
     .formCard input,.formCard textarea{width:100%;padding:1rem;border:none;border-radius:.5rem;margin-top:.8rem;background:#172742;color:#fff}
+    .formCard input:focus,.formCard textarea:focus{outline:2px solid rgba(243,112,33,.55);outline-offset:2px;box-shadow:0 0 0 6px rgba(243,112,33,.12)}
     .formCard button{margin-top:1rem;background:var(--accent);color:#fff;border:none;padding:1rem 2rem;border-radius:.5rem;font-weight:700;width:100%}
     .formCard button:hover{opacity:.88}
+
+    /* Subtle top accent line for major cards/sections */
+    .card::before,.news::before,.mission::before,.eventWrap::before,
+    .afterpartyWrap::before,.donateWrap::before,.staffWrap::before{
+      content:""; display:block; height:3px; width:78px; margin:-.75rem auto 1.25rem;
+      background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);
+      border-radius:3px; opacity:.9;
+    }
+
+    /* Reveal animation */
+    .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease }
+    .reveal.in{ opacity:1; transform:none }
+    @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none } }
+
+    /* Lift-on-hover for all feature blocks */
+    .card,.news,.mission,.eventWrap,.afterpartyWrap,.donateWrap,.staffWrap,.postcard{
+      transition:transform .22s ease, box-shadow .22s ease, border-color .22s;
+    }
+    .card:hover,.news:hover,.mission:hover,.eventWrap:hover,.afterpartyWrap:hover,.donateWrap:hover,.staffWrap:hover,.postcard:hover{
+      transform:translateY(-3px);
+      box-shadow:0 18px 36px rgba(0,0,0,.28);
+      border-color:rgba(255,255,255,.14);
+    }
 
     /* Footer */
     footer{background:#081425;color:#a5b4d4;text-align:center;padding:2.5rem 1rem;font-size:.85rem;font-style:italic}
@@ -257,14 +267,8 @@
     #progress{z-index:10000 !important}
     .leaflet-container{z-index:1 !important}
 
-    /* Safety: ensure content sits above any accidental overlaps */
-    main{position:relative; z-index: 1;}
-
-    /* Small screens: keep actions usable */
-    @media (max-width:720px){
-      nav{padding:.5rem .75rem}
-      .links{display:none} /* optional: hide center links on very small widths to prevent wrap */
-    }
+    /* Selection tint */
+    ::selection{ background:rgba(243,112,33,.35); color:#fff }
   </style>
 </head>
 <body>
@@ -277,21 +281,16 @@
     <img src="TPLOGO.png" alt="Japan Trek logo" />
   </div>
 
-  <!-- Centered links (no Donate/Register here) -->
   <div class="links" role="navigation" aria-label="Primary">
     <a href="#news">News</a>
     <a href="#mission">Mission</a>
     <a href="#event">Event</a>
     <a href="#afterparty">After-Party</a>
-    <a href="#donate">Donate Info</a>
+    <a href="#donate" class="btn-nav secondary">Donate</a>
+    <a href="#register" class="btn-nav primary">Register</a>
   </div>
 
-  <!-- Right side actions -->
-  <div class="actions">
-    <div id="countBox" aria-live="polite"></div>
-    <a href="#donate" class="btn-nav secondary" data-magnetic>Donate</a>
-    <a href="#register" class="btn-nav primary" data-magnetic>Register</a>
-  </div>
+  <div id="countBox" aria-live="polite"></div>
 </nav>
 
 <!-- ============================= HERO ============================= -->
@@ -308,7 +307,7 @@
     <button id="next" class="heroBtn" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
     <div class="swiper-pagination !bottom-8"></div>
     <div class="heroOverlay">
-      <h1 class="pop">TransPerfect Charity Trek 2025</h1>
+      <h1>TransPerfect Charity Trek 2025</h1>
       <p>Hike, connect, give back.</p>
       <a href="#register" class="btn">Register Soon</a>
     </div>
@@ -319,8 +318,8 @@
 
 <main id="main">
   <!-- ============================= NEWS ============================= -->
-  <section id="news" class="news tilt reveal" aria-labelledby="news-title">
-    <img class="deco leaf" src="https://upload.wikimedia.org/wikipedia/commons/2/21/OpenMoji-color_15.0.0_1F341.svg" alt="" />
+  <section id="news" class="news reveal" aria-labelledby="news-title">
+    <img class="deco leaf" data-parallax="8" src="https://upload.wikimedia.org/wikipedia/commons/2/21/OpenMoji-color_15.0.0_1F341.svg" alt="" />
     <span class="badge">Trek News</span>
     <h2 id="news-title">TransPerfect Japan Charity Hike · Saturday, November 8</h2>
     <p>We’re excited to announce that TransPerfect Japan will be hosting a charity hiking event on <strong>Saturday, November 8</strong>.</p>
@@ -333,17 +332,17 @@
     <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
   </section>
 
-  <!-- ============================= REPO BANNER ============================= -->
-  <section class="card tilt reveal" aria-label="Repository banner">
-    <h2 class="pop">Reconnect in Nature</h2>
+  <!-- ============================= RECONNECT CARD ============================= -->
+  <section class="card reveal" aria-label="Repository banner">
+    <h2>Reconnect in Nature</h2>
     <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
   </section>
 
   <!-- ============================= MISSION ============================= -->
-  <section id="mission" class="mission tilt reveal" aria-labelledby="mission-title">
+  <section id="mission" class="mission reveal" aria-labelledby="mission-title">
     <div>
       <span class="badge">Our Mission</span>
-      <h2 id="mission-title" class="pop">Giving Back, Together</h2>
+      <h2 id="mission-title">Giving Back, Together</h2>
       <p class="lede">One of the privileges of being a successful business is having the opportunity to give back. TransPerfect’s commitment to good corporate citizenship guides how we work every day.</p>
     </div>
     <div>
@@ -353,9 +352,9 @@
   </section>
 
   <!-- ============================= EVENT INFO ============================= -->
-  <section id="event" class="eventWrap tilt reveal" aria-labelledby="event-title">
-    <img class="deco mountain" src="https://upload.wikimedia.org/wikipedia/commons/8/83/OpenMoji-color_15.0.0_26F0.svg" alt="" />
-    <h2 id="event-title" class="eventHeader pop">Event Information</h2>
+  <section id="event" class="eventWrap reveal" aria-labelledby="event-title">
+    <img class="deco mountain" data-parallax="10" src="https://upload.wikimedia.org/wikipedia/commons/8/83/OpenMoji-color_15.0.0_26F0.svg" alt="" />
+    <h2 id="event-title" class="eventHeader">Event Information</h2>
     <p class="eventDate">Saturday, November 8, 2025</p>
 
     <div class="eventGrid">
@@ -398,21 +397,12 @@
         </ul>
       </div>
     </div>
-
-    <!-- Add-to-Calendar controls -->
-    <div class="calGroup" aria-label="Add event to your calendar">
-      <button class="btnCal primary" id="addCalMain">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M7 2v3M17 2v3M3 9h18M5 6h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        Add .ics
-      </button>
-      <a class="btnCal" id="gcalMain" target="_blank" rel="noopener">Add to Google</a>
-    </div>
   </section>
 
   <!-- ============================= AFTER-PARTY ============================= -->
-  <section id="afterparty" class="afterpartyWrap tilt reveal" aria-labelledby="afterparty-title">
+  <section id="afterparty" class="afterpartyWrap reveal" aria-labelledby="afterparty-title">
     <div>
-      <h2 id="afterparty-title" class="pop">After-Party!</h2>
+      <h2 id="afterparty-title">After-Party!</h2>
       <p>Join our after-party.</p>
       <p>The company will cover food and drinks for employees. For non-TPT employees, we will collect the money on-site. Adults: 5,500 JPY. Kids over 3: 3,000 JPY. <span class="badgeUpdate">[Nov 1] Fee for kids is revised.</span></p>
       <dl class="dl">
@@ -422,15 +412,6 @@
         <dt>Address</dt><dd>1912 Takaomachi, Hachioji, Tokyo 193-0844</dd>
       </dl>
       <p class="afterpartyLinks" style="margin-top:.75rem"><a href="https://maps.app.goo.gl/3hZjhvUUbRsP5kPbW8" target="_blank" rel="noopener">Open in Google Maps</a></p>
-
-      <!-- Add-to-Calendar controls (after-party) -->
-      <div class="calGroup" aria-label="Add after-party to your calendar">
-        <button class="btnCal primary" id="addCalAfter">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M7 2v3M17 2v3M3 9h18M5 6h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          Add .ics
-        </button>
-        <a class="btnCal" id="gcalAfter" target="_blank" rel="noopener">Add to Google</a>
-      </div>
     </div>
 
     <figure class="afterMedia">
@@ -440,16 +421,16 @@
   </section>
 
   <!-- ============================= DONATION ============================= -->
-  <section id="donate" class="donateWrap tilt reveal" aria-labelledby="donate-title">
-    <h2 id="donate-title" class="pop">Donation Only</h2>
+  <section id="donate" class="donateWrap reveal" aria-labelledby="donate-title">
+    <h2 id="donate-title">Donation Only</h2>
     <p>Charity-only participation is welcome!</p>
     <p>Please input the amount you are willing to donate from the organization’s page. Language can be changed from the top-right corner.</p>
     <p style="margin-top:.25rem"><a class="btnWide btnDonate" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Donate now</a></p>
   </section>
 
   <!-- ============================= STAFF ============================= -->
-  <section id="staff" class="staffWrap tilt reveal" aria-labelledby="staff-title">
-    <h2 id="staff-title" class="pop">Our Staff</h2>
+  <section id="staff" class="staffWrap reveal" aria-labelledby="staff-title">
+    <h2 id="staff-title">Our Staff</h2>
     <div class="staffGrid">
       <!-- Order as requested, with John last -->
       <article class="cardStaff">
@@ -519,45 +500,27 @@
   </section>
 
   <!-- ============================= HIGHLIGHTS ============================= -->
-  <section id="gallery" class="reveal">
-    <article class="postcard tilt"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h2 style="font-size:var(--h2)" class="pop">Camaraderie</h2><p>Walk shoulder to shoulder with colleagues, friends, and family.</p></div></article>
-    <article class="postcard tilt"><img src="20241109_c2_041.jpg" alt="Vista"><div><h2 style="font-size:var(--h2)" class="pop">Vistas</h2><p>Lookouts reveal sweeping skylines.</p></div></article>
-  </section>
-
-  <!-- ============================= PACKING LIST ============================= -->
-  <section id="packing" class="packWrap reveal" aria-labelledby="pack-title">
-    <h2 id="pack-title" class="pop">Packing List</h2>
-    <div class="packGrid" id="packGrid">
-      <label class="packItem"><input type="checkbox" data-key="water"><span>Water bottle or hydration pack</span></label>
-      <label class="packItem"><input type="checkbox" data-key="snacks"><span>Snacks or light lunch</span></label>
-      <label class="packItem"><input type="checkbox" data-key="shoes"><span>Comfortable hiking shoes</span></label>
-      <label class="packItem"><input type="checkbox" data-key="layers"><span>Light layers / jacket</span></label>
-      <label class="packItem"><input type="checkbox" data-key="sun"><span>Hat / sunscreen</span></label>
-      <label class="packItem"><input type="checkbox" data-key="cash"><span>Transit card / small cash</span></label>
-    </div>
-    <div class="packActions">
-      <button class="btnTiny" id="packCheckAll">Check all</button>
-      <button class="btnTiny" id="packUncheckAll">Uncheck all</button>
-      <button class="btnTiny danger" id="packReset">Reset saved list</button>
-    </div>
+  <section id="gallery">
+    <article class="postcard reveal"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h2 style="font-size:var(--h2)">Camaraderie</h2><p>Walk shoulder to shoulder with colleagues, friends, and family.</p></div></article>
+    <article class="postcard reveal"><img src="20241109_c2_041.jpg" alt="Vista"><div><h2 style="font-size:var(--h2)">Vistas</h2><p>Lookouts reveal sweeping skylines.</p></div></article>
   </section>
 
   <!-- ============================= ELEVATION ============================= -->
-  <section id="elevation" data-dark class="reveal">
-    <h2 class="pop">Elevation Profile</h2>
+  <section id="elevation" class="reveal" data-dark>
+    <h2>Elevation Profile</h2>
     <canvas id="chart" role="img" aria-label="Elevation graph"></canvas>
   </section>
 
   <!-- ============================= WEATHER ============================= -->
-  <section id="weather" data-dark class="reveal">
-    <h2 class="pop">Live Weather</h2>
+  <section id="weather" class="reveal" data-dark>
+    <h2>Live Weather</h2>
     <div id="weatherCard"><p>Loading…</p></div>
   </section>
 
   <!-- ============================= REGISTER ============================= -->
   <section id="register" class="formCard reveal">
-    <h2 class="pop">Register</h2>
-    <form action="https://formspree.io/f/your-id" method="POST" id="regForm">
+    <h2>Register</h2>
+    <form action="https://formspree.io/f/your-id" method="POST">
       <label class="sr-only">Name<input name="name" placeholder="Full Name" required /></label>
       <label class="sr-only">Email<input type="email" name="email" placeholder="Email" required /></label>
       <textarea rows="4" name="note" placeholder="Preferred date and time"></textarea>
@@ -569,9 +532,6 @@
 <footer>© 2025 TransPerfect · Japan Trek · Built with ✨ & ☕</footer>
 
 <script>
-/* Mark JS-enabled for progressive enhancement (reveal effects only apply then) */
-document.documentElement.classList.add('js');
-
 /* ===== Helper: recompute anchor offset from *actual* nav height ===== */
 const root = document.documentElement;
 const navEl = document.getElementById('siteNav');
@@ -589,7 +549,7 @@ document.addEventListener('click', (e)=>{
   history.pushState(null,'','#'+id);
 });
 
-/* Progress + compact nav + active link + hero parallax */
+/* Progress + compact nav + active link */
 const bar = document.getElementById('progress');
 const navLinks = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
 const sections = navLinks.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
@@ -603,32 +563,20 @@ function setActive(){
 function onScroll(){
   const max = document.body.scrollHeight - innerHeight;
   bar.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
-  navEl.classList.toggle('compact', scrollY > 100);
+  navEl.classList.toggle('compact', scrollY > 80);
   setActive();
-
-  const heroOverlay = document.querySelector('.heroOverlay');
-  if(heroOverlay){
-    const p = Math.min(1, Math.max(0, scrollY / innerHeight));
-    heroOverlay.style.transform = `translateY(${p*20}px)`;
-    heroOverlay.style.opacity = String(1 - p*0.15);
-  }
 }
 addEventListener('scroll', onScroll, {passive:true});
 addEventListener('load', ()=>{ onScroll(); setActive(); if(location.hash){ const el=document.getElementById(location.hash.slice(1)); if(el){ const y = el.getBoundingClientRect().top + pageYOffset - navEl.offsetHeight; scrollTo(0,y); }}});
 
 /* Hero slider */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const swiper = new Swiper('.swiper',{
+new Swiper('.swiper',{
   loop:true, preloadImages:false, lazy:{loadPrevNext:true},
   autoplay: reduce ? false : {delay:5200,disableOnInteraction:false},
   speed: reduce ? 0 : 900, effect: reduce ? 'slide' : 'fade',
   navigation:{nextEl:'#next',prevEl:'#prev'},
   pagination:{el:'.swiper-pagination',clickable:true}
-});
-// Arrow keys to control hero
-addEventListener('keydown', (e)=>{
-  if(e.key === 'ArrowRight') swiper.slideNext();
-  if(e.key === 'ArrowLeft') swiper.slidePrev();
 });
 
 /* Countdown — Nov 8, 2025 09:30 JST (minimal + bold) */
@@ -665,148 +613,29 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
   L.marker([35.6339,139.2434],{title:'Sakura Park - Meeting Point'}).addTo(map).bindPopup('Sakura Park - Meeting Point');
 })();
 
-/* ===== Scroll reveal (IntersectionObserver) ===== */
-const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-(function initReveal(){
-  const nodes = document.querySelectorAll('.reveal');
-  if (prefersReduced || !('IntersectionObserver' in window)) {
-    nodes.forEach(n=>n.classList.add('visible'));
-    return;
-  }
-  const io = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
-    });
-  },{threshold:.12});
-  nodes.forEach(el=>io.observe(el));
+/* Scroll reveal */
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const obs = new IntersectionObserver((entries)=>{
+    for(const e of entries){ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } }
+  }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 })();
 
-/* ===== 3D Tilt (subtle, respects reduced motion) ===== */
-function addTilt(el){
-  let rID=null;
-  const strength=10; // deg
-  function onMove(e){
-    const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left)/rect.width - .5;
-    const py = (e.clientY - rect.top)/rect.height - .5;
-    const rx = (+py)*strength, ry = (-px)*strength;
-    cancelAnimationFrame(rID);
-    rID = requestAnimationFrame(()=>{ el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`; });
+/* Gentle parallax for decorative icons */
+(() => {
+  const items = Array.from(document.querySelectorAll('.deco[data-parallax]'));
+  if (!items.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function run(){
+    const y = window.scrollY;
+    for(const el of items){
+      const depth = parseFloat(el.dataset.parallax)||8;
+      el.style.transform = `translateY(${y/depth}px) rotate(-2deg)`;
+    }
+    requestAnimationFrame(run);
   }
-  function reset(){ el.style.transform='rotateX(0) rotateY(0)'; }
-  el.addEventListener('pointermove', onMove);
-  el.addEventListener('pointerleave', reset);
-}
-if(!prefersReduced){
-  document.querySelectorAll('.tilt').forEach(addTilt);
-}
-
-/* ===== Magnetic buttons (Donate/Register) ===== */
-function magnetic(btn){
-  let raf=null;
-  const str=10; // px
-  btn.addEventListener('pointermove', (e)=>{
-    const r=btn.getBoundingClientRect();
-    const px=(e.clientX-r.left)/r.width-.5;
-    const py=(e.clientY-r.top)/r.height-.5;
-    cancelAnimationFrame(raf);
-    raf=requestAnimationFrame(()=>{ btn.style.transform=`translate(${px*str}px,${py*str}px)`; });
-  });
-  btn.addEventListener('pointerleave', ()=>{ btn.style.transform='translate(0,0)'; });
-}
-if(!prefersReduced){
-  document.querySelectorAll('[data-magnetic]').forEach(magnetic);
-}
-
-/* ===== Add-to-Calendar (ICS + Google) ===== */
-function fmtICS(dt){ return dt.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z'); }
-function buildICS({title, start, end, location, description}){
-  const cal = [
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//TransPerfect Japan Trek//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    `UID:${Date.now()}@tptrek`,
-    `DTSTAMP:${fmtICS(new Date())}`,
-    `DTSTART:${fmtICS(start)}`,
-    `DTEND:${fmtICS(end)}`,
-    `SUMMARY:${title}`,
-    `DESCRIPTION:${description.replace(/\n/g,'\\n')}`,
-    `LOCATION:${location}`,
-    'END:VEVENT','END:VCALENDAR'
-  ].join('\r\n');
-  const blob = new Blob([cal], {type:'text/calendar'});
-  return URL.createObjectURL(blob);
-}
-function gcalURL({title,start,end,location,description}){
-  const p = new URLSearchParams({
-    action:'TEMPLATE',
-    text:title,
-    dates:`${fmtICS(start)}/${fmtICS(end)}`,
-    details:description,
-    location:location
-  });
-  return `https://calendar.google.com/calendar/render?${p.toString()}`;
-}
-const mainStart = new Date('2025-11-08T10:00:00+09:00');
-const mainEnd   = new Date('2025-11-08T17:00:00+09:00');
-const afterStart= new Date('2025-11-08T14:00:00+09:00');
-const afterEnd  = new Date('2025-11-08T17:00:00+09:00');
-
-const mainMeta = {
-  title:'TransPerfect Charity Trek 2025',
-  location:'Mt. Takao (Tokyo)',
-  description:'Hike, connect, give back. Meeting 9:30; Event 10:00–17:00 (JST).'
-};
-const afterMeta = {
-  title:'After-Party — TransPerfect Charity Trek 2025',
-  location:'バーガーズカフェ シュシュ, 1912 Takaomachi, Hachioji, Tokyo 193-0844',
-  description:'Company covers food/drinks for employees. Non-TPT: Adults 5,500 JPY, Kids 3,000 JPY.'
-};
-
-document.getElementById('addCalMain').addEventListener('click', ()=>{
-  const url = buildICS({start:mainStart,end:mainEnd,...mainMeta});
-  const a = Object.assign(document.createElement('a'),{href:url,download:'Trek-2025.ics'});
-  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 5000);
-});
-document.getElementById('gcalMain').setAttribute('href', gcalURL({start:mainStart,end:mainEnd,...mainMeta}));
-
-document.getElementById('addCalAfter').addEventListener('click', ()=>{
-  const url = buildICS({start:afterStart,end:afterEnd,...afterMeta});
-  const a = Object.assign(document.createElement('a'),{href:url,download:'Trek-2025-AfterParty.ics'});
-  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 5000);
-});
-document.getElementById('gcalAfter').setAttribute('href', gcalURL({start:afterStart,end:afterEnd,...afterMeta}));
-
-/* ===== Packing list persistence ===== */
-const packGrid = document.getElementById('packGrid');
-const KEY_PREFIX = 'tptrek-pack-';
-function loadPack(){
-  packGrid.querySelectorAll('input[type="checkbox"]').forEach(cb=>{
-    cb.checked = localStorage.getItem(KEY_PREFIX + cb.dataset.key) === '1';
-  });
-}
-packGrid.addEventListener('change', (e)=>{
-  const cb = e.target.closest('input[type="checkbox"]'); if(!cb) return;
-  localStorage.setItem(KEY_PREFIX + cb.dataset.key, cb.checked ? '1' : '0');
-});
-document.getElementById('packCheckAll').addEventListener('click', ()=>{
-  packGrid.querySelectorAll('input').forEach(cb=>{ cb.checked=true; localStorage.setItem(KEY_PREFIX + cb.dataset.key,'1'); });
-});
-document.getElementById('packUncheckAll').addEventListener('click', ()=>{
-  packGrid.querySelectorAll('input').forEach(cb=>{ cb.checked=false; localStorage.setItem(KEY_PREFIX + cb.dataset.key,'0'); });
-});
-document.getElementById('packReset').addEventListener('click', ()=>{
-  packGrid.querySelectorAll('input').forEach(cb=>{ cb.checked=false; localStorage.removeItem(KEY_PREFIX + cb.dataset.key); });
-});
-loadPack();
-
-/* ===== Confetti on Register submit ===== */
-const regForm = document.getElementById('regForm');
-regForm.addEventListener('submit', ()=>{
-  try{
-    confetti({particleCount:120,spread:70,origin:{y:.6}});
-    setTimeout(()=>confetti({particleCount:60,spread:90,origin:{y:.2}}), 150);
-  }catch(e){}
-});
+  run();
+})();
 </script>
 </body>
 </html>
