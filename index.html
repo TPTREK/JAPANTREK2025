@@ -32,7 +32,7 @@
       --card:#15284a;
       --shadow:0 12px 28px rgba(0,0,0,.15);
       --h2:clamp(1.6rem,3.6vw,2.2rem); /* unified section headings */
-      --scroll-offset:56px;            /* set live from JS = nav height */
+      --scroll-offset:64px;            /* set live from JS = nav height */
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -55,50 +55,53 @@
     /* Progress bar */
     #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:120}
 
-    /* ========================== NAV (ultra-compact) ========================== */
+    /* ========================== NAV (larger + centered links) ========================== */
     nav{
       position:fixed;top:0;left:0;width:100%;
-      padding:.2rem .75rem;                 /* very small vertical padding */
+      padding:.6rem 1rem;                 /* larger */
       background:rgba(0,0,0,.75);backdrop-filter:blur(8px) saturate(120%);
       border-bottom:1px solid rgba(255,255,255,.08);
-      display:flex;align-items:center;gap:.75rem;z-index:110;
-      transition:padding .18s ease, background .18s ease;
+      display:flex;align-items:center;gap:.9rem;z-index:110;
+      transition:padding .18s ease, background .18s ease, box-shadow .18s ease;
     }
     nav .brand{display:flex;align-items:center;gap:.5rem}
-    nav .brand img{height:1.1rem;width:auto;display:block}  /* logo never grows nav */
+    nav .brand img{height:1.4rem;width:auto;display:block}  /* logo scales but doesn’t dictate nav height */
+
+    /* Centered page links */
     nav .links{
       flex:1;display:flex;justify-content:center;align-items:center;
-      gap:clamp(.6rem,2.4vw,1rem);font-size:.88rem;letter-spacing:.12em;
+      gap:clamp(.7rem,2.6vw,1.2rem);font-size:.98rem;letter-spacing:.12em;
       text-transform:uppercase;
     }
-    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.4rem .2rem;border-radius:.25rem}
+    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.5rem .25rem;border-radius:.25rem}
     nav .links a:hover{opacity:1}
     nav .links a.is-active{position:relative}
     nav .links a.is-active::after{
-      content:"";position:absolute;left:10%;right:10%;bottom:-6px;height:2px;background:var(--orange);border-radius:2px
+      content:"";position:absolute;left:12%;right:12%;bottom:-8px;height:2px;background:var(--orange);border-radius:2px
     }
 
-    /* Header buttons in nav */
+    /* Right side actions: countdown + donate/register */
+    .actions{display:flex;align-items:center;gap:.55rem;flex-wrap:nowrap}
+    #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums;margin-right:.2rem}
+    #countBox .num{font-weight:800;font-size:clamp(1rem,2.2vw,1.15rem);line-height:1}
+    #countBox .sep{opacity:.6;margin:0 .1rem}
+
     .btn-nav{
-      padding:.5rem .85rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.15);
+      padding:.6rem .95rem;border-radius:.6rem;border:1px solid rgba(255,255,255,.15);
       background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-      transform:translateZ(0); transition:transform .12s ease, box-shadow .12s ease;
+      transform:translateZ(0); transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      will-change: transform;
     }
     .btn-nav:hover{transform:translateY(-1px)}
-    .btn-nav.primary{background:var(--orange);color:#1b120a;border-color:transparent}
+    .btn-nav.primary{background:var(--orange);color:#1b120a;border-color:transparent;box-shadow:0 6px 18px rgba(243,112,33,.25)}
     .btn-nav.primary:hover{filter:brightness(.95)}
     .btn-nav.secondary:hover{background:rgba(255,255,255,.12)}
 
-    /* Countdown — minimal, bold, same line-height as links */
-    #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
-    #countBox .num{font-weight:800;font-size:clamp(.95rem,2.2vw,1.1rem);line-height:1}
-    #countBox .sep{opacity:.6;margin:0 .1rem}
-
-    /* Compact-on-scroll (even thinner) */
-    nav.compact{padding:.15rem .6rem}
-    nav.compact .brand img{height:1rem}
-    nav.compact .links{gap:.6rem;font-size:.82rem}
-    nav.compact #countBox .num{font-size:clamp(.9rem,2vw,1rem)}
+    /* Compact-on-scroll */
+    nav.compact{padding:.35rem .8rem;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+    nav.compact .brand img{height:1.2rem}
+    nav.compact .links{gap:.7rem;font-size:.92rem}
+    nav.compact #countBox .num{font-size:clamp(.95rem,2vw,1.05rem)}
 
     /* ============================ HERO ============================ */
     header{
@@ -256,6 +259,12 @@
 
     /* Safety: ensure content sits above any accidental overlaps */
     main{position:relative; z-index: 1;}
+
+    /* Small screens: keep actions usable */
+    @media (max-width:720px){
+      nav{padding:.5rem .75rem}
+      .links{display:none} /* optional: hide center links on very small widths to prevent wrap */
+    }
   </style>
 </head>
 <body>
@@ -268,16 +277,21 @@
     <img src="TPLOGO.png" alt="Japan Trek logo" />
   </div>
 
+  <!-- Centered links (no Donate/Register here) -->
   <div class="links" role="navigation" aria-label="Primary">
     <a href="#news">News</a>
     <a href="#mission">Mission</a>
     <a href="#event">Event</a>
     <a href="#afterparty">After-Party</a>
-    <a href="#donate" class="btn-nav secondary">Donate</a>
-    <a href="#register" class="btn-nav primary">Register</a>
+    <a href="#donate">Donate Info</a>
   </div>
 
-  <div id="countBox" aria-live="polite"></div>
+  <!-- Right side actions -->
+  <div class="actions">
+    <div id="countBox" aria-live="polite"></div>
+    <a href="#donate" class="btn-nav secondary" data-magnetic>Donate</a>
+    <a href="#register" class="btn-nav primary" data-magnetic>Register</a>
+  </div>
 </nav>
 
 <!-- ============================= HERO ============================= -->
@@ -589,7 +603,7 @@ function setActive(){
 function onScroll(){
   const max = document.body.scrollHeight - innerHeight;
   bar.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
-  navEl.classList.toggle('compact', scrollY > 80);
+  navEl.classList.toggle('compact', scrollY > 100);
   setActive();
 
   const heroOverlay = document.querySelector('.heroOverlay');
@@ -656,7 +670,7 @@ const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 (function initReveal(){
   const nodes = document.querySelectorAll('.reveal');
   if (prefersReduced || !('IntersectionObserver' in window)) {
-    nodes.forEach(n=>n.classList.add('visible')); // no hiding if motion reduced or unsupported
+    nodes.forEach(n=>n.classList.add('visible'));
     return;
   }
   const io = new IntersectionObserver(entries=>{
@@ -685,6 +699,23 @@ function addTilt(el){
 }
 if(!prefersReduced){
   document.querySelectorAll('.tilt').forEach(addTilt);
+}
+
+/* ===== Magnetic buttons (Donate/Register) ===== */
+function magnetic(btn){
+  let raf=null;
+  const str=10; // px
+  btn.addEventListener('pointermove', (e)=>{
+    const r=btn.getBoundingClientRect();
+    const px=(e.clientX-r.left)/r.width-.5;
+    const py=(e.clientY-r.top)/r.height-.5;
+    cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>{ btn.style.transform=`translate(${px*str}px,${py*str}px)`; });
+  });
+  btn.addEventListener('pointerleave', ()=>{ btn.style.transform='translate(0,0)'; });
+}
+if(!prefersReduced){
+  document.querySelectorAll('[data-magnetic]').forEach(magnetic);
 }
 
 /* ===== Add-to-Calendar (ICS + Google) ===== */
@@ -779,3 +810,4 @@ regForm.addEventListener('submit', ()=>{
 </script>
 </body>
 </html>
+```0
