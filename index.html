@@ -24,14 +24,16 @@
       --ink-dim:#cfe0ff;
       --muted:#a5b4d4;
       --beige:#e8dcc7;
-      --accent:#d30000;           /* red accent used in chart line etc */
-      --orange:#f37021;           /* brand orange for buttons & chips */
+      --accent:#d30000;
+      --orange:#f37021;
       --surface:#12213a;
       --surface-2:#172742;
-      --card:#15284a;
       --shadow:0 12px 28px rgba(0,0,0,.15);
-      --h2:clamp(1.6rem,3.6vw,2.2rem); /* unified section headings */
-      --scroll-offset:56px;            /* set live from JS = nav height */
+      --h2:clamp(1.6rem,3.6vw,2.2rem);
+      --pad-card-y:clamp(2rem,3.6vw,3rem);
+      --pad-card-x:clamp(1.25rem,2.6vw,2rem);
+      --radius:1rem;
+      --scroll-offset:56px; /* updated from JS */
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -40,87 +42,70 @@
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block;height:auto}
     .sr-only{position:absolute !important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
-
-    /* All anchor targets land below the fixed nav */
     [id]{scroll-margin-top:var(--scroll-offset)}
-
-    /* Focus styles */
     :focus-visible{outline:3px solid rgba(243,112,33,.85);outline-offset:2px;border-radius:6px}
 
-    /* Skip link */
+    /* Skip link + progress */
     #skip{position:absolute;top:-40px;left:0;background:var(--accent);padding:.5rem 1rem;font-weight:700;z-index:200}
     #skip:focus{top:0}
-
-    /* Progress bar */
     #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:120}
 
-    /* ========================== NAV (polished glass) ========================== */
+    /* ================= NAV ================= */
     nav{
-      position:fixed;top:0;left:0;width:100%;
-      padding:.5rem .9rem;                 /* a bit taller */
+      position:fixed;inset:0 auto auto 0;width:100%;
+      padding:.6rem .9rem;
       background:rgba(7,14,25,.78);backdrop-filter:blur(8px) saturate(120%);
       border-bottom:1px solid rgba(255,255,255,.08);
-      display:flex;align-items:center;gap:.75rem;z-index:110;
+      display:flex;align-items:center;gap:.8rem;z-index:110;
       box-shadow:0 10px 24px rgba(0,0,0,.18);
       transition:padding .18s ease, background .18s ease;
     }
-    nav .brand{display:flex;align-items:center;gap:.5rem}
-    nav .brand img{height:1.1rem;width:auto;display:block}  /* logo never grows nav */
+    nav .nav-left{display:flex;align-items:center;gap:.8rem;min-width:0}
+    nav .brand img{height:1.1rem;width:auto}
+    /* Countdown on LEFT */
+    #countBox{
+      display:flex;align-items:center;gap:.35rem;font-variant-numeric:tabular-nums;
+      padding:.18rem .45rem;border-radius:.6rem;background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);
+    }
+    #countBox .num{min-width:1.8ch;text-align:center;padding:.2rem .35rem;border-radius:.35rem;font-weight:900;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);font-size:clamp(.95rem,2.2vw,1.1rem);line-height:1}
+    #countBox .sep{opacity:.6;margin:0 .1rem}
+
+    /* Centered nav links */
     nav .links{
       flex:1;display:flex;justify-content:center;align-items:center;
-      gap:clamp(.6rem,2.4vw,1rem);font-size:.88rem;letter-spacing:.12em;
-      text-transform:uppercase;
+      gap:clamp(.7rem,2.6vw,1.2rem);font-size:.9rem;letter-spacing:.12em;text-transform:uppercase
     }
-    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.4rem .2rem;border-radius:.25rem;position:relative;transition:opacity .2s,transform .2s}
+    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.45rem .3rem;border-radius:.3rem;position:relative;transition:opacity .2s,transform .2s}
     nav .links a:hover{opacity:1;transform:translateY(-1px)}
     nav .links a.is-active::after{
-      content:"";
-      position:absolute; left:12%; right:12%; bottom:-8px; height:2px;
-      background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);
-      border-radius:999px;
+      content:"";position:absolute;left:12%;right:12%;bottom:-8px;height:2px;background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);border-radius:999px
     }
 
-    /* Header buttons in nav */
+    /* Right-side actions: Donate + Register */
+    nav .nav-right{display:flex;align-items:center;gap:.55rem}
     .btn-nav{
-      padding:.5rem .85rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.15);
+      padding:.55rem .9rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.15);
       background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-      box-shadow:0 6px 18px rgba(0,0,0,.22);
-      transition:transform .18s ease, box-shadow .18s ease, filter .2s ease;
+      box-shadow:0 6px 18px rgba(0,0,0,.22);transition:transform .18s, box-shadow .18s, filter .2s
     }
     .btn-nav.primary{background:linear-gradient(180deg,var(--orange),#ff8f42);color:#20140a;border-color:transparent}
     .btn-nav.primary:hover{filter:brightness(.95);transform:translateY(-1px)}
     .btn-nav.secondary:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
 
-    /* Countdown — pill styling */
-    #countBox{
-      display:flex;align-items:center;gap:.35rem;font-variant-numeric:tabular-nums;
-      padding:.2rem .45rem;border-radius:.6rem;background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);
-    }
-    #countBox .num{
-      min-width:1.8ch;text-align:center;padding:.2rem .35rem;border-radius:.35rem;font-weight:900;
-      background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
-      font-size:clamp(.95rem,2.2vw,1.1rem);line-height:1;
-    }
-    #countBox .sep{opacity:.6;margin:0 .1rem}
-
-    /* Compact-on-scroll */
-    nav.compact{padding:.35rem .7rem}
+    /* Compact on scroll */
+    nav.compact{padding:.4rem .7rem}
     nav.compact .brand img{height:1rem}
-    nav.compact .links{gap:.6rem;font-size:.84rem}
+    nav.compact .links{gap:.6rem;font-size:.86rem}
     nav.compact #countBox .num{font-size:clamp(.9rem,2vw,1rem)}
 
-    /* ============================ HERO ============================ */
-    header{
-      position:relative;overflow:hidden;
-      margin-top:var(--scroll-offset);
-      height:calc(100svh - var(--scroll-offset));
-    }
+    /* ================ HERO ================ */
+    header{position:relative;overflow:hidden;margin-top:var(--scroll-offset);height:calc(100svh - var(--scroll-offset))}
     .swiper{width:100%;height:100%}
     .swiper-slide img{width:100%;height:100%;object-fit:cover}
     .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:10}
     .heroBtn svg{width:22px;height:22px;stroke:#000;stroke-width:2;fill:none}
-    #prev{left:1rem} #next{right:1rem}
+    #prev{left:1rem}#next{right:1rem}
     .heroOverlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.5));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding:0 1rem}
     .heroOverlay h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:.08em;margin-bottom:.6rem;text-shadow:0 10px 40px rgba(0,0,0,.45);animation:breath 8s ease-in-out infinite}
     .heroOverlay p{max-width:640px;margin-bottom:1.1rem}
@@ -128,172 +113,124 @@
     .btn:hover{opacity:.88}
     .caption{position:absolute;bottom:0;left:0;width:100%;padding:.75rem 1rem;font-size:.85rem;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);opacity:0;color:#fff;transition:.3s}
     .swiper-slide:hover .caption{opacity:1}
-
-    /* Cinematic grain + warm radial glow */
     header::after{
-      content:""; position:absolute; inset:0; pointer-events:none;
+      content:"";position:absolute;inset:0;pointer-events:none;
       background:radial-gradient(1200px 600px at 50% -20%, rgba(243,112,33,.22), transparent 60%),
                  url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence baseFrequency="0.7" numOctaves="2" seed="2" type="fractalNoise"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity=".035"/></svg>');
       mix-blend-mode:overlay;
     }
-    @keyframes breath{
-      0%,100%{ transform:translateY(0) scale(1) }
-      50%    { transform:translateY(-2px) scale(1.01) }
-    }
+    @keyframes breath{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.01)}}
 
     .spacer{height:32px}
 
-    /* ============================ CARDS & SECTIONS ============================ */
-    .card{max-width:1100px;margin:2rem auto;background:var(--surface);border-radius:1.2rem;box-shadow:var(--shadow);padding:3.2rem 2.4rem;text-align:center;position:relative;overflow:hidden}
-    .card h2,
-    .news h2,
-    .mission h2,
-    .eventHeader,
-    .afterpartyWrap h2,
-    #donate-title,
-    #staff-title,
-    #elevation h2,
-    #weather h2,
-    .formCard h2{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em}
-
-    .news{max-width:1100px;margin:2rem auto 0;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem;position:relative;border:1px solid rgba(255,255,255,.08)}
-    .news .badge{display:inline-block;background:#1f3b64;color:#cfe0ff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.75rem}
-    .news p{line-height:1.75;margin:.4rem 0}
-    .news a{color:#8db1ff;text-decoration:underline}
-
-    /* small decorative images */
-    .deco{position:absolute;opacity:.7;pointer-events:none;user-select:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
-    .deco.leaf{width:60px;top:-12px;right:-12px;transform:rotate(-12deg)}
-    .deco.mountain{width:70px;top:-16px;right:-16px}
-
-    .postcard{display:grid;gap:2rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;margin-bottom:4.5rem;max-width:1100px;margin-inline:auto;border:1px solid rgba(255,255,255,.08)}
-    .postcard img{width:100%;border-radius:.9rem}
+    /* ======== Sections / unified spacing ======== */
+    .card,.news,.mission,.eventWrap,.afterpartyWrap,.donateWrap,.staffWrap,.postcard{
+      max-width:1100px;margin:2rem auto;background:var(--surface);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:var(--pad-card-y) var(--pad-card-x);position:relative;border:1px solid rgba(255,255,255,.08)
+    }
+    .postcard{background:var(--surface-2);display:grid;gap:2rem;margin-bottom:4.5rem}
     @media(min-width:768px){.postcard{grid-template-columns:repeat(2,1fr);align-items:center}}
+    .postcard img{border-radius:.9rem}
 
-    section[data-dark]{padding:4rem 2rem;text-align:center;background:#15284a}
-    canvas{max-width:800px;width:100%;height:300px;margin:auto}
-    #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
-    #weatherCard .t{font-size:2.4rem;font-weight:700}
-
-    /* Mission */
-    .mission{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem;position:relative;border:1px solid rgba(255,255,255,.08)}
-    @media(min-width:900px){.mission{grid-template-columns:1.05fr 1fr;align-items:start}}
-    .mission .badge{display:inline-block;background:var(--orange);color:#1b120a;font-weight:800;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
-    .mission .lede{color:var(--beige);font-size:1.05rem;line-height:1.6}
-    .mission p{line-height:1.65}
-    .btn-secondary{display:inline-block;border:2px solid var(--beige);color:var(--beige);padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.6rem}
-    .btn-secondary:hover{opacity:.9}
-
-    /* Event info */
-    .eventWrap{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;position:relative;border:1px solid rgba(255,255,255,.08)}
-    .eventDate{color:var(--beige);font-size:1.05rem;margin:.5rem 0 1.25rem}
-    .eventGrid{display:grid;gap:2rem}
-    @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
-    .eventCol h3{color:#8db1ff;font-size:1.05rem;margin:1.25rem 0 .5rem 0;letter-spacing:.02em}
-    .eventCol p,.eventCol li{line-height:1.65}
+    .news p,.mission p,.eventCol p,.eventCol li,.donateWrap p{line-height:1.75}
     .eventCol ul{padding-left:1.1rem}
-    .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
-    .changed{color:#ff6a7a;font-weight:700}
-    #meetMap{width:100%;height:220px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
+    .eventCol li{margin:.35rem 0}
+    .eventGrid{display:grid;gap:clamp(1.5rem,3vw,2rem)}
+    @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
 
-    /* After-party */
-    .afterpartyWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem;border:1px solid rgba(255,255,255,.08)}
+    .mission{background:var(--surface-2)}
+    .afterpartyWrap{grid-template-columns:1fr;display:grid}
     @media(min-width:900px){.afterpartyWrap{grid-template-columns:1fr 420px;align-items:start}}
-    .badgeUpdate{color:#ff6a6a;font-weight:800;margin-left:.5rem}
-    .dl{margin-top:1.25rem;display:grid;grid-template-columns:110px 1fr;gap:.5rem 1.25rem}
-    .dl dt{font-weight:700;color:#d1ddff}
-    .dl dd{margin:0}
-    .afterpartyLinks a{color:#8db1ff;text-decoration:underline}
-    .afterpartyLinks a:hover{opacity:.9}
-    .afterMedia img{border-radius:1rem;box-shadow:var(--shadow)}
-    .afterMedia figcaption{color:#a5b4d4;font-size:.85rem;margin-top:.5rem}
+    #meetMap{width:100%;height:240px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.6rem}
 
-    /* Donation */
-    .donateWrap{max-width:1100px;margin:4rem auto;background:#1a2e50;border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1rem;position:relative;border:1px solid rgba(255,255,255,.08)}
-    .donateWrap p{line-height:1.7}
+    /* Headings unified */
+    .card h2,.news h2,.mission h2,.eventHeader,.afterpartyWrap h2,#donate-title,#staff-title,#elevation h2,#weather h2,.formCard h2{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em;margin-bottom:.65rem}
+
+    /* Top accent line with better spacing */
+    .card::before,.news::before,.mission::before,.eventWrap::before,.afterpartyWrap::before,.donateWrap::before,.staffWrap::before{
+      content:"";display:block;height:3px;width:78px;margin:0 auto 1.25rem;background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);border-radius:3px;opacity:.9
+    }
+
+    /* Mission badge + buttons */
+    .mission .badge{display:inline-block;background:var(--orange);color:#1b120a;font-weight:800;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
+    .btn-secondary{display:inline-block;border:2px solid var(--beige);color:var(--beige);padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.65rem}
+    .btn-secondary:hover{opacity:.9}
+    .eventDate{color:var(--beige);font-size:1.05rem;margin:.25rem 0 1.1rem}
+    .changed{color:#ff6a7a;font-weight:700}
+    .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
+
+    /* Donate */
     .btnWide{display:inline-block;padding:1.1rem 2.4rem;border-radius:.75rem;font-size:1.05rem;font-weight:800}
     .btnDonate{background:linear-gradient(180deg,var(--orange),#ff8f42);color:#1b120a;box-shadow:0 10px 24px rgba(243,112,33,.25)}
     .btnDonate:hover{filter:brightness(.95)}
 
-    /* Staff */
-    .staffWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.2rem;border:1px solid rgba(255,255,255,.08)}
+    /* Staff cards */
     .staffGrid{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:1.5rem;margin-top:1.2rem}
     @media(min-width:640px){.staffGrid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:900px){.staffGrid{grid-template-columns:repeat(4,1fr)}}
-    .cardStaff{background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.9rem;overflow:hidden;display:flex;flex-direction:column;transition:transform .22s ease, box-shadow .22s ease, border-color .22s}
+    .cardStaff{background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.9rem;overflow:hidden;display:flex;flex-direction:column;transition:transform .22s, box-shadow .22s, border-color .22s}
     .cardStaff:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(0,0,0,.28);border-color:rgba(255,255,255,.14)}
-    .cardStaff img{aspect-ratio:4/3;object-fit:cover;width:100%;filter:grayscale(.3) contrast(1.05);transition:filter .25s ease, transform .25s ease, box-shadow .25s ease;border-bottom:1px solid rgba(255,255,255,.06)}
+    .cardStaff img{aspect-ratio:4/3;object-fit:cover;width:100%;filter:grayscale(.3) contrast(1.05);transition:filter .25s, transform .25s}
     .cardStaff:hover img{filter:none;transform:scale(1.02)}
     .cardStaff .info{padding:.9rem 1rem;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);border-top:1px solid rgba(255,255,255,.06)}
-    .cardStaff .name{font-weight:900;letter-spacing:.02em}
+    .cardStaff .name{font-weight:900}
     .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
 
     /* Register */
-    .formCard{max-width:1100px;margin:5rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;text-align:center;border:1px solid rgba(255,255,255,.08)}
+    .formCard{max-width:1100px;margin:2rem auto 5rem;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad-card-y) var(--pad-card-x);text-align:center;border:1px solid rgba(255,255,255,.08)}
     .formCard form{max-width:680px;margin:auto}
     .formCard input,.formCard textarea{width:100%;padding:1rem;border:none;border-radius:.5rem;margin-top:.8rem;background:#172742;color:#fff}
     .formCard input:focus,.formCard textarea:focus{outline:2px solid rgba(243,112,33,.55);outline-offset:2px;box-shadow:0 0 0 6px rgba(243,112,33,.12)}
     .formCard button{margin-top:1rem;background:var(--accent);color:#fff;border:none;padding:1rem 2rem;border-radius:.5rem;font-weight:700;width:100%}
     .formCard button:hover{opacity:.88}
 
-    /* Subtle top accent line for major cards/sections */
-    .card::before,.news::before,.mission::before,.eventWrap::before,
-    .afterpartyWrap::before,.donateWrap::before,.staffWrap::before{
-      content:""; display:block; height:3px; width:78px; margin:-.75rem auto 1.25rem;
-      background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);
-      border-radius:3px; opacity:.9;
-    }
+    /* Hover lift for blocks */
+    .card,.news,.mission,.eventWrap,.afterpartyWrap,.donateWrap,.staffWrap,.postcard{transition:transform .22s, box-shadow .22s, border-color .22s}
+    .card:hover,.news:hover,.mission:hover,.eventWrap:hover,.afterpartyWrap:hover,.donateWrap:hover,.staffWrap:hover,.postcard:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(0,0,0,.28);border-color:rgba(255,255,255,.14)}
 
     /* Reveal animation */
-    .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease }
-    .reveal.in{ opacity:1; transform:none }
-    @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none } }
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s, transform .6s}
+    .reveal.in{opacity:1;transform:none}
+    @media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none} }
 
-    /* Lift-on-hover for all feature blocks */
-    .card,.news,.mission,.eventWrap,.afterpartyWrap,.donateWrap,.staffWrap,.postcard{
-      transition:transform .22s ease, box-shadow .22s ease, border-color .22s;
-    }
-    .card:hover,.news:hover,.mission:hover,.eventWrap:hover,.afterpartyWrap:hover,.donateWrap:hover,.staffWrap:hover,.postcard:hover{
-      transform:translateY(-3px);
-      box-shadow:0 18px 36px rgba(0,0,0,.28);
-      border-color:rgba(255,255,255,.14);
-    }
-
-    /* Footer */
     footer{background:#081425;color:#a5b4d4;text-align:center;padding:2.5rem 1rem;font-size:.85rem;font-style:italic}
 
-    /* Z layers */
     nav{z-index:9999 !important}
     #progress{z-index:10000 !important}
     .leaflet-container{z-index:1 !important}
-
-    /* Selection tint */
-    ::selection{ background:rgba(243,112,33,.35); color:#fff }
+    ::selection{background:rgba(243,112,33,.35);color:#fff}
   </style>
 </head>
 <body>
 <a href="#main" id="skip">Skip to content</a>
 <div id="progress"></div>
 
-<!-- ============================= NAV ============================= -->
+<!-- ================= NAV ================= -->
 <nav id="siteNav">
-  <div class="brand">
-    <img src="TPLOGO.png" alt="Japan Trek logo" />
+  <!-- LEFT: brand + countdown -->
+  <div class="nav-left">
+    <div class="brand"><img src="TPLOGO.png" alt="Japan Trek logo" /></div>
+    <div id="countBox" aria-live="polite"></div>
   </div>
 
+  <!-- CENTER: links -->
   <div class="links" role="navigation" aria-label="Primary">
     <a href="#news">News</a>
+    <a href="#about">About</a>
     <a href="#mission">Mission</a>
     <a href="#event">Event</a>
     <a href="#afterparty">After-Party</a>
+    <a href="#staff">Our Staff</a>
+  </div>
+
+  <!-- RIGHT: actions -->
+  <div class="nav-right">
     <a href="#donate" class="btn-nav secondary">Donate</a>
     <a href="#register" class="btn-nav primary">Register</a>
   </div>
-
-  <div id="countBox" aria-live="polite"></div>
 </nav>
 
-<!-- ============================= HERO ============================= -->
+<!-- ================ HERO ================ -->
 <header id="hero" aria-label="Slideshow">
   <div class="swiper">
     <div class="swiper-wrapper">
@@ -317,7 +254,7 @@
 <div class="spacer"></div>
 
 <main id="main">
-  <!-- ============================= NEWS ============================= -->
+  <!-- =============== NEWS =============== -->
   <section id="news" class="news reveal" aria-labelledby="news-title">
     <img class="deco leaf" data-parallax="8" src="https://upload.wikimedia.org/wikipedia/commons/2/21/OpenMoji-color_15.0.0_1F341.svg" alt="" />
     <span class="badge">Trek News</span>
@@ -332,13 +269,13 @@
     <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
   </section>
 
-  <!-- ============================= RECONNECT CARD ============================= -->
-  <section class="card reveal" aria-label="Repository banner">
+  <!-- =============== ABOUT (Camaraderie) =============== -->
+  <section id="about" class="card reveal" aria-label="About">
     <h2>Reconnect in Nature</h2>
     <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
   </section>
 
-  <!-- ============================= MISSION ============================= -->
+  <!-- =============== MISSION =============== -->
   <section id="mission" class="mission reveal" aria-labelledby="mission-title">
     <div>
       <span class="badge">Our Mission</span>
@@ -351,7 +288,7 @@
     </div>
   </section>
 
-  <!-- ============================= EVENT INFO ============================= -->
+  <!-- =============== EVENT INFO =============== -->
   <section id="event" class="eventWrap reveal" aria-labelledby="event-title">
     <img class="deco mountain" data-parallax="10" src="https://upload.wikimedia.org/wikipedia/commons/8/83/OpenMoji-color_15.0.0_26F0.svg" alt="" />
     <h2 id="event-title" class="eventHeader">Event Information</h2>
@@ -399,13 +336,13 @@
     </div>
   </section>
 
-  <!-- ============================= AFTER-PARTY ============================= -->
+  <!-- =============== AFTER-PARTY =============== -->
   <section id="afterparty" class="afterpartyWrap reveal" aria-labelledby="afterparty-title">
     <div>
       <h2 id="afterparty-title">After-Party!</h2>
       <p>Join our after-party.</p>
       <p>The company will cover food and drinks for employees. For non-TPT employees, we will collect the money on-site. Adults: 5,500 JPY. Kids over 3: 3,000 JPY. <span class="badgeUpdate">[Nov 1] Fee for kids is revised.</span></p>
-      <dl class="dl">
+      <dl class="dl" style="margin-top:.9rem;display:grid;grid-template-columns:140px 1fr;gap:.5rem 1.25rem">
         <dt>Restaurant</dt><dd>バーガーズカフェ シュシュ</dd>
         <dt>Time</dt><dd>2:00 pm to 5:00 pm</dd>
         <dt>Phone</dt><dd><a class="afterpartyLinks" href="tel:0426733917">042-673-3917</a></dd>
@@ -420,104 +357,48 @@
     </figure>
   </section>
 
-  <!-- ============================= DONATION ============================= -->
+  <!-- =============== DONATE =============== -->
   <section id="donate" class="donateWrap reveal" aria-labelledby="donate-title">
     <h2 id="donate-title">Donation Only</h2>
     <p>Charity-only participation is welcome!</p>
     <p>Please input the amount you are willing to donate from the organization’s page. Language can be changed from the top-right corner.</p>
-    <p style="margin-top:.25rem"><a class="btnWide btnDonate" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Donate now</a></p>
+    <p style="margin-top:.35rem"><a class="btnWide btnDonate" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Donate now</a></p>
   </section>
 
-  <!-- ============================= STAFF ============================= -->
+  <!-- =============== STAFF =============== -->
   <section id="staff" class="staffWrap reveal" aria-labelledby="staff-title">
     <h2 id="staff-title">Our Staff</h2>
     <div class="staffGrid">
-      <!-- Order as requested, with John last -->
-      <article class="cardStaff">
-        <img src="Norma-1.jpg" alt="Norma" />
-        <div class="info">
-          <div class="name">Norma</div>
-          <div class="chip">Ambassador of Awesome</div>
-        </div>
-      </article>
-
-      <article class="cardStaff">
-        <img src="Yujiro.jpg" alt="Yujiro" />
-        <div class="info">
-          <div class="name">Yujiro</div>
-          <div class="chip">Maestro of Mayhem</div>
-        </div>
-      </article>
-
-      <article class="cardStaff">
-        <img src="Peiyu.jpg" alt="Peiyu" />
-        <div class="info">
-          <div class="name">Peiyu</div>
-          <div class="chip">Chief Inspiration Officer</div>
-        </div>
-      </article>
-
-      <article class="cardStaff">
-        <img src="Shotaro-2.jpg" alt="Shotaro" />
-        <div class="info">
-          <div class="name">Shotaro</div>
-          <div class="chip">Happiness Hero</div>
-        </div>
-      </article>
-
-      <article class="cardStaff">
-        <img src="Shin-photo-1.jpg" alt="Shin" />
-        <div class="info">
-          <div class="name">Shin</div>
-          <div class="chip">Guru</div>
-        </div>
-      </article>
-
-      <article class="cardStaff">
-        <img src="Nana.jpg" alt="Nana" />
-        <div class="info">
-          <div class="name">Nana</div>
-          <div class="chip">Digital & Dream Architect</div>
-        </div>
-      </article>
-
-      <article class="cardStaff">
-        <img src="Waing.jpg" alt="Waing" />
-        <div class="info">
-          <div class="name">Waing</div>
-          <div class="chip">Strategy Whisperer</div>
-        </div>
-      </article>
-
-      <article class="cardStaff">
-        <img src="john.jpg" alt="John" />
-        <div class="info">
-          <div class="name">John</div>
-          <div class="chip">Trailblazer</div>
-        </div>
-      </article>
+      <article class="cardStaff"><img src="Norma-1.jpg" alt="Norma" /><div class="info"><div class="name">Norma</div><div class="chip">Ambassador of Awesome</div></div></article>
+      <article class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro" /><div class="info"><div class="name">Yujiro</div><div class="chip">Maestro of Mayhem</div></div></article>
+      <article class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu" /><div class="info"><div class="name">Peiyu</div><div class="chip">Chief Inspiration Officer</div></div></article>
+      <article class="cardStaff"><img src="Shotaro-2.jpg" alt="Shotaro" /><div class="info"><div class="name">Shotaro</div><div class="chip">Happiness Hero</div></div></article>
+      <article class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin" /><div class="info"><div class="name">Shin</div><div class="chip">Guru</div></div></article>
+      <article class="cardStaff"><img src="Nana.jpg" alt="Nana" /><div class="info"><div class="name">Nana</div><div class="chip">Digital & Dream Architect</div></div></article>
+      <article class="cardStaff"><img src="Waing.jpg" alt="Waing" /><div class="info"><div class="name">Waing</div><div class="chip">Strategy Whisperer</div></div></article>
+      <article class="cardStaff"><img src="john.jpg" alt="John" /><div class="info"><div class="name">John</div><div class="chip">Trailblazer</div></div></article>
     </div>
   </section>
 
-  <!-- ============================= HIGHLIGHTS ============================= -->
+  <!-- =============== HIGHLIGHTS =============== -->
   <section id="gallery">
     <article class="postcard reveal"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h2 style="font-size:var(--h2)">Camaraderie</h2><p>Walk shoulder to shoulder with colleagues, friends, and family.</p></div></article>
     <article class="postcard reveal"><img src="20241109_c2_041.jpg" alt="Vista"><div><h2 style="font-size:var(--h2)">Vistas</h2><p>Lookouts reveal sweeping skylines.</p></div></article>
   </section>
 
-  <!-- ============================= ELEVATION ============================= -->
+  <!-- =============== ELEVATION =============== -->
   <section id="elevation" class="reveal" data-dark>
     <h2>Elevation Profile</h2>
     <canvas id="chart" role="img" aria-label="Elevation graph"></canvas>
   </section>
 
-  <!-- ============================= WEATHER ============================= -->
+  <!-- =============== WEATHER =============== -->
   <section id="weather" class="reveal" data-dark>
     <h2>Live Weather</h2>
     <div id="weatherCard"><p>Loading…</p></div>
   </section>
 
-  <!-- ============================= REGISTER ============================= -->
+  <!-- =============== REGISTER =============== -->
   <section id="register" class="formCard reveal">
     <h2>Register</h2>
     <form action="https://formspree.io/f/your-id" method="POST">
@@ -532,78 +413,69 @@
 <footer>© 2025 TransPerfect · Japan Trek · Built with ✨ & ☕</footer>
 
 <script>
-/* ===== Helper: recompute anchor offset from *actual* nav height ===== */
+/* ===== Set offset to actual nav height ===== */
 const root = document.documentElement;
 const navEl = document.getElementById('siteNav');
 function setOffset(){ root.style.setProperty('--scroll-offset', (navEl.offsetHeight) + 'px'); }
 setOffset(); addEventListener('resize', setOffset);
 
-/* Precise anchor scrolling (accounts for live nav height) */
-document.addEventListener('click', (e)=>{
-  const a = e.target.closest('a[href^="#"]'); if(!a) return;
-  const id = decodeURIComponent(a.getAttribute('href').slice(1));
-  const target = id && document.getElementById(id); if(!target) return;
+/* Smooth anchor scroll accounting for live nav height */
+document.addEventListener('click',(e)=>{
+  const a=e.target.closest('a[href^="#"]'); if(!a) return;
+  const id=decodeURIComponent(a.getAttribute('href').slice(1));
+  const target=id&&document.getElementById(id); if(!target) return;
   e.preventDefault();
-  const y = target.getBoundingClientRect().top + window.pageYOffset - navEl.offsetHeight;
-  window.scrollTo({top:y, behavior:'smooth'});
+  const y=target.getBoundingClientRect().top+window.pageYOffset-navEl.offsetHeight;
+  window.scrollTo({top:y,behavior:'smooth'});
   history.pushState(null,'','#'+id);
 });
 
-/* Progress + compact nav + active link */
-const bar = document.getElementById('progress');
-const navLinks = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
-const sections = navLinks.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
-
+/* Progress + compact + active link */
+const bar=document.getElementById('progress');
+const navLinks=Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
+const sections=navLinks.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
 function setActive(){
-  const y = scrollY + navEl.offsetHeight + 2;
-  let cur = sections[0]?.id;
-  for(const s of sections){ if(s.offsetTop <= y) cur = s.id; }
-  navLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href').slice(1) === cur));
+  const y=scrollY+navEl.offsetHeight+2;
+  let cur=sections[0]?.id;
+  for(const s of sections){ if(s.offsetTop<=y) cur=s.id; }
+  navLinks.forEach(a=>a.classList.toggle('is-active',a.getAttribute('href').slice(1)===cur));
 }
 function onScroll(){
-  const max = document.body.scrollHeight - innerHeight;
-  bar.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
-  navEl.classList.toggle('compact', scrollY > 80);
+  const max=document.body.scrollHeight-innerHeight;
+  bar.style.transform=`scaleX(${Math.max(0,Math.min(1,scrollY/max))})`;
+  navEl.classList.toggle('compact',scrollY>80);
   setActive();
 }
-addEventListener('scroll', onScroll, {passive:true});
-addEventListener('load', ()=>{ onScroll(); setActive(); if(location.hash){ const el=document.getElementById(location.hash.slice(1)); if(el){ const y = el.getBoundingClientRect().top + pageYOffset - navEl.offsetHeight; scrollTo(0,y); }}});
+addEventListener('scroll',onScroll,{passive:true});
+addEventListener('load',()=>{onScroll();setActive();if(location.hash){const el=document.getElementById(location.hash.slice(1));if(el){const y=el.getBoundingClientRect().top+pageYOffset-navEl.offsetHeight;scrollTo(0,y);}}});
 
 /* Hero slider */
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-new Swiper('.swiper',{
-  loop:true, preloadImages:false, lazy:{loadPrevNext:true},
-  autoplay: reduce ? false : {delay:5200,disableOnInteraction:false},
-  speed: reduce ? 0 : 900, effect: reduce ? 'slide' : 'fade',
-  navigation:{nextEl:'#next',prevEl:'#prev'},
-  pagination:{el:'.swiper-pagination',clickable:true}
-});
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+new Swiper('.swiper',{loop:true,preloadImages:false,lazy:{loadPrevNext:true},autoplay:reduce?false:{delay:5200,disableOnInteraction:false},speed:reduce?0:900,effect:reduce?'slide':'fade',navigation:{nextEl:'#next',prevEl:'#prev'},pagination:{el:'.swiper-pagination',clickable:true}});
 
-/* Countdown — Nov 8, 2025 09:30 JST (minimal + bold) */
-const cb = document.getElementById('countBox');
-cb.innerHTML = '<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
-const deadline = new Date('2025-11-08T09:30:00+09:00');
+/* Countdown — Nov 8, 2025 09:30 JST */
+const cb=document.getElementById('countBox');
+cb.innerHTML='<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
+const deadline=new Date('2025-11-08T09:30:00+09:00');
 const d=document.getElementById('d'),h=document.getElementById('h'),m=document.getElementById('m'),s=document.getElementById('s');
 const pad=n=>String(n).padStart(2,'0');
 function parts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60}}
-function tick(){ const r=deadline-Date.now(); if(r<=0){cb.textContent='Event Day!';return} const p=parts(r); d.textContent=pad(p.d); h.textContent=pad(p.h); m.textContent=pad(p.m); s.textContent=pad(p.s); }
-tick(); setInterval(tick,1000);
+function tick(){const r=deadline-Date.now();if(r<=0){cb.textContent='Event Day!';return}const p=parts(r);d.textContent=pad(p.d);h.textContent=pad(p.h);m.textContent=pad(p.m);s.textContent=pad(p.s);}
+tick();setInterval(tick,1000);
 
 /* Elevation chart */
 new Chart('chart',{type:'line',
-  data:{labels:['Start','Mid','Shrine','Summit'],
-        datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
-  options:{plugins:{legend:{display:false}},
-    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}
+  data:{labels:['Start','Mid','Shrine','Summit'],datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
+  options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}
 });
 
 /* Weather */
 fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true&timezone=Asia%2FTokyo')
-  .then(r=>r.json()).then(({current_weather:t})=>{
-    const label={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'};
-    document.getElementById('weatherCard').innerHTML =
-      `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
-  });
+ .then(r=>r.json()).then(({current_weather:t})=>{
+   const label={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'};
+   document.getElementById('weatherCard').innerHTML =
+     `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
+ });
 
 /* Meeting point map */
 (function(){
@@ -614,27 +486,14 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
 })();
 
 /* Scroll reveal */
-(() => {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const obs = new IntersectionObserver((entries)=>{
-    for(const e of entries){ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } }
-  }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+(()=>{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const obs=new IntersectionObserver((entries)=>{for(const e of entries){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}}},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 })();
 
-/* Gentle parallax for decorative icons */
-(() => {
-  const items = Array.from(document.querySelectorAll('.deco[data-parallax]'));
-  if (!items.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  function run(){
-    const y = window.scrollY;
-    for(const el of items){
-      const depth = parseFloat(el.dataset.parallax)||8;
-      el.style.transform = `translateY(${y/depth}px) rotate(-2deg)`;
-    }
-    requestAnimationFrame(run);
-  }
-  run();
+/* Parallax for decorative icons */
+(()=>{ const items=Array.from(document.querySelectorAll('.deco[data-parallax]')); if(!items.length||matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function run(){const y=window.scrollY;for(const el of items){const depth=parseFloat(el.dataset.parallax)||8;el.style.transform=`translateY(${y/depth}px) rotate(-2deg)`;}requestAnimationFrame(run);} run();
 })();
 </script>
 </body>
