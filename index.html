@@ -24,13 +24,13 @@
       --ink-dim:#cfe0ff;
       --muted:#a5b4d4;
       --beige:#e8dcc7;
-      --accent:#d30000;           /* red accent used in chart line etc */
-      --orange:#f37021;           /* brand orange for buttons & chips */
+      --accent:#d30000;
+      --orange:#f37021;
       --surface:#12213a;
       --surface-2:#172742;
       --card:#15284a;
       --shadow:0 12px 28px rgba(0,0,0,.15);
-      --h2:clamp(1.6rem,3.6vw,2.2rem);  /* unified section headings */
+      --h2:clamp(1.6rem,3.6vw,2.2rem);
       --scroll-offset:56px;              /* set live from JS = nav height */
       --content-max:1100px;
     }
@@ -61,7 +61,7 @@
     .nav-inner{
       max-width:var(--content-max);margin:0 auto;
       display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
-      gap:1rem;padding:.6rem 1rem; /* compact but readable */
+      gap:1rem;padding:.6rem 1rem;
     }
 
     /* LEFT: countdown */
@@ -154,7 +154,7 @@
     .eventCol h3{color:#8db1ff;font-size:1.05rem;margin:1rem 0 .5rem;letter-spacing:.02em}
     .eventCol p,.eventCol li{line-height:1.65}
     .eventCol ul{padding-left:1.1rem}
-    .eventCol > :first-child{margin-top:0}             /* remove weird top gap */
+    .eventCol > :first-child{margin-top:0}
     .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
     .changed{color:#ff7a7a;font-weight:700;margin:.25rem 0 .5rem}
     #meetMap{width:100%;height:240px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
@@ -163,8 +163,8 @@
     .afterpartyWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem;display:grid;gap:1.5rem}
     @media(min-width:900px){.afterpartyWrap{grid-template-columns:1fr 420px;align-items:start}}
     .afterpartyWrap h2{margin-bottom:.25rem}
-    .afterMedia{margin:0}                    /* remove figure default margin */
-    .afterMedia img{border-radius:1rem;box-shadow:var(--shadow);display:block;margin:0}   /* kill blank top gap */
+    .afterMedia{margin:0}
+    .afterMedia img{border-radius:1rem;box-shadow:var(--shadow);display:block;margin:0}
     .afterMedia figcaption{color:#a5b4d4;font-size:.85rem;margin-top:.5rem}
     .dl{margin-top:1rem;display:grid;grid-template-columns:110px 1fr;gap:.45rem 1.25rem}
     .dl dt{font-weight:700;color:#d1ddff}
@@ -188,7 +188,7 @@
     .cardStaff .name{font-weight:800}
     .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
 
-    /* About (moved Reconnect in Nature here with gallery) */
+    /* About (Reconnect + Gallery) */
     #about{max-width:var(--content-max);margin:4rem auto}
     .aboutGrid{display:grid;gap:1.5rem}
     @media(min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
@@ -200,7 +200,8 @@
     /* Elevation & Weather */
     section[data-dark]{padding:3rem 1rem;text-align:center;background:#15284a}
     section[data-dark] .shell{max-width:var(--content-max)}
-    canvas{display:block;max-width:900px;width:100%;height:320px;margin:0 auto} /* ensure visible, no overlap */
+    /* IMPORTANT: fixed, non-responsive canvas to avoid resize loops */
+    #chart{display:block;max-width:900px;width:100%;height:auto;margin:0 auto}
     #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
     #weatherCard .t{font-size:2.4rem;font-weight:700}
 
@@ -446,7 +447,8 @@
   <section id="elevation" data-dark>
     <div class="shell">
       <h2>Elevation Profile</h2>
-      <canvas id="chart" role="img" aria-label="Elevation graph"></canvas>
+      <!-- FIX: explicit width/height attributes to stop resize loops -->
+      <canvas id="chart" width="900" height="320" role="img" aria-label="Elevation graph"></canvas>
     </div>
   </section>
 
@@ -520,7 +522,7 @@ new Swiper('.swiper',{
   pagination:{el:'.swiper-pagination',clickable:true}
 });
 
-/* Countdown — Nov 8, 2025 09:30 JST (minimal + bold) */
+/* Countdown — Nov 8, 2025 09:30 JST */
 const cb = document.getElementById('countBox');
 cb.innerHTML = '<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
 const deadline = new Date('2025-11-08T09:30:00+09:00');
@@ -530,13 +532,17 @@ function parts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math
 function tick(){ const r=deadline-Date.now(); if(r<=0){cb.textContent='Event Day!';return} const p=parts(r); d.textContent=pad(p.d); h.textContent=pad(p.h); m.textContent=pad(p.m); s.textContent=pad(p.s); }
 tick(); setInterval(tick,1000);
 
-/* Elevation chart (explicit height so it never collapses) */
-new Chart('chart',{type:'line',
+/* Elevation chart — fixed dimensions; no responsive loops */
+new Chart(document.getElementById('chart'),{
+  type:'line',
   data:{labels:['Start','Mid','Shrine','Summit'],
         datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
-  options:{maintainAspectRatio:false,
+  options:{
+    responsive:false,            // <- stops ResizeObserver loop
+    animation:false,
     plugins:{legend:{display:false}},
-    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}
+    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}
+  }
 });
 
 /* Weather */
@@ -547,7 +553,7 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
       `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
   });
 
-/* Meeting point map (no blank gap) */
+/* Meeting point map */
 (function(){
   const el=document.getElementById('meetMap'); if(!el) return;
   const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([35.6339,139.2434],15);
