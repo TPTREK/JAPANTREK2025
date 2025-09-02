@@ -154,9 +154,10 @@
     .postcard img{width:100%;border-radius:.9rem}
     @media(min-width:768px){.postcard{grid-template-columns:repeat(2,1fr);align-items:center}}
 
-    /* Reveal animation */
-    .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease}
-    .reveal.visible{opacity:1;transform:none}
+    /* Reveal animation (progressive enhancement) */
+    .reveal{ /* visible by default; JS will enhance on capable browsers */ }
+    .js .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease}
+    .js .reveal.visible{opacity:1;transform:none}
 
     /* Tilt */
     .tilt{transform-style:preserve-3d;will-change:transform}
@@ -252,6 +253,9 @@
     nav{z-index:9999 !important}
     #progress{z-index:10000 !important}
     .leaflet-container{z-index:1 !important}
+
+    /* Safety: ensure content sits above any accidental overlaps */
+    main{position:relative; z-index: 1;}
   </style>
 </head>
 <body>
@@ -384,7 +388,6 @@
     <!-- Add-to-Calendar controls -->
     <div class="calGroup" aria-label="Add event to your calendar">
       <button class="btnCal primary" id="addCalMain">
-        <!-- calendar icon -->
         <svg viewBox="0 0 24 24" fill="none"><path d="M7 2v3M17 2v3M3 9h18M5 6h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         Add .ics
       </button>
@@ -552,6 +555,9 @@
 <footer>© 2025 TransPerfect · Japan Trek · Built with ✨ & ☕</footer>
 
 <script>
+/* Mark JS-enabled for progressive enhancement (reveal effects only apply then) */
+document.documentElement.classList.add('js');
+
 /* ===== Helper: recompute anchor offset from *actual* nav height ===== */
 const root = document.documentElement;
 const navEl = document.getElementById('siteNav');
@@ -569,7 +575,7 @@ document.addEventListener('click', (e)=>{
   history.pushState(null,'','#'+id);
 });
 
-/* Progress + compact nav + active link */
+/* Progress + compact nav + active link + hero parallax */
 const bar = document.getElementById('progress');
 const navLinks = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
 const sections = navLinks.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
@@ -586,7 +592,6 @@ function onScroll(){
   navEl.classList.toggle('compact', scrollY > 80);
   setActive();
 
-  // Hero parallax (subtle)
   const heroOverlay = document.querySelector('.heroOverlay');
   if(heroOverlay){
     const p = Math.min(1, Math.max(0, scrollY / innerHeight));
@@ -648,14 +653,19 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
 
 /* ===== Scroll reveal (IntersectionObserver) ===== */
 const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(!prefersReduced){
+(function initReveal(){
+  const nodes = document.querySelectorAll('.reveal');
+  if (prefersReduced || !('IntersectionObserver' in window)) {
+    nodes.forEach(n=>n.classList.add('visible')); // no hiding if motion reduced or unsupported
+    return;
+  }
   const io = new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
     });
   },{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-}
+  nodes.forEach(el=>io.observe(el));
+})();
 
 /* ===== 3D Tilt (subtle, respects reduced motion) ===== */
 function addTilt(el){
@@ -678,16 +688,10 @@ if(!prefersReduced){
 }
 
 /* ===== Add-to-Calendar (ICS + Google) ===== */
-function fmtICS(dt){ // Date -> YYYYMMDDTHHMMSSZ
-  return dt.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
-}
+function fmtICS(dt){ return dt.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z'); }
 function buildICS({title, start, end, location, description}){
   const cal = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//TransPerfect Japan Trek//EN',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//TransPerfect Japan Trek//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH',
     'BEGIN:VEVENT',
     `UID:${Date.now()}@tptrek`,
     `DTSTAMP:${fmtICS(new Date())}`,
@@ -696,12 +700,10 @@ function buildICS({title, start, end, location, description}){
     `SUMMARY:${title}`,
     `DESCRIPTION:${description.replace(/\n/g,'\\n')}`,
     `LOCATION:${location}`,
-    'END:VEVENT',
-    'END:VCALENDAR'
+    'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
   const blob = new Blob([cal], {type:'text/calendar'});
-  const url = URL.createObjectURL(blob);
-  return url;
+  return URL.createObjectURL(blob);
 }
 function gcalURL({title,start,end,location,description}){
   const p = new URLSearchParams({
@@ -713,7 +715,6 @@ function gcalURL({title,start,end,location,description}){
   });
   return `https://calendar.google.com/calendar/render?${p.toString()}`;
 }
-// Main event times (JST -> convert to local automatically via Date)
 const mainStart = new Date('2025-11-08T10:00:00+09:00');
 const mainEnd   = new Date('2025-11-08T17:00:00+09:00');
 const afterStart= new Date('2025-11-08T14:00:00+09:00');
