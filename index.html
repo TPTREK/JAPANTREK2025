@@ -53,7 +53,7 @@
     /* ================= NAV ================= */
     nav{
       position:fixed;inset:0 auto auto 0;width:100%;
-      padding:.6rem .9rem;
+      padding:.7rem 1rem;
       background:rgba(7,14,25,.78);backdrop-filter:blur(8px) saturate(120%);
       border-bottom:1px solid rgba(255,255,255,.08);
       display:flex;align-items:center;gap:.8rem;z-index:110;
@@ -85,7 +85,7 @@
     /* Right-side actions: Donate + Register */
     nav .nav-right{display:flex;align-items:center;gap:.55rem}
     .btn-nav{
-      padding:.55rem .9rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.15);
+      padding:.6rem 1rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.15);
       background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
       box-shadow:0 6px 18px rgba(0,0,0,.22);transition:transform .18s, box-shadow .18s, filter .2s
     }
@@ -94,7 +94,7 @@
     .btn-nav.secondary:hover{background:rgba(255,255,255,.12);transform:translateY(-1px)}
 
     /* Compact on scroll */
-    nav.compact{padding:.4rem .7rem}
+    nav.compact{padding:.5rem .8rem}
     nav.compact .brand img{height:1rem}
     nav.compact .links{gap:.6rem;font-size:.86rem}
     nav.compact #countBox .num{font-size:clamp(.9rem,2vw,1rem)}
@@ -135,27 +135,29 @@
     .news p,.mission p,.eventCol p,.eventCol li,.donateWrap p{line-height:1.75}
     .eventCol ul{padding-left:1.1rem}
     .eventCol li{margin:.35rem 0}
-    .eventGrid{display:grid;gap:clamp(1.5rem,3vw,2rem)}
+    .eventGrid{display:grid;gap:clamp(1.25rem,2.6vw,1.75rem);align-items:start}
     @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
 
     .mission{background:var(--surface-2)}
-    .afterpartyWrap{grid-template-columns:1fr;display:grid}
+    .afterpartyWrap{display:grid;gap:clamp(1.25rem,2.6vw,1.75rem)}
     @media(min-width:900px){.afterpartyWrap{grid-template-columns:1fr 420px;align-items:start}}
-    #meetMap{width:100%;height:240px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.6rem}
+    #meetMap{width:100%;height:240px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
 
     /* Headings unified */
     .card h2,.news h2,.mission h2,.eventHeader,.afterpartyWrap h2,#donate-title,#staff-title,#elevation h2,#weather h2,.formCard h2{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em;margin-bottom:.65rem}
 
-    /* Top accent line with better spacing */
+    /* Top accent line (tighter to remove awkward blank space) */
     .card::before,.news::before,.mission::before,.eventWrap::before,.afterpartyWrap::before,.donateWrap::before,.staffWrap::before{
-      content:"";display:block;height:3px;width:78px;margin:0 auto 1.25rem;background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);border-radius:3px;opacity:.9
+      content:"";display:block;height:3px;width:78px;margin:0 auto .7rem;background:linear-gradient(90deg,#ffb27a,var(--orange),#ffb27a);border-radius:3px;opacity:.9
     }
+    /* Make event + afterparty even tighter as requested */
+    .eventWrap::before,.afterpartyWrap::before{margin-bottom:.4rem}
 
     /* Mission badge + buttons */
     .mission .badge{display:inline-block;background:var(--orange);color:#1b120a;font-weight:800;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
-    .btn-secondary{display:inline-block;border:2px solid var(--beige);color:var(--beige);padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.65rem}
+    .btn-secondary{display:inline-block;border:2px solid var(--beige);color:#beceef;padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.65rem}
     .btn-secondary:hover{opacity:.9}
-    .eventDate{color:var(--beige);font-size:1.05rem;margin:.25rem 0 1.1rem}
+    .eventDate{color:var(--beige);font-size:1.05rem;margin:.15rem 0 1rem}
     .changed{color:#ff6a7a;font-weight:700}
     .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
 
@@ -183,6 +185,18 @@
     .formCard input:focus,.formCard textarea:focus{outline:2px solid rgba(243,112,33,.55);outline-offset:2px;box-shadow:0 0 0 6px rgba(243,112,33,.12)}
     .formCard button{margin-top:1rem;background:var(--accent);color:#fff;border:none;padding:1rem 2rem;border-radius:.5rem;font-weight:700;width:100%}
     .formCard button:hover{opacity:.88}
+
+    /* Dark sections (ELEVATION/WEATHER) — restore visuals */
+    section[data-dark]{padding:4rem 2rem;text-align:center;background:#15284a}
+    canvas{max-width:800px;width:100%;height:300px;margin:auto}
+    #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
+    #weatherCard .t{font-size:2.4rem;font-weight:700}
+
+    /* Remove stray spacing above right-column media */
+    .afterMedia{margin:0}
+    .afterMedia img{margin:0;border-radius:1rem}
+    /* Remove any ghost top gap over meeting map */
+    #meetMap{margin-top:.4rem}
 
     /* Hover lift for blocks */
     .card,.news,.mission,.eventWrap,.afterpartyWrap,.donateWrap,.staffWrap,.postcard{transition:transform .22s, box-shadow .22s, border-color .22s}
@@ -267,25 +281,6 @@
     <p>Questions? Email <a href="mailto:TransPerfectJapanTrek@transperfect.com">TransPerfectJapanTrek@transperfect.com</a>.</p>
     <p>You, your family, and your friends are welcome. See you there.</p>
     <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
-  </section>
-
-  <!-- =============== ABOUT (Camaraderie) =============== -->
-  <section id="about" class="card reveal" aria-label="About">
-    <h2>Reconnect in Nature</h2>
-    <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
-  </section>
-
-  <!-- =============== MISSION =============== -->
-  <section id="mission" class="mission reveal" aria-labelledby="mission-title">
-    <div>
-      <span class="badge">Our Mission</span>
-      <h2 id="mission-title">Giving Back, Together</h2>
-      <p class="lede">One of the privileges of being a successful business is having the opportunity to give back. TransPerfect’s commitment to good corporate citizenship guides how we work every day.</p>
-    </div>
-    <div>
-      <p>We support local communities and a diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts to make a difference.</p>
-      <p>This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life for cancer patients. <a class="btn-secondary" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a></p>
-    </div>
   </section>
 
   <!-- =============== EVENT INFO =============== -->
@@ -384,6 +379,12 @@
   <section id="gallery">
     <article class="postcard reveal"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h2 style="font-size:var(--h2)">Camaraderie</h2><p>Walk shoulder to shoulder with colleagues, friends, and family.</p></div></article>
     <article class="postcard reveal"><img src="20241109_c2_041.jpg" alt="Vista"><div><h2 style="font-size:var(--h2)">Vistas</h2><p>Lookouts reveal sweeping skylines.</p></div></article>
+  </section>
+
+  <!-- =============== ABOUT near CAMARADERIE =============== -->
+  <section id="about" class="card reveal" aria-label="About">
+    <h2>Reconnect in Nature</h2>
+    <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
   </section>
 
   <!-- =============== ELEVATION =============== -->
