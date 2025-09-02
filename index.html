@@ -17,7 +17,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-  <!-- Critical styles (keep type attribute + exact closing tag) -->
+  <!-- Critical styles -->
   <style type="text/css">
     :root{
       --bg:#0e1a2b;--ink:#fff;--accent:#d30000;--beige:#e8dcc7;--muted:#a5b4d4;--shadow:0 12px 28px rgba(0,0,0,.15);
@@ -41,30 +41,33 @@
     /* Progress bar */
     #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--accent));transform-origin:0 0;z-index:120}
 
-    /* ================= NAV (thin + CTAs) ================= */
+    /* ================= NAV (grid: brand | centered links | right tools) ================= */
     nav{
       position:fixed;top:0;left:0;width:100%;
       min-height:44px;padding:.25rem .6rem;
       background:rgba(0,0,0,.82);backdrop-filter:blur(8px) saturate(120%);
       border-bottom:1px solid rgba(255,255,255,.08);
-      display:flex;align-items:center;gap:.6rem;z-index:110;
-      transition:min-height .18s ease,padding .18s ease
+      display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+      z-index:110;transition:min-height .18s ease,padding .18s ease
     }
-    nav .brand{display:flex;align-items:center;gap:.5rem}
-    nav .brand img{width:120px;height:auto;transition:width .18s ease}
-    nav .links{flex:1;display:flex;justify-content:center;gap:clamp(.5rem,2vw,1rem);font-size:.82rem;letter-spacing:.1em}
-    nav .links a{font-weight:700;text-transform:uppercase;opacity:.9;transition:opacity .2s,color .2s}
-    nav .links a:hover{opacity:1}
-    nav .links a.is-active{color:#fff;position:relative}
-    nav .links a.is-active::after{
+    .brand{justify-self:start;display:flex;align-items:center;gap:.5rem}
+    .brand img{width:120px;height:auto;transition:width .18s ease}
+
+    .links{justify-self:center;display:flex;align-items:center;gap:clamp(.5rem,2vw,1rem);font-size:.82rem;letter-spacing:.1em}
+    .links a{font-weight:700;text-transform:uppercase;opacity:.9;transition:opacity .2s,color .2s}
+    .links a:hover{opacity:1}
+    .links a.is-active{color:#fff;position:relative}
+    .links a.is-active::after{
       content:"";position:absolute;left:10%;right:10%;bottom:-6px;height:2px;background:var(--orange);border-radius:2px
     }
+
+    .right{justify-self:end;display:flex;align-items:center;gap:.5rem}
     #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
     #countBox .num{font-weight:800;font-size:clamp(1rem,2.6vw,1.4rem);line-height:1}
     #countBox .sep{opacity:.6;margin:0 .1rem}
 
     /* Header CTAs */
-    .cta{display:flex;align-items:center;gap:.45rem;margin-left:.5rem}
+    .cta{display:flex;align-items:center;gap:.45rem}
     .pill{
       display:inline-block;padding:.5rem .9rem;border-radius:9999px;font-weight:900;
       letter-spacing:.06em;text-transform:uppercase;font-size:.78rem;line-height:1;
@@ -81,10 +84,7 @@
     nav.compact #countBox .num{font-size:.95rem}
 
     /* ================= HERO ================= */
-    header{
-      position:relative;overflow:hidden;margin-top:var(--scroll-offset);
-      height:calc(100svh - var(--scroll-offset));
-    }
+    header{position:relative;overflow:hidden;margin-top:var(--scroll-offset);height:calc(100svh - var(--scroll-offset))}
     .swiper{width:100%;height:100%}
     .swiper-slide img{width:100%;height:100%;object-fit:cover}
     .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:10}
@@ -205,18 +205,25 @@
 <!-- NAVIGATION -->
 <nav>
   <div class="brand">
-    <img src="Logos_TPT_JapanTrek_center_colour-03.png" alt="Japan Trek logo">
+    <!-- Updated logo -->
+    <img src="TPLOGO.png" alt="Japan Trek logo">
   </div>
+
+  <!-- Center column: links stay visually centered regardless of left/right widths -->
   <div class="links">
     <a href="#news">News</a>
     <a href="#mission">Mission</a>
     <a href="#event">Event</a>
     <a href="#afterparty">After-Party</a>
   </div>
-  <div id="countBox" aria-live="polite"></div>
-  <div class="cta">
-    <a href="#donate" class="pill pill--donate">Donate</a>
-    <a href="#register" class="pill pill--register">Register</a>
+
+  <!-- Right column: countdown + CTAs grouped -->
+  <div class="right">
+    <div id="countBox" aria-live="polite"></div>
+    <div class="cta">
+      <a href="#donate" class="pill pill--donate">Donate</a>
+      <a href="#register" class="pill pill--register">Register</a>
+    </div>
   </div>
 </nav>
 
