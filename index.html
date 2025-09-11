@@ -68,15 +68,15 @@
     .brand img{height:75px;width:auto;display:block}
     /* LEFT: countdown */
     #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
-    #countBox .num{font-weight:800;font-size:clamp(1rem,2.2vw,1.15rem);line-height:1}
+    #countBox .num{font-weight:800;font-size:clamp(.92rem,2vw,1.05rem);line-height:1}
     #countBox .sep{opacity:.6;margin:0 .1rem}
 
     /* CENTER: links */
     nav .links{
       display:flex;justify-content:center;align-items:center;
-      gap:clamp(.6rem,2.4vw,1rem);font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;
+      gap:clamp(.5rem,2vw,.9rem);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
     }
-    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.4rem .25rem;border-radius:.25rem}
+    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.35rem .25rem;border-radius:.25rem}
     nav .links a:hover{opacity:1}
     nav .links a.is-active{position:relative}
     nav .links a.is-active::after{
@@ -85,15 +85,15 @@
 
     /* RIGHT: actions */
     .actions{justify-self:end;display:flex;align-items:center;gap:.5rem}
-    .btn-nav{padding:.55rem .9rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.15);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));font-weight:800}
+    .btn-nav{padding:.5rem .85rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.15);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));font-weight:800;font-size:.86rem}
     .btn-nav.primary{background:var(--orange);color:#1b120a;border-color:transparent}
     .btn-nav.primary:hover{filter:brightness(.95)}
     .btn-nav.secondary:hover{background:rgba(255,255,255,.12)}
 
     /* Compact-on-scroll */
     nav.compact .nav-inner{padding:.35rem 1rem}
-    nav.compact .links{gap:.7rem;font-size:.84rem}
-    nav.compact #countBox .num{font-size:clamp(.95rem,2vw,1.05rem)}
+    nav.compact .links{gap:.6rem;font-size:.78rem}
+    nav.compact #countBox .num{font-size:clamp(.9rem,2vw,1rem)}
     nav.compact .brand img{height:60px}
 
     /* ============================ HERO ============================ */
@@ -203,6 +203,8 @@
     /* rounded blue image block above “Reconnect in Nature” */
     .aboutImgCard{background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1rem;margin-bottom:1.25rem}
     .aboutImgCard img{border-radius:.8rem}
+    /* force camaraderie card to stack: text first, image below */
+    .postcard.stack{grid-template-columns:1fr}
 
     /* Elevation & Weather */
     section[data-dark]{padding:3rem 1rem;text-align:center;background:#15284a}
@@ -249,7 +251,7 @@
       <a href="#event">Event</a>
       <a href="#afterparty">After-Party</a>
       <a href="#staff">Our Staff</a>
-      <a href="#about">About</a>
+      <!-- About removed per request -->
     </div>
 
     <!-- RIGHT: Actions -->
@@ -336,10 +338,19 @@
           <li><strong>All participants:</strong> 3,000 JPY per person (T-shirt included)</li>
         </ul>
         <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
+
+        <!-- MOVED HERE: PRIZES under Registration Fee -->
+        <h3>Prizes</h3>
+        <p>Top three to the summit win:</p>
+        <ul>
+          <li>1st - Amazon Gift Card: 3,000 yen</li>
+          <li>2nd - Amazon Gift Card: 2,000 yen</li>
+          <li>3rd - Amazon Gift Card: 1,000 yen</li>
+        </ul>
       </div>
 
       <div class="eventCol">
-        <!-- MAP MOVED TO THE VERY TOP OF RIGHT COLUMN -->
+        <!-- MAP stays at the VERY TOP of the right column -->
         <div id="meetMap" aria-label="Map to Koma Bridge"></div>
         <p class="note" style="margin:.4rem 0 0">
           <a href="https://www.google.com/maps/search/?api=1&query=%E9%99%8D%E9%AD%94%E6%A9%8B%20%E5%8C%97%E9%8E%8C%E5%80%89" target="_blank" rel="noopener">Open precise location in Google Maps</a>
@@ -351,14 +362,6 @@
         <h3>Hiking Trail</h3>
         <ul><li><strong>Kamakura Daibutsu Hiking Trail</strong> (around 3km)</li></ul>
         <p>The trail is a scenic forest path linking Kita-Kamakura to the Great Buddha area. Expect packed dirt, roots, and some stairs with gentle to moderate inclines; allow ~60–90 minutes at a relaxed pace. Surfaces can be slippery after rain—wear shoes with grip and bring water.</p>
-
-        <h3>Prizes</h3>
-        <p>Top three to the summit win:</p>
-        <ul>
-          <li>1st - Amazon Gift Card: 3,000 yen</li>
-          <li>2nd - Amazon Gift Card: 2,000 yen</li>
-          <li>3rd - Amazon Gift Card: 1,000 yen</li>
-        </ul>
       </div>
     </div>
   </section>
@@ -433,7 +436,7 @@
 
   <!-- ============================= ABOUT (Reconnect + Gallery) ============================= -->
   <section id="about" class="shell">
-    <!-- rounded blue image section ABOVE “Reconnect in Nature” (now using your PNG) -->
+    <!-- rounded blue image section ABOVE “Reconnect in Nature” -->
     <article class="aboutImgCard">
       <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Japan Trek graphic banner" />
     </article>
@@ -445,12 +448,13 @@
         <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
       </article>
 
-      <article class="postcard">
-        <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
+      <!-- Camaraderie: text first, image below in same box -->
+      <article class="postcard stack">
         <div>
           <h2>Camaraderie</h2>
           <p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
         </div>
+        <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
       </article>
     </div>
 
