@@ -65,16 +65,9 @@
     }
 
     /* LEFT: logo + countdown */
-    .left{display:flex;align-items:center;gap:.75rem;justify-self:start}
-    .brand{display:inline-flex;align-items:center}
-    .brand img{
-      height:75px;          /* requested size */
-      width:75px;
-      object-fit:contain;
-      display:block;
-    }
+    .left{display:flex;align-items:center;gap:.6rem;justify-self:start}
+    .brand img{width:75px;height:75px;object-fit:contain;display:block}
 
-    /* LEFT: countdown */
     #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
     #countBox .num{font-weight:800;font-size:clamp(1rem,2.2vw,1.15rem);line-height:1}
     #countBox .sep{opacity:.6;margin:0 .1rem}
@@ -102,7 +95,7 @@
     nav.compact .nav-inner{padding:.35rem 1rem}
     nav.compact .links{gap:.7rem;font-size:.84rem}
     nav.compact #countBox .num{font-size:clamp(.95rem,2vw,1.05rem)}
-    /* (No compact logo resize to keep 75x75 as requested) */
+    nav.compact .brand img{width:64px;height:64px}
 
     /* ============================ HERO ============================ */
     header{
@@ -199,12 +192,15 @@
     .cardStaff .name{font-weight:800}
     .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
 
+    /* Full-width banner between Staff and About */
+    .betweenBanner{max-width:var(--content-max);margin:2rem auto}
+    .betweenBanner img{width:100%;height:auto;border-radius:.9rem;box-shadow:var(--shadow)}
+
     /* About (Reconnect + Gallery) */
     #about{max-width:var(--content-max);margin:4rem auto}
     .aboutGrid{display:grid;gap:1.5rem}
     @media(min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
     .aboutCard{background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem;text-align:center}
-    .aboutCard img{border-radius:.9rem;margin-top:1rem}
     .postcard{display:grid;gap:1.25rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1.25rem}
     @media(min-width:768px){.postcard{grid-template-columns:1.1fr .9fr;align-items:center}}
     .postcard img{width:100%;border-radius:.9rem}
@@ -212,6 +208,7 @@
     /* Elevation & Weather */
     section[data-dark]{padding:3rem 1rem;text-align:center;background:#15284a}
     section[data-dark] .shell{max-width:var(--content-max)}
+    /* IMPORTANT: fixed, non-responsive canvas to avoid resize loops */
     #chart{display:block;max-width:900px;width:100%;height:auto;margin:0 auto}
     #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
     #weatherCard .t{font-size:2.4rem;font-weight:700}
@@ -241,9 +238,7 @@
   <div class="nav-inner">
     <!-- LEFT: Logo + Countdown -->
     <div class="left">
-      <a href="#hero" class="brand" aria-label="Home">
-        <img src="TPLOGO.png" alt="TransPerfect logo">
-      </a>
+      <div class="brand"><img src="TPLOGO.png" alt="TransPerfect logo"></div>
       <div id="countBox" aria-live="polite"></div>
     </div>
 
@@ -326,11 +321,11 @@
     <div class="eventGrid">
       <div class="eventCol">
         <ul>
-          <li><strong>Meeting Time:</strong> 10:00 am</li>
-          <li><strong>Place:</strong> Koma Bridge (降魔橋), near JR Kita-Kamakura Station (West Exit)</li>
-          <li><strong>Participation Conditions:</strong> TransPerfect employee, employee’s family or friends</li>
+          <li>Time: 10:00 am to 5:00 pm. (Meeting Time: 9:30 am)</li>
+          <li>Place: Mt. Takao (Tokyo)</li>
+          <li>Participation Conditions: TransPerfect employee, employee’s family or friends</li>
         </ul>
-        <p class="note">* Please bring water.</p>
+        <p class="note">* Please bring water and some snacks.</p>
         <p class="note">* Transportation costs to and from the event are self covered.</p>
 
         <h3 id="after-party">After-Party</h3>
@@ -338,18 +333,20 @@
 
         <h3>Registration Fee</h3>
         <ul>
-          <li><strong>All participants:</strong> 3,000 JPY per person <em>(T-shirt included)</em></li>
+          <li>TransPerfect employees: 1,000 JPY per person</li>
+          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself. A common-law partner is considered as family.</li>
+          <li>Non-TransPerfect members: 1,000 JPY per participant</li>
         </ul>
         <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
       </div>
 
       <div class="eventCol">
         <h3>Meeting Point</h3>
-        <p>Koma Bridge (降魔橋) — near JR Kita-Kamakura Station West Exit</p>
-        <div id="meetMap" aria-label="Map to Koma Bridge (Kita-Kamakura)"></div>
+        <p class="changed">[Oct 30] Changed. Sakura Park</p>
+        <div id="meetMap" aria-label="Map to Sakura Park"></div>
 
         <h3>Hiking Trail</h3>
-        <ul><li>Kamakura Daibutsu Hiking Trail (around 3km)</li></ul>
+        <ul><li>Ascending - Inariyama Trail, Descending - Trail 1 <em>* read more</em></li></ul>
         <p>Please feel free to ride the cable car if needed. We will meet up at the top of the mountain.</p>
 
         <h3>Prizes</h3>
@@ -431,18 +428,22 @@
     </div>
   </section>
 
+  <!-- ============================= BANNER AFTER STAFF ============================= -->
+  <section class="betweenBanner shell" aria-label="Banner image">
+    <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Trek promotional banner">
+  </section>
+
   <!-- ============================= ABOUT (Reconnect + Gallery) ============================= -->
   <section id="about" class="shell">
     <div class="aboutGrid">
-      <!-- Reconnect in Nature now includes the "Camaraderie" image -->
       <article class="aboutCard">
         <h2>Reconnect in Nature</h2>
         <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
-        <img src="20241109_c2_024.jpg" alt="Trail camaraderie" />
       </article>
 
-      <!-- Camaraderie now text-only (image moved above) -->
+      <!-- Camaraderie now uses the former Vistas image (20241109_c2_041.jpg) -->
       <article class="postcard">
+        <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
         <div>
           <h2>Camaraderie</h2>
           <p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
@@ -450,8 +451,9 @@
       </article>
     </div>
 
+    <!-- Vistas now uses 20241109_c2_031.jpg -->
     <article class="postcard" style="margin-top:1.25rem">
-      <img src="20241109_c2_041.jpg" alt="Vista">
+      <img src="20241109_c2_031.jpg" alt="Vista">
       <div>
         <h2>Vistas</h2>
         <p>Lookouts reveal sweeping skylines.</p>
@@ -463,6 +465,7 @@
   <section id="elevation" data-dark>
     <div class="shell">
       <h2>Elevation Profile</h2>
+      <!-- fixed size to avoid resize loops -->
       <canvas id="chart" width="900" height="320" role="img" aria-label="Elevation graph"></canvas>
     </div>
   </section>
@@ -553,7 +556,7 @@ new Chart(document.getElementById('chart'),{
   data:{labels:['Start','Mid','Shrine','Summit'],
         datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
   options:{
-    responsive:false,
+    responsive:false,            // <- stops ResizeObserver loop
     animation:false,
     plugins:{legend:{display:false}},
     scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}
@@ -568,13 +571,12 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
       `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
   });
 
-/* Meeting point map — Koma Bridge (approx coords near JR Kita-Kamakura West Exit) */
+/* Meeting point map */
 (function(){
   const el=document.getElementById('meetMap'); if(!el) return;
-  const lat=35.3376, lon=139.5308; // update if you have a more precise pin
-  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([lat,lon],16);
+  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([35.6339,139.2434],15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-  L.marker([lat,lon],{title:'Koma Bridge (降魔橋) - Meeting Point'}).addTo(map).bindPopup('Koma Bridge (降魔橋) - Meeting Point');
+  L.marker([35.6339,139.2434],{title:'Sakura Park - Meeting Point'}).addTo(map).bindPopup('Sakura Park - Meeting Point');
 })();
 </script>
 </body>
