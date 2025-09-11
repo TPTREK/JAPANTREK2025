@@ -24,15 +24,14 @@
       --ink-dim:#cfe0ff;
       --muted:#a5b4d4;
       --beige:#e8dcc7;
-      --accent:#d30000;
-      --orange:#f37021;
+      --accent:#d30000;           /* red accent used in chart line etc */
+      --orange:#f37021;           /* brand orange for buttons & chips */
       --surface:#12213a;
       --surface-2:#172742;
       --card:#15284a;
       --shadow:0 12px 28px rgba(0,0,0,.15);
-      --h2:clamp(1.6rem,3.6vw,2.2rem);
-      --scroll-offset:56px;              /* set live from JS = nav height */
-      --content-max:1100px;
+      --h2:clamp(1.6rem,3.6vw,2.2rem); /* unified section headings */
+      --scroll-offset:56px;            /* set live from JS = nav height */
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -41,7 +40,11 @@
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block;height:auto}
     .sr-only{position:absolute !important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+    /* All anchor targets land below the fixed nav */
     [id]{scroll-margin-top:var(--scroll-offset)}
+
+    /* Focus styles */
     :focus-visible{outline:3px solid rgba(243,111,33,.85);outline-offset:2px;border-radius:6px}
 
     /* Skip link */
@@ -51,47 +54,48 @@
     /* Progress bar */
     #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:120}
 
-    /* ========================== NAV ========================== */
+    /* ========================== NAV (ultra-compact) ========================== */
     nav{
       position:fixed;top:0;left:0;width:100%;
-      background:rgba(2,10,20,.8);backdrop-filter:blur(8px) saturate(120%);
+      padding:.2rem .75rem;                 /* very small vertical padding */
+      background:rgba(0,0,0,.75);backdrop-filter:blur(8px) saturate(120%);
       border-bottom:1px solid rgba(255,255,255,.08);
-      z-index:110;
+      display:flex;align-items:center;gap:.75rem;z-index:110;
+      transition:padding .18s ease, background .18s ease;
     }
-    .nav-inner{
-      max-width:var(--content-max);margin:0 auto;
-      display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
-      gap:1rem;padding:.6rem 1rem;
-    }
-
-    /* LEFT: countdown */
-    #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums;justify-self:start}
-    #countBox .num{font-weight:800;font-size:clamp(1rem,2.2vw,1.15rem);line-height:1}
-    #countBox .sep{opacity:.6;margin:0 .1rem}
-
-    /* CENTER: links */
+    nav .brand{display:flex;align-items:center;gap:.5rem}
+    nav .brand img{height:1.1rem;width:auto;display:block}  /* logo never grows nav */
     nav .links{
-      display:flex;justify-content:center;align-items:center;
-      gap:clamp(.6rem,2.4vw,1rem);font-size:.9rem;letter-spacing:.12em;text-transform:uppercase;
+      flex:1;display:flex;justify-content:center;align-items:center;
+      gap:clamp(.6rem,2.4vw,1rem);font-size:.88rem;letter-spacing:.12em;
+      text-transform:uppercase;
     }
-    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.4rem .25rem;border-radius:.25rem}
+    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.4rem .2rem;border-radius:.25rem}
     nav .links a:hover{opacity:1}
     nav .links a.is-active{position:relative}
     nav .links a.is-active::after{
-      content:"";position:absolute;left:12%;right:12%;bottom:-6px;height:2px;background:var(--orange);border-radius:2px
+      content:"";position:absolute;left:10%;right:10%;bottom:-6px;height:2px;background:var(--orange);border-radius:2px
     }
 
-    /* RIGHT: actions */
-    .actions{justify-self:end;display:flex;align-items:center;gap:.5rem}
-    .btn-nav{padding:.55rem .9rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.15);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));font-weight:800}
+    /* Header buttons in nav */
+    .btn-nav{
+      padding:.5rem .85rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.15);
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    }
     .btn-nav.primary{background:var(--orange);color:#1b120a;border-color:transparent}
     .btn-nav.primary:hover{filter:brightness(.95)}
     .btn-nav.secondary:hover{background:rgba(255,255,255,.12)}
 
-    /* Compact-on-scroll */
-    nav.compact .nav-inner{padding:.35rem 1rem}
-    nav.compact .links{gap:.7rem;font-size:.84rem}
-    nav.compact #countBox .num{font-size:clamp(.95rem,2vw,1.05rem)}
+    /* Countdown — minimal, bold, same line-height as links */
+    #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
+    #countBox .num{font-weight:800;font-size:clamp(.95rem,2.2vw,1.1rem);line-height:1}
+    #countBox .sep{opacity:.6;margin:0 .1rem}
+
+    /* Compact-on-scroll (even thinner) */
+    nav.compact{padding:.15rem .6rem}
+    nav.compact .brand img{height:1rem}
+    nav.compact .links{gap:.6rem;font-size:.82rem}
+    nav.compact #countBox .num{font-size:clamp(.9rem,2vw,1rem)}
 
     /* ============================ HERO ============================ */
     header{
@@ -114,10 +118,8 @@
 
     .spacer{height:32px}
 
-    /* ============================ SECTIONS ============================ */
-    section{position:relative}
-    .shell{max-width:var(--content-max);margin:0 auto}
-    .card{max-width:var(--content-max);margin:2rem auto;background:var(--surface);border-radius:1.2rem;box-shadow:var(--shadow);padding:3.2rem 2.4rem;text-align:center;overflow:hidden}
+    /* ============================ CARDS & SECTIONS ============================ */
+    .card{max-width:1100px;margin:2rem auto;background:var(--surface);border-radius:1.2rem;box-shadow:var(--shadow);padding:3.2rem 2.4rem;text-align:center;position:relative;overflow:hidden}
     .card h2,
     .news h2,
     .mission h2,
@@ -125,88 +127,82 @@
     .afterpartyWrap h2,
     #donate-title,
     #staff-title,
-    #about h2,
     #elevation h2,
     #weather h2,
     .formCard h2{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em}
 
-    .news{max-width:var(--content-max);margin:2rem auto 0;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
+    .news{max-width:1100px;margin:2rem auto 0;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem;position:relative}
     .news .badge{display:inline-block;background:#1f3b64;color:#cfe0ff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.75rem}
-    .news p{line-height:1.75;margin:.5rem 0}
+    .news p{line-height:1.75;margin:.4rem 0}
     .news a{color:#8db1ff;text-decoration:underline}
 
-    /* Decorative SVGs */
+    /* small decorative images */
     .deco{position:absolute;opacity:.7;pointer-events:none;user-select:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
     .deco.leaf{width:60px;top:-12px;right:-12px;transform:rotate(-12deg)}
     .deco.mountain{width:70px;top:-16px;right:-16px}
 
+    .postcard{display:grid;gap:2rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;margin-bottom:4.5rem;max-width:1100px;margin-inline:auto}
+    .postcard img{width:100%;border-radius:.9rem}
+    @media(min-width:768px){.postcard{grid-template-columns:repeat(2,1fr);align-items:center}}
+
+    section[data-dark]{padding:4rem 2rem;text-align:center;background:#15284a}
+    canvas{max-width:800px;width:100%;height:300px;margin:auto}
+    #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
+    #weatherCard .t{font-size:2.4rem;font-weight:700}
+
     /* Mission */
-    .mission{max-width:var(--content-max);margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem;display:grid;gap:1.5rem}
+    .mission{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem;position:relative}
     @media(min-width:900px){.mission{grid-template-columns:1.05fr 1fr;align-items:start}}
     .mission .badge{display:inline-block;background:var(--orange);color:#1b120a;font-weight:800;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
-    .mission p{line-height:1.68}
+    .mission .lede{color:var(--beige);font-size:1.05rem;line-height:1.6}
+    .mission p{line-height:1.65}
+    .btn-secondary{display:inline-block;border:2px solid var(--beige);color:var(--beige);padding:.75rem 1.25rem;border-radius:.55rem;font-weight:700;margin-top:.6rem}
+    .btn-secondary:hover{opacity:.9}
 
     /* Event info */
-    .eventWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem}
+    .eventWrap{max-width:1100px;margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;position:relative}
     .eventDate{color:var(--beige);font-size:1.05rem;margin:.5rem 0 1.25rem}
-    .eventGrid{display:grid;gap:1.75rem}
+    .eventGrid{display:grid;gap:2rem}
     @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
-    .eventCol h3{color:#8db1ff;font-size:1.05rem;margin:1rem 0 .5rem;letter-spacing:.02em}
+    .eventCol h3{color:#8db1ff;font-size:1.05rem;margin:1.25rem 0 .5rem 0;letter-spacing:.02em}
     .eventCol p,.eventCol li{line-height:1.65}
     .eventCol ul{padding-left:1.1rem}
-    .eventCol > :first-child{margin-top:0}
     .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
-    .changed{color:#ff7a7a;font-weight:700;margin:.25rem 0 .5rem}
-    #meetMap{width:100%;height:240px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
+    .changed{color:#ff7a7a;font-weight:700}
+    #meetMap{width:100%;height:260px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.5rem}
 
     /* After-party */
-    .afterpartyWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem;display:grid;gap:1.5rem}
+    .afterpartyWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1.75rem}
     @media(min-width:900px){.afterpartyWrap{grid-template-columns:1fr 420px;align-items:start}}
-    .afterpartyWrap h2{margin-bottom:.25rem}
-    .afterMedia{margin:0}
-    .afterMedia img{border-radius:1rem;box-shadow:var(--shadow);display:block;margin:0}
-    .afterMedia figcaption{color:#a5b4d4;font-size:.85rem;margin-top:.5rem}
-    .dl{margin-top:1rem;display:grid;grid-template-columns:110px 1fr;gap:.45rem 1.25rem}
+    .badgeUpdate{color:#ff6a6a;font-weight:800;margin-left:.5rem}
+    .dl{margin-top:1.25rem;display:grid;grid-template-columns:110px 1fr;gap:.5rem 1.25rem}
     .dl dt{font-weight:700;color:#d1ddff}
     .dl dd{margin:0}
+    .afterpartyLinks a{color:#8db1ff;text-decoration:underline}
+    .afterpartyLinks a:hover{opacity:.9}
+    .afterMedia img{border-radius:1rem;box-shadow:var(--shadow)}
+    .afterMedia figcaption{color:#a5b4d4;font-size:.85rem;margin-top:.5rem}
 
     /* Donation */
-    .donateWrap{max-width:var(--content-max);margin:4rem auto;background:#1a2e50;border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem;display:grid;gap:1rem}
+    .donateWrap{max-width:1100px;margin:4rem auto;background:#1a2e50;border-radius:1rem;box-shadow:var(--shadow);padding:3rem;display:grid;gap:1rem;position:relative}
     .donateWrap p{line-height:1.7}
     .btnWide{display:inline-block;padding:1.1rem 2.4rem;border-radius:.75rem;font-size:1.05rem;font-weight:800}
     .btnDonate{background:var(--orange);color:#1b120a}
     .btnDonate:hover{filter:brightness(.95)}
 
     /* Staff */
-    .staffWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
-    .staffGrid{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:1.25rem;margin-top:1rem}
+    .staffWrap{max-width:1100px;margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.2rem}
+    .staffGrid{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:1.5rem;margin-top:1.2rem}
     @media(min-width:640px){.staffGrid{grid-template-columns:repeat(2,1fr)}}
     @media(min-width:900px){.staffGrid{grid-template-columns:repeat(4,1fr)}}
     .cardStaff{background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.9rem;overflow:hidden;display:flex;flex-direction:column}
     .cardStaff img{aspect-ratio:4/3;object-fit:cover;width:100%}
-    .cardStaff .info{padding:.85rem 1rem}
+    .cardStaff .info{padding:.9rem 1rem}
     .cardStaff .name{font-weight:800}
     .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
 
-    /* About (Reconnect + Gallery) */
-    #about{max-width:var(--content-max);margin:4rem auto}
-    .aboutGrid{display:grid;gap:1.5rem}
-    @media(min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
-    .aboutCard{background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem;text-align:center}
-    .postcard{display:grid;gap:1.25rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1.25rem}
-    @media(min-width:768px){.postcard{grid-template-columns:1.1fr .9fr;align-items:center}}
-    .postcard img{width:100%;border-radius:.9rem}
-
-    /* Elevation & Weather */
-    section[data-dark]{padding:3rem 1rem;text-align:center;background:#15284a}
-    section[data-dark] .shell{max-width:var(--content-max)}
-    /* IMPORTANT: fixed, non-responsive canvas to avoid resize loops */
-    #chart{display:block;max-width:900px;width:100%;height:auto;margin:0 auto}
-    #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
-    #weatherCard .t{font-size:2.4rem;font-weight:700}
-
     /* Register */
-    .formCard{max-width:var(--content-max);margin:5rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;text-align:center}
+    .formCard{max-width:1100px;margin:5rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;text-align:center}
     .formCard form{max-width:680px;margin:auto}
     .formCard input,.formCard textarea{width:100%;padding:1rem;border:none;border-radius:.5rem;margin-top:.8rem;background:#172742;color:#fff}
     .formCard button{margin-top:1rem;background:var(--accent);color:#fff;border:none;padding:1rem 2rem;border-radius:.5rem;font-weight:700;width:100%}
@@ -227,26 +223,20 @@
 
 <!-- ============================= NAV ============================= -->
 <nav id="siteNav">
-  <div class="nav-inner">
-    <!-- LEFT: Countdown -->
-    <div id="countBox" aria-live="polite"></div>
-
-    <!-- CENTER: Links -->
-    <div class="links" role="navigation" aria-label="Primary">
-      <a href="#news">News</a>
-      <a href="#mission">Mission</a>
-      <a href="#event">Event</a>
-      <a href="#afterparty">After-Party</a>
-      <a href="#staff">Our Staff</a>
-      <a href="#about">About</a>
-    </div>
-
-    <!-- RIGHT: Actions -->
-    <div class="actions">
-      <a href="#donate" class="btn-nav secondary">Donate</a>
-      <a href="#register" class="btn-nav primary">Register</a>
-    </div>
+  <div class="brand">
+    <img src="TPLOGO.png" alt="Japan Trek logo" />
   </div>
+
+  <div class="links" role="navigation" aria-label="Primary">
+    <a href="#news">News</a>
+    <a href="#mission">Mission</a>
+    <a href="#event">Event</a>
+    <a href="#afterparty">After-Party</a>
+    <a href="#donate" class="btn-nav secondary">Donate</a>
+    <a href="#register" class="btn-nav primary">Register</a>
+  </div>
+
+  <div id="countBox" aria-live="polite"></div>
 </nav>
 
 <!-- ============================= HERO ============================= -->
@@ -274,7 +264,7 @@
 
 <main id="main">
   <!-- ============================= NEWS ============================= -->
-  <section id="news" class="news shell" aria-labelledby="news-title">
+  <section id="news" class="news" aria-labelledby="news-title">
     <img class="deco leaf" src="https://upload.wikimedia.org/wikipedia/commons/2/21/OpenMoji-color_15.0.0_1F341.svg" alt="" />
     <span class="badge">Trek News</span>
     <h2 id="news-title">TransPerfect Japan Charity Hike · Saturday, November 8</h2>
@@ -288,12 +278,18 @@
     <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
   </section>
 
+  <!-- ============================= REPO BANNER ============================= -->
+  <section class="card" aria-label="Repository banner">
+    <h2>Reconnect in Nature</h2>
+    <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
+  </section>
+
   <!-- ============================= MISSION ============================= -->
-  <section id="mission" class="mission shell" aria-labelledby="mission-title">
+  <section id="mission" class="mission" aria-labelledby="mission-title">
     <div>
       <span class="badge">Our Mission</span>
       <h2 id="mission-title">Giving Back, Together</h2>
-      <p>One of the privileges of being a successful business is having the opportunity to give back. TransPerfect’s commitment to good corporate citizenship guides how we work every day.</p>
+      <p class="lede">One of the privileges of being a successful business is having the opportunity to give back. TransPerfect’s commitment to good corporate citizenship guides how we work every day.</p>
     </div>
     <div>
       <p>We support local communities and a diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts to make a difference.</p>
@@ -301,8 +297,8 @@
     </div>
   </section>
 
-  <!-- ============================= EVENT INFO ============================= -->
-  <section id="event" class="eventWrap shell" aria-labelledby="event-title">
+  <!-- ============================= EVENT INFO (UPDATED) ============================= -->
+  <section id="event" class="eventWrap" aria-labelledby="event-title">
     <img class="deco mountain" src="https://upload.wikimedia.org/wikipedia/commons/8/83/OpenMoji-color_15.0.0_26F0.svg" alt="" />
     <h2 id="event-title" class="eventHeader">Event Information</h2>
     <p class="eventDate">Saturday, November 8, 2025</p>
@@ -310,47 +306,34 @@
     <div class="eventGrid">
       <div class="eventCol">
         <ul>
-          <li>Time: 10:00 am to 5:00 pm. (Meeting Time: 9:30 am)</li>
-          <li>Place: Mt. Takao (Tokyo)</li>
-          <li>Participation Conditions: TransPerfect employee, employee’s family or friends</li>
+          <li><strong>Meeting Time:</strong> 10:00 am</li>
+          <li><strong>Place:</strong> Koma Bridge (降魔橋), near <strong>Kita-Kamakura Station</strong> — JR West Exit</li>
+          <li><strong>Participation Conditions:</strong> TransPerfect employee, employee’s family or friends</li>
         </ul>
-        <p class="note">* Please bring water and some snacks.</p>
-        <p class="note">* Transportation costs to and from the event are self covered.</p>
 
-        <h3 id="after-party">After-Party</h3>
-        <p>We will have an after-party this year. Please move to the restaurant after hiking. Details are below <a href="#afterparty">#afterparty</a>.</p>
+        <p class="note">* Please bring water.</p>
+        <p class="note">* Transportation costs to and from the event are self covered.</p>
 
         <h3>Registration Fee</h3>
         <ul>
-          <li>TransPerfect employees: 1,000 JPY per person</li>
-          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself. A common-law partner is considered as family.</li>
-          <li>Non-TransPerfect members: 1,000 JPY per participant</li>
+          <li><strong>All participants:</strong> 3,000 JPY per person <em>(T-shirt included)</em></li>
         </ul>
         <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
       </div>
 
       <div class="eventCol">
         <h3>Meeting Point</h3>
-        <p class="changed">[Oct 30] Changed. Sakura Park</p>
-        <div id="meetMap" aria-label="Map to Sakura Park"></div>
+        <p>Koma Bridge (降魔橋). See map below.</p>
+        <div id="meetMap" aria-label="Map to Koma Bridge (near JR Kita-Kamakura West Exit)"></div>
 
         <h3>Hiking Trail</h3>
-        <ul><li>Ascending - Inariyama Trail, Descending - Trail 1 <em>* read more</em></li></ul>
-        <p>Please feel free to ride the cable car if needed. We will meet up at the top of the mountain.</p>
-
-        <h3>Prizes</h3>
-        <p>Top three to the summit win:</p>
-        <ul>
-          <li>1st - Amazon Gift Card: 3,000 yen</li>
-          <li>2nd - Amazon Gift Card: 2,000 yen</li>
-          <li>3rd - Amazon Gift Card: 1,000 yen</li>
-        </ul>
+        <p><strong>Kamakura Daibutsu Hiking Trail</strong> (around 3 km)</p>
       </div>
     </div>
   </section>
 
   <!-- ============================= AFTER-PARTY ============================= -->
-  <section id="afterparty" class="afterpartyWrap shell" aria-labelledby="afterparty-title">
+  <section id="afterparty" class="afterpartyWrap" aria-labelledby="afterparty-title">
     <div>
       <h2 id="afterparty-title">After-Party!</h2>
       <p>Join our after-party.</p>
@@ -371,7 +354,7 @@
   </section>
 
   <!-- ============================= DONATION ============================= -->
-  <section id="donate" class="donateWrap shell" aria-labelledby="donate-title">
+  <section id="donate" class="donateWrap" aria-labelledby="donate-title">
     <h2 id="donate-title">Donation Only</h2>
     <p>Charity-only participation is welcome!</p>
     <p>Please input the amount you are willing to donate from the organization’s page. Language can be changed from the top-right corner.</p>
@@ -379,89 +362,96 @@
   </section>
 
   <!-- ============================= STAFF ============================= -->
-  <section id="staff" class="staffWrap shell" aria-labelledby="staff-title">
+  <section id="staff" class="staffWrap" aria-labelledby="staff-title">
     <h2 id="staff-title">Our Staff</h2>
     <div class="staffGrid">
+      <!-- Order as requested, with John last -->
       <article class="cardStaff">
         <img src="Norma-1.jpg" alt="Norma" />
-        <div class="info"><div class="name">Norma</div><div class="chip">Ambassador of Awesome</div></div>
+        <div class="info">
+          <div class="name">Norma</div>
+          <div class="chip">Ambassador of Awesome</div>
+        </div>
       </article>
+
       <article class="cardStaff">
         <img src="Yujiro.jpg" alt="Yujiro" />
-        <div class="info"><div class="name">Yujiro</div><div class="chip">Maestro of Mayhem</div></div>
+        <div class="info">
+          <div class="name">Yujiro</div>
+          <div class="chip">Maestro of Mayhem</div>
+        </div>
       </article>
+
       <article class="cardStaff">
         <img src="Peiyu.jpg" alt="Peiyu" />
-        <div class="info"><div class="name">Peiyu</div><div class="chip">Chief Inspiration Officer</div></div>
+        <div class="info">
+          <div class="name">Peiyu</div>
+          <div class="chip">Chief Inspiration Officer</div>
+        </div>
       </article>
+
       <article class="cardStaff">
         <img src="Shotaro-2.jpg" alt="Shotaro" />
-        <div class="info"><div class="name">Shotaro</div><div class="chip">Happiness Hero</div></div>
+        <div class="info">
+          <div class="name">Shotaro</div>
+          <div class="chip">Happiness Hero</div>
+        </div>
       </article>
+
       <article class="cardStaff">
         <img src="Shin-photo-1.jpg" alt="Shin" />
-        <div class="info"><div class="name">Shin</div><div class="chip">Guru</div></div>
+        <div class="info">
+          <div class="name">Shin</div>
+          <div class="chip">Guru</div>
+        </div>
       </article>
+
       <article class="cardStaff">
         <img src="Nana.jpg" alt="Nana" />
-        <div class="info"><div class="name">Nana</div><div class="chip">Digital & Dream Architect</div></div>
+        <div class="info">
+          <div class="name">Nana</div>
+          <div class="chip">Digital & Dream Architect</div>
+        </div>
       </article>
+
       <article class="cardStaff">
         <img src="Waing.jpg" alt="Waing" />
-        <div class="info"><div class="name">Waing</div><div class="chip">Strategy Whisperer</div></div>
+        <div class="info">
+          <div class="name">Waing</div>
+          <div class="chip">Strategy Whisperer</div>
+        </div>
       </article>
+
       <article class="cardStaff">
         <img src="john.jpg" alt="John" />
-        <div class="info"><div class="name">John</div><div class="chip">Trailblazer</div></div>
+        <div class="info">
+          <div class="name">John</div>
+          <div class="chip">Trailblazer</div>
+        </div>
       </article>
     </div>
   </section>
 
-  <!-- ============================= ABOUT (Reconnect + Gallery) ============================= -->
-  <section id="about" class="shell">
-    <div class="aboutGrid">
-      <article class="aboutCard">
-        <h2>Reconnect in Nature</h2>
-        <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
-      </article>
-
-      <article class="postcard">
-        <img src="20241109_c2_024.jpg" alt="Trail camaraderie">
-        <div>
-          <h2>Camaraderie</h2>
-          <p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
-        </div>
-      </article>
-    </div>
-
-    <article class="postcard" style="margin-top:1.25rem">
-      <img src="20241109_c2_041.jpg" alt="Vista">
-      <div>
-        <h2>Vistas</h2>
-        <p>Lookouts reveal sweeping skylines.</p>
-      </div>
-    </article>
+  <!-- ============================= HIGHLIGHTS ============================= -->
+  <section id="gallery">
+    <article class="postcard"><img src="20241109_c2_024.jpg" alt="Trail camaraderie"><div><h2 style="font-size:var(--h2)">Camaraderie</h2><p>Walk shoulder to shoulder with colleagues, friends, and family.</p></div></article>
+    <article class="postcard"><img src="20241109_c2_041.jpg" alt="Vista"><div><h2 style="font-size:var(--h2)">Vistas</h2><p>Lookouts reveal sweeping skylines.</p></div></article>
   </section>
 
   <!-- ============================= ELEVATION ============================= -->
   <section id="elevation" data-dark>
-    <div class="shell">
-      <h2>Elevation Profile</h2>
-      <!-- FIX: explicit width/height attributes to stop resize loops -->
-      <canvas id="chart" width="900" height="320" role="img" aria-label="Elevation graph"></canvas>
-    </div>
+    <h2>Elevation Profile</h2>
+    <canvas id="chart" role="img" aria-label="Elevation graph"></canvas>
   </section>
 
   <!-- ============================= WEATHER ============================= -->
   <section id="weather" data-dark>
-    <div class="shell">
-      <h2>Live Weather</h2>
-      <div id="weatherCard"><p>Loading…</p></div>
-    </div>
+    <h2>Live Weather</h2>
+    <div id="weatherCard"><p>Loading…</p></div>
   </section>
 
   <!-- ============================= REGISTER ============================= -->
-  <section id="register" class="formCard shell">
+  <section id="register" class="formCard">
     <h2>Register</h2>
     <form action="https://formspree.io/f/your-id" method="POST">
       <label class="sr-only">Name<input name="name" placeholder="Full Name" required /></label>
@@ -522,7 +512,7 @@ new Swiper('.swiper',{
   pagination:{el:'.swiper-pagination',clickable:true}
 });
 
-/* Countdown — Nov 8, 2025 09:30 JST */
+/* Countdown — Nov 8, 2025 09:30 JST (minimal + bold) */
 const cb = document.getElementById('countBox');
 cb.innerHTML = '<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
 const deadline = new Date('2025-11-08T09:30:00+09:00');
@@ -532,17 +522,12 @@ function parts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math
 function tick(){ const r=deadline-Date.now(); if(r<=0){cb.textContent='Event Day!';return} const p=parts(r); d.textContent=pad(p.d); h.textContent=pad(p.h); m.textContent=pad(p.m); s.textContent=pad(p.s); }
 tick(); setInterval(tick,1000);
 
-/* Elevation chart — fixed dimensions; no responsive loops */
-new Chart(document.getElementById('chart'),{
-  type:'line',
+/* Elevation chart */
+new Chart('chart',{type:'line',
   data:{labels:['Start','Mid','Shrine','Summit'],
         datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
-  options:{
-    responsive:false,            // <- stops ResizeObserver loop
-    animation:false,
-    plugins:{legend:{display:false}},
-    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}
-  }
+  options:{plugins:{legend:{display:false}},
+    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}}
 });
 
 /* Weather */
@@ -553,12 +538,14 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
       `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
   });
 
-/* Meeting point map */
+/* Meeting point map — Koma Bridge near JR Kita-Kamakura (approx coords, adjust if needed) */
 (function(){
   const el=document.getElementById('meetMap'); if(!el) return;
-  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([35.6339,139.2434],15);
+  const lat = 35.3362, lng = 139.5378; // near JR Kita-Kamakura West Exit / Koma Bridge
+  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([lat,lng],16);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-  L.marker([35.6339,139.2434],{title:'Sakura Park - Meeting Point'}).addTo(map).bindPopup('Sakura Park - Meeting Point');
+  L.marker([lat,lng],{title:'Koma Bridge (降魔橋) — Meeting Point'}).addTo(map)
+    .bindPopup('Koma Bridge (降魔橋) — near JR Kita-Kamakura Station West Exit');
 })();
 </script>
 </body>
