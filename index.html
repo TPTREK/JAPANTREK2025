@@ -64,11 +64,8 @@
       gap:1rem;padding:.6rem 1rem;
     }
 
-    /* LEFT: logo + countdown */
-    .left{display:flex;align-items:center;gap:.6rem;justify-self:start}
-    .brand img{width:75px;height:75px;object-fit:contain;display:block}
-
-    #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
+    /* LEFT: countdown */
+    #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums;justify-self:start}
     #countBox .num{font-weight:800;font-size:clamp(1rem,2.2vw,1.15rem);line-height:1}
     #countBox .sep{opacity:.6;margin:0 .1rem}
 
@@ -95,7 +92,6 @@
     nav.compact .nav-inner{padding:.35rem 1rem}
     nav.compact .links{gap:.7rem;font-size:.84rem}
     nav.compact #countBox .num{font-size:clamp(.95rem,2vw,1.05rem)}
-    nav.compact .brand img{width:64px;height:64px}
 
     /* ============================ HERO ============================ */
     header{
@@ -192,10 +188,6 @@
     .cardStaff .name{font-weight:800}
     .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
 
-    /* Full-width banner between Staff and About */
-    .betweenBanner{max-width:var(--content-max);margin:2rem auto}
-    .betweenBanner img{width:100%;height:auto;border-radius:.9rem;box-shadow:var(--shadow)}
-
     /* About (Reconnect + Gallery) */
     #about{max-width:var(--content-max);margin:4rem auto}
     .aboutGrid{display:grid;gap:1.5rem}
@@ -204,6 +196,9 @@
     .postcard{display:grid;gap:1.25rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1.25rem}
     @media(min-width:768px){.postcard{grid-template-columns:1.1fr .9fr;align-items:center}}
     .postcard img{width:100%;border-radius:.9rem}
+    /* NEW: rounded blue image block above “Reconnect in Nature” */
+    .aboutImgCard{background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1rem;margin-bottom:1.25rem}
+    .aboutImgCard img{border-radius:.8rem}
 
     /* Elevation & Weather */
     section[data-dark]{padding:3rem 1rem;text-align:center;background:#15284a}
@@ -236,11 +231,8 @@
 <!-- ============================= NAV ============================= -->
 <nav id="siteNav">
   <div class="nav-inner">
-    <!-- LEFT: Logo + Countdown -->
-    <div class="left">
-      <div class="brand"><img src="TPLOGO.png" alt="TransPerfect logo"></div>
-      <div id="countBox" aria-live="polite"></div>
-    </div>
+    <!-- LEFT: Countdown -->
+    <div id="countBox" aria-live="polite"></div>
 
     <!-- CENTER: Links -->
     <div class="links" role="navigation" aria-label="Primary">
@@ -321,11 +313,11 @@
     <div class="eventGrid">
       <div class="eventCol">
         <ul>
-          <li>Time: 10:00 am to 5:00 pm. (Meeting Time: 9:30 am)</li>
-          <li>Place: Mt. Takao (Tokyo)</li>
-          <li>Participation Conditions: TransPerfect employee, employee’s family or friends</li>
+          <li><strong>Meeting Time:</strong> 10:00 am</li>
+          <li><strong>Place:</strong> Koma Bridge (降魔橋) near Kita-Kamakura Station (JR West Exit)</li>
+          <li><strong>Participation Conditions:</strong> TransPerfect employee, employee’s family or friends</li>
         </ul>
-        <p class="note">* Please bring water and some snacks.</p>
+        <p class="note">* Please bring water.</p>
         <p class="note">* Transportation costs to and from the event are self covered.</p>
 
         <h3 id="after-party">After-Party</h3>
@@ -333,21 +325,22 @@
 
         <h3>Registration Fee</h3>
         <ul>
-          <li>TransPerfect employees: 1,000 JPY per person</li>
-          <li>TransPerfect employee’s family: 2,000 JPY for the whole family including yourself. A common-law partner is considered as family.</li>
-          <li>Non-TransPerfect members: 1,000 JPY per participant</li>
+          <li><strong>All participants:</strong> 3,000 JPY per person (T-shirt included)</li>
         </ul>
         <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
       </div>
 
       <div class="eventCol">
         <h3>Meeting Point</h3>
-        <p class="changed">[Oct 30] Changed. Sakura Park</p>
-        <div id="meetMap" aria-label="Map to Sakura Park"></div>
+        <p>Koma Bridge (降魔橋) — short walk from JR Kita-Kamakura Station (West Exit).</p>
+        <div id="meetMap" aria-label="Map to Koma Bridge"></div>
+        <p class="note" style="margin-top:.4rem">
+          <a href="https://www.google.com/maps/search/?api=1&query=%E9%99%8D%E9%AD%94%E6%A9%8B%20%E5%8C%97%E9%8E%8C%E5%80%89" target="_blank" rel="noopener">Open precise location in Google Maps</a>
+        </p>
 
         <h3>Hiking Trail</h3>
-        <ul><li>Ascending - Inariyama Trail, Descending - Trail 1 <em>* read more</em></li></ul>
-        <p>Please feel free to ride the cable car if needed. We will meet up at the top of the mountain.</p>
+        <ul><li><strong>Kamakura Daibutsu Hiking Trail</strong> (around 3km)</li></ul>
+        <p>The trail is a scenic forest path linking Kita-Kamakura to the Great Buddha area. Expect packed dirt, roots, and some stairs with gentle to moderate inclines; allow ~60–90 minutes at a relaxed pace. Surfaces can be slippery after rain—wear shoes with grip and bring water.</p>
 
         <h3>Prizes</h3>
         <p>Top three to the summit win:</p>
@@ -428,20 +421,19 @@
     </div>
   </section>
 
-  <!-- ============================= BANNER AFTER STAFF ============================= -->
-  <section class="betweenBanner shell" aria-label="Banner image">
-    <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Trek promotional banner">
-  </section>
-
   <!-- ============================= ABOUT (Reconnect + Gallery) ============================= -->
   <section id="about" class="shell">
+    <!-- NEW: rounded blue image section above “Reconnect in Nature” -->
+    <article class="aboutImgCard">
+      <img src="20241109_c2_024.jpg" alt="Reconnect in Nature — hikers on trail" />
+    </article>
+
     <div class="aboutGrid">
       <article class="aboutCard">
         <h2>Reconnect in Nature</h2>
         <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
       </article>
 
-      <!-- Camaraderie now uses the former Vistas image (20241109_c2_041.jpg) -->
       <article class="postcard">
         <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
         <div>
@@ -451,7 +443,6 @@
       </article>
     </div>
 
-    <!-- Vistas now uses 20241109_c2_031.jpg -->
     <article class="postcard" style="margin-top:1.25rem">
       <img src="20241109_c2_031.jpg" alt="Vista">
       <div>
@@ -465,7 +456,7 @@
   <section id="elevation" data-dark>
     <div class="shell">
       <h2>Elevation Profile</h2>
-      <!-- fixed size to avoid resize loops -->
+      <!-- FIX: explicit width/height attributes to stop resize loops -->
       <canvas id="chart" width="900" height="320" role="img" aria-label="Elevation graph"></canvas>
     </div>
   </section>
@@ -571,12 +562,16 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
       `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
   });
 
-/* Meeting point map */
+/* Meeting point map
+   Using Kita-Kamakura Station area (approx) as Koma Bridge is a short walk from the West Exit.
+   Coords: 35.33806, 139.54444 (JR Kita-Kamakura). */
 (function(){
   const el=document.getElementById('meetMap'); if(!el) return;
-  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([35.6339,139.2434],15);
+  const center=[35.33806,139.54444];
+  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView(center,16);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-  L.marker([35.6339,139.2434],{title:'Sakura Park - Meeting Point'}).addTo(map).bindPopup('Sakura Park - Meeting Point');
+  L.marker(center,{title:'Koma Bridge (降魔橋) – near JR Kita-Kamakura West Exit'}).addTo(map)
+    .bindPopup('Koma Bridge (降魔橋)<br>Near JR Kita-Kamakura Station – West Exit');
 })();
 </script>
 </body>
