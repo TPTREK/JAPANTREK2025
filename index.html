@@ -68,8 +68,9 @@
     .left{display:flex;align-items:center;gap:.75rem;justify-self:start}
     .brand{display:inline-flex;align-items:center}
     .brand img{
-      height:100px;          /* requested size */
-      width:auto;
+      height:75px;          /* requested size */
+      width:75px;
+      object-fit:contain;
       display:block;
     }
 
@@ -101,7 +102,7 @@
     nav.compact .nav-inner{padding:.35rem 1rem}
     nav.compact .links{gap:.7rem;font-size:.84rem}
     nav.compact #countBox .num{font-size:clamp(.95rem,2vw,1.05rem)}
-    nav.compact .brand img{height:72px} /* gentle shrink on scroll so header doesn't dominate */
+    /* (No compact logo resize to keep 75x75 as requested) */
 
     /* ============================ HERO ============================ */
     header{
@@ -203,6 +204,7 @@
     .aboutGrid{display:grid;gap:1.5rem}
     @media(min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
     .aboutCard{background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem;text-align:center}
+    .aboutCard img{border-radius:.9rem;margin-top:1rem}
     .postcard{display:grid;gap:1.25rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1.25rem}
     @media(min-width:768px){.postcard{grid-template-columns:1.1fr .9fr;align-items:center}}
     .postcard img{width:100%;border-radius:.9rem}
@@ -432,13 +434,15 @@
   <!-- ============================= ABOUT (Reconnect + Gallery) ============================= -->
   <section id="about" class="shell">
     <div class="aboutGrid">
+      <!-- Reconnect in Nature now includes the "Camaraderie" image -->
       <article class="aboutCard">
         <h2>Reconnect in Nature</h2>
         <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
+        <img src="20241109_c2_024.jpg" alt="Trail camaraderie" />
       </article>
 
+      <!-- Camaraderie now text-only (image moved above) -->
       <article class="postcard">
-        <img src="20241109_c2_024.jpg" alt="Trail camaraderie">
         <div>
           <h2>Camaraderie</h2>
           <p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
