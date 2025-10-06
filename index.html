@@ -65,6 +65,20 @@
     .split{display:grid;gap:var(--gap)}
     @media (min-width:900px){.split{grid-template-columns:1fr 1fr}}
 
+    /* === GIVE (Donation + Goods) two-column layout === */
+#give { max-width: var(--content-max); margin: 4rem auto; }
+#give .giveGrid { display: grid; gap: 1.5rem; align-items: stretch; }
+@media (min-width: 900px){
+  #give .giveGrid { grid-template-columns: 1fr 1fr; }
+}
+/* Remove the big outer margins when used inside the grid */
+#give .donateWrap { margin: 0; height: 100%; }
+
+/* (Already there, but keeping for clarity) */
+#goods .goodsRow{display:flex;align-items:center;gap:1rem}
+#goods .goodsRow img{width:140px;height:auto;border-radius:.5rem}
+#goods .goodsText{flex:1}
+
     /* Glass + neon frame */
     .frame{
       position:relative;background:rgba(13,24,44,.6);
@@ -350,29 +364,40 @@
       <figcaption class="subtle">After-party venue preview.</figcaption>
     </figure>
   </section>
+<!-- ====================== GIVE (Donate + Goods side-by-side) ====================== -->
+<section id="give" class="shell" aria-label="Support the cause">
+  <div class="giveGrid">
 
-  <!-- =============== DONATION =============== -->
-  <section id="donate" class="section frame reveal" aria-labelledby="donate-title">
-    <h2 id="donate-title" class="headline accent-line">Donation Only</h2>
-    <p>Charity-only participation is welcome! Please donate via our partner site (language can be changed at top-right on their page).</p>
-    <p style="margin-top:.6rem">
-      <a class="btn btnWide" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">Donate now</a>
-    </p>
-  </section>
+    <!-- DONATION -->
+    <section id="donate" class="donateWrap" aria-labelledby="donate-title">
+      <h2 id="donate-title">Donation Only</h2>
+      <p>Charity-only participation is welcome! Please donate via our partner site (language can be changed at top-right on their page).</p>
+      <p style="margin-top:.25rem">
+        <a class="btnWide btnDonate" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">
+          Donate now
+        </a>
+      </p>
+    </section>
 
-  <!-- =============== GOODS =============== -->
-  <section id="goods" class="tight frame reveal" aria-labelledby="goods-title">
-    <h2 id="goods-title" class="headline accent-line">Goods</h2>
-    <div class="goodsRow">
-      <img src="goods.png" alt="Goods preview">
-      <div class="goodsText">
-        <p><i>The proceeds of the goods will go to Relay for Life.</i></p>
-        <p style="margin-top:.5rem">
-          <a class="btn btnWide" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">Goods Shop</a>
-        </p>
+    <!-- GOODS -->
+    <section id="goods" class="donateWrap" aria-labelledby="goods-title">
+      <h2 id="goods-title">Goods</h2>
+
+      <div class="goodsRow">
+        <img src="goods.png" alt="Goods preview">
+        <div class="goodsText">
+          <p><i>The proceeds of the goods will go to Relay for Life.</i></p>
+          <p style="margin-top:.25rem">
+            <a class="btnWide btnDonate" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">
+              Goods Shop
+            </a>
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+  </div>
+</section>
 
   <!-- =============== STAFF =============== -->
   <section id="staff" class="section frame reveal" aria-labelledby="staff-title">
