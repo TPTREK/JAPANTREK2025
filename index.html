@@ -44,6 +44,16 @@
     [id]{scroll-margin-top:var(--scroll-offset)}
     :focus-visible{outline:3px solid rgba(243,111,33,.85);outline-offset:2px;border-radius:6px}
 
+/* Mini map under the After-Party Google Maps link */
+.miniMap{
+  width:100%;
+  height:220px;
+  margin-top:.6rem;
+  border-radius:1rem;
+  border:1px solid rgba(255,255,255,.12);
+  overflow:hidden;
+}
+    
     /* Skip link */
     #skip{position:absolute;top:-40px;left:0;background:var(--accent);padding:.5rem 1rem;font-weight:700;z-index:200}
     #skip:focus{top:0}
@@ -405,6 +415,8 @@
     <figcaption>After-party venue preview.</figcaption>
   </figure>
 </section>
+
+  
   <!-- ============================= DONATION ============================= -->
   <section id="donate" class="donateWrap shell" aria-labelledby="donate-title">
     <h2 id="donate-title">Donation Only</h2>
@@ -616,6 +628,24 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
   L.marker(center,{title:'Koma Bridge (降魔橋) – near JR Kita-Kamakura West Exit'}).addTo(map)
     .bindPopup('Koma Bridge (降魔橋)<br>Near JR Kita-Kamakura Station – West Exit');
+})();
+
+  /* After-party mini map (Leaflet) */
+(function(){
+  const el = document.getElementById('afterMap');
+  if (!el) return;
+
+  const lat = 35.6255, lng = 139.2431; // Cafe Terrace Itsuki-Garden (approx)
+
+  const map = L.map(el, { zoomControl:false, scrollWheelZoom:false, dragging:true })
+               .setView([lat, lng], 15);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' })
+    .addTo(map);
+
+  L.marker([lat, lng], { title:'Cafe Terrace Itsuki-Garden' })
+    .addTo(map)
+    .bindPopup('Cafe Terrace Itsuki-Garden');
 })();
 </script>
 </body>
