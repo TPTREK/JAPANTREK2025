@@ -16,7 +16,7 @@
   <script src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
+  
   <style>
     :root{
       --bg:#0e1a2b;
@@ -179,6 +179,11 @@
     .btnWide{display:inline-block;padding:1.1rem 2.4rem;border-radius:.75rem;font-size:1.05rem;font-weight:800}
     .btnDonate{background:var(--orange);color:#1b120a}
     .btnDonate:hover{filter:brightness(.95)}
+
+    /* Goods layout */
+#goods .goodsRow{display:flex;align-items:center;gap:1rem}
+#goods .goodsRow img{width:140px;height:auto;border-radius:.5rem}
+#goods .goodsText{flex:1}
 
     /* Staff */
     .staffWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
@@ -386,13 +391,22 @@
     <p>Please input the amount you are willing to donate from the organization’s page. Language can be changed from the top-right corner.</p>
     <p style="margin-top:.25rem"><a class="btnWide btnDonate" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">Donate now</a></p>
   </section>
-   <section id="goods" class="donateWrap shell" aria-labelledby="donate-title">
-    <h2 id="donate-title">Goods</h2>
-    <p>      <article class="cardStaff">
-        <img src="goods.png" </p>
-    <p>The proceeds of the goods will go to Relay for Life.</p>
-    <p style="margin-top:.25rem"><a class="btnWide btnDonate" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">Goods Shop</a></p>
-  </section>
+<section id="goods" class="donateWrap shell" aria-labelledby="goods-title">
+  <h2 id="goods-title">Goods</h2>
+
+  <!-- ============================= GOODS ============================= -->
+  <div class="goodsRow">
+    <img src="goods.png" alt="Goods preview">
+    <div class="goodsText">
+      <p><i>The proceeds of the goods will go to Relay for Life.</i></p>
+      <p style="margin-top:.25rem">
+        <a class="btnWide btnDonate" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">
+          Goods Shop
+        </a>
+      </p>
+    </div>
+  </div>
+</section>
 
   <!-- ============================= STAFF ============================= -->
   <section id="staff" class="staffWrap shell" aria-labelledby="staff-title">
