@@ -220,6 +220,41 @@
     /* Reveal-on-scroll */
     .reveal{opacity:0;transform:translateY(12px);transition:.45s ease}
     .reveal.in{opacity:1;transform:none}
+
+    /* ===== GIVE (Donation + Goods) — polished two-column cards ===== */
+#give{max-width:var(--content-max);margin:4rem auto}
+#give .giveGrid{display:grid;gap:1.25rem}
+@media(min-width:900px){#give .giveGrid{grid-template-columns:1fr 1fr}}
+
+.giveCard{
+  background:linear-gradient(145deg,#132440,#0f1d34);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:1rem; box-shadow:var(--shadow);
+  padding:1.75rem 1.75rem 1.5rem; 
+  display:flex; flex-direction:column; min-height:320px;
+}
+.giveCard h2{font-size:var(--h2);margin:0 0 .35rem}
+.giveLead{color:#d6e3ff;line-height:1.6;margin:.25rem 0 1rem 0}
+.giveActions{margin-top:auto} /* pins the button to the bottom edge */
+
+.giveCard .content{display:grid;gap:1.25rem;align-items:center}
+.giveCard.goods .content{
+  grid-template-columns:140px 1fr;
+}
+@media(min-width:1100px){
+  .giveCard.goods .content{grid-template-columns:180px 1fr}
+}
+
+.giveImg{
+  width:100%; aspect-ratio:1/1; object-fit:contain;
+  border-radius:.6rem; background:rgba(255,255,255,.06);
+  padding:.5rem; box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+/* Buttons: consistent orange + tighter */
+.btnWide{padding:.9rem 1.4rem;border-radius:.7rem;font-weight:800}
+.btnDonate{background:var(--orange);color:#1b120a;border:none}
+.btnDonate:hover{filter:brightness(.95);transform:translateY(-1px)}
   </style>
 </head>
 <body>
@@ -369,36 +404,38 @@
   <div class="giveGrid">
 
     <!-- DONATION -->
-    <section id="donate" class="donateWrap" aria-labelledby="donate-title">
+    <article class="giveCard donate" id="donate" aria-labelledby="donate-title">
       <h2 id="donate-title">Donation Only</h2>
-      <p>Charity-only participation is welcome! Please donate via our partner site (language can be changed at top-right on their page).</p>
-      <p style="margin-top:.25rem">
-        <a class="btnWide btnDonate" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">
-          Donate now
-        </a>
+      <p class="giveLead">
+        Charity-only participation is welcome! Please donate via our partner site
+        (language can be changed at top-right on their page).
       </p>
-    </section>
+      <div class="giveActions">
+        <a class="btnWide btnDonate"
+           href="https://congrant.com/project/selfwalk/19450/form/step1"
+           target="_blank" rel="noopener">Donate now</a>
+      </div>
+    </article>
 
     <!-- GOODS -->
-    <section id="goods" class="donateWrap" aria-labelledby="goods-title">
+    <article class="giveCard goods" id="goods" aria-labelledby="goods-title">
       <h2 id="goods-title">Goods</h2>
 
-      <div class="goodsRow">
-        <img src="goods.png" alt="Goods preview">
-        <div class="goodsText">
-          <p><i>The proceeds of the goods will go to Relay for Life.</i></p>
-          <p style="margin-top:.25rem">
-            <a class="btnWide btnDonate" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">
-              Goods Shop
-            </a>
-          </p>
+      <div class="content">
+        <img class="giveImg" src="goods.png" alt="Goods preview">
+        <div>
+          <p class="giveLead">The proceeds of the goods will go to Relay for Life.</p>
+          <div class="giveActions">
+            <a class="btnWide btnDonate"
+               href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04"
+               target="_blank" rel="noopener">Goods Shop</a>
+          </div>
         </div>
       </div>
-    </section>
+    </article>
 
   </div>
 </section>
-
   <!-- =============== STAFF =============== -->
   <section id="staff" class="section frame reveal" aria-labelledby="staff-title">
     <h2 id="staff-title" class="headline accent-line">Our Staff</h2>
