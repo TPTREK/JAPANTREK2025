@@ -10,283 +10,232 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Swiper / Leaflet / Chart.js (CDN) -->
+  <!-- Swiper / Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  
+
   <style>
+    /* =============== Theme =============== */
     :root{
-      --bg:#0e1a2b;
-      --ink:#ffffff;
+      --bg:#0b1424;               /* deeper navy */
+      --bg-2:#0f1c34;             /* panel base */
+      --ink:#fff;
       --ink-dim:#cfe0ff;
       --muted:#a5b4d4;
       --beige:#e8dcc7;
-      --accent:#d30000;
       --orange:#f37021;
-      --surface:#12213a;
-      --surface-2:#172742;
-      --card:#15284a;
-      --shadow:0 12px 28px rgba(0,0,0,.15);
-      --h2:clamp(1.6rem,3.6vw,2.2rem);
-      --scroll-offset:56px;              /* set live from JS = nav height */
-      --content-max:1100px;
+      --orange-2:#ff9a4c;
+      --accent:#d30000;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+      --r:14px;                   /* radius */
+      --gap:1.1rem;               /* global gap */
+      --content-max:1120px;
+      --h2:clamp(1.45rem,3.2vw,2.05rem);
+      --scroll-offset:56px;       /* updated by JS */
     }
 
+    /* =============== Base =============== */
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at -10% -10%, rgba(243,112,33,.08), transparent 50%),
+        radial-gradient(1000px 500px at 110% -20%, rgba(255,154,76,.07), transparent 45%),
+        var(--bg);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block;height:auto}
-    .sr-only{position:absolute !important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
     [id]{scroll-margin-top:var(--scroll-offset)}
-    :focus-visible{outline:3px solid rgba(243,111,33,.85);outline-offset:2px;border-radius:6px}
+    .sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
+    :focus-visible{outline:3px solid rgba(243,112,33,.9);outline-offset:3px;border-radius:10px}
 
-/* Mini map under the After-Party Google Maps link */
-.miniMap{
-  width:100%;
-  height:220px;
-  margin-top:.6rem;
-  border-radius:1rem;
-  border:1px solid rgba(255,255,255,.12);
-  overflow:hidden;
-}
-    
-    /* Skip link */
-    #skip{position:absolute;top:-40px;left:0;background:var(--accent);padding:.5rem 1rem;font-weight:700;z-index:200}
+    /* =============== Helpers =============== */
+    .shell{max-width:var(--content-max);margin-inline:auto;padding-inline:clamp(.75rem,2.2vw,1.25rem)}
+    .section{margin:2.4rem 0}
+    .tight{margin:1.6rem 0}
+    .badge{display:inline-block;padding:.35rem .6rem;border-radius:999px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+    .headline{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em;line-height:1.2;margin:.35rem 0 1rem}
+    .subtle{color:var(--muted)}
+    .split{display:grid;gap:var(--gap)}
+    @media (min-width:900px){.split{grid-template-columns:1fr 1fr}}
+
+    /* Glass + neon frame */
+    .frame{
+      position:relative;background:rgba(13,24,44,.6);
+      border-radius:var(--r);padding:clamp(1.2rem,2.2vw,1.8rem);
+      box-shadow:var(--shadow);backdrop-filter:blur(8px) saturate(120%);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .frame::before{
+      content:"";position:absolute;inset:-1px;border-radius:inherit;
+      padding:1px;
+      background:linear-gradient(120deg,rgba(255,255,255,.08),rgba(243,112,33,.35),rgba(255,255,255,.08));
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;mask-composite:exclude;
+      pointer-events:none;
+    }
+
+    /* Orange line accent under headings */
+    .accent-line{position:relative;padding-top:.35rem;margin-top:.1rem}
+    .accent-line::before{
+      content:"";position:absolute;top:0;left:0;width:92px;height:4px;
+      background:linear-gradient(90deg,var(--orange),var(--orange-2));
+      border-radius:999px;box-shadow:0 0 18px rgba(243,112,33,.55);
+    }
+
+    /* =============== Skip + Progress =============== */
+    #skip{position:absolute;top:-40px;left:0;background:var(--orange);color:#1b120a;padding:.5rem 1rem;font-weight:800;z-index:200}
     #skip:focus{top:0}
+    #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:150}
 
-    /* Progress bar */
-    #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:120}
-
-    /* ========================== NAV ========================== */
+    /* =============== NAV =============== */
     nav{
       position:fixed;top:0;left:0;width:100%;
-      background:rgba(2,10,20,.8);backdrop-filter:blur(8px) saturate(120%);
-      border-bottom:1px solid rgba(255,255,255,.08);
-      z-index:110;
+      background:rgba(1,8,20,.7);backdrop-filter:blur(10px) saturate(120%);
+      border-bottom:1px solid rgba(255,255,255,.06);z-index:120;
     }
     .nav-inner{
-      max-width:var(--content-max);margin:0 auto;
-      display:grid;grid-template-columns:auto 1fr auto;align-items:center;
-      gap:1rem;padding:.6rem 1rem;
+      height:auto;display:grid;align-items:center;
+      grid-template-columns:auto 1fr auto;gap:.9rem;
+      padding:.55rem clamp(.75rem,2.2vw,1.25rem);
     }
-    /* LEFT cluster: logo + countdown */
-    .left{display:flex;align-items:center;gap:.65rem}
-    .brand img{height:75px;width:auto;display:block}
-    /* LEFT: countdown */
+    .left{display:flex;align-items:center;gap:.6rem}
+    .brand img{height:75px;width:auto}
     #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
-    #countBox .num{font-weight:800;font-size:clamp(.92rem,2vw,1.05rem);line-height:1}
+    #countBox .num{font-weight:900;font-size:clamp(.95rem,2vw,1.1rem);line-height:1}
     #countBox .sep{opacity:.6;margin:0 .1rem}
-
-    /* CENTER: links */
-    nav .links{
-      display:flex;justify-content:center;align-items:center;
-      gap:clamp(.5rem,2vw,.9rem);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
-    }
-    nav .links a{font-weight:700;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.35rem .25rem;border-radius:.25rem}
-    nav .links a:hover{opacity:1}
-    nav .links a.is-active{position:relative}
-    nav .links a.is-active::after{
-      content:"";position:absolute;left:12%;right:12%;bottom:-6px;height:2px;background:var(--orange);border-radius:2px
-    }
-
-    /* RIGHT: actions */
-    .actions{justify-self:end;display:flex;align-items:center;gap:.5rem}
-    .btn-nav{padding:.5rem .85rem;border-radius:.55rem;border:1px solid rgba(255,255,255,.15);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));font-weight:800;font-size:.86rem}
-    .btn-nav.primary{background:var(--orange);color:#1b120a;border-color:transparent}
-    .btn-nav.primary:hover{filter:brightness(.95)}
-    .btn-nav.secondary:hover{background:rgba(255,255,255,.12)}
-
-    /* Compact-on-scroll */
-    nav.compact .nav-inner{padding:.35rem 1rem}
-    nav.compact .links{gap:.6rem;font-size:.78rem}
-    nav.compact #countBox .num{font-size:clamp(.9rem,2vw,1rem)}
+    .links{display:flex;justify-content:center;gap:clamp(.5rem,2.2vw,.95rem);text-transform:uppercase;letter-spacing:.12em;font-size:.84rem}
+    .links a{opacity:.92;font-weight:800;padding:.35rem .25rem;border-radius:.35rem;position:relative}
+    .links a:hover{opacity:1}
+    .links a.is-active::after{content:"";position:absolute;left:12%;right:12%;bottom:-6px;height:2px;background:linear-gradient(90deg,var(--orange),var(--orange-2));border-radius:2px}
+    .actions{display:flex;align-items:center;gap:.5rem}
     nav.compact .brand img{height:60px}
+    nav.compact .links{gap:.6rem;font-size:.78rem}
+    nav.compact .nav-inner{padding:.35rem clamp(.75rem,2.2vw,1.25rem)}
 
-    /* ============================ HERO ============================ */
-    header{
-      position:relative;overflow:hidden;
-      margin-top:var(--scroll-offset);
-      height:calc(100svh - var(--scroll-offset));
+    /* Buttons — unified orange */
+    :root{--btn-bg:linear-gradient(180deg,var(--orange),var(--orange-2));--btn-ink:#1b120a}
+    .btn,.btnWide,.btn-nav,.btnDonate,.formCard button,.btn-secondary{
+      background:var(--btn-bg)!important;color:var(--btn-ink)!important;
+      border:1px solid rgba(255,255,255,.05)!important;border-radius:.65rem;
+      padding:.75rem 1.05rem;font-weight:900;line-height:1;display:inline-block;
+      box-shadow:0 8px 26px rgba(243,112,33,.28);transition:transform .15s ease,filter .15s ease;
+      text-decoration:none
     }
+    .btn:hover,.btnWide:hover,.btn-nav:hover,.btnDonate:hover,.formCard button:hover,.btn-secondary:hover{filter:brightness(.95);transform:translateY(-1px)}
+    .btnWide{padding:1rem 1.6rem;border-radius:.8rem}
+
+    /* =============== HERO =============== */
+    header{margin-top:var(--scroll-offset);height:calc(92svh - var(--scroll-offset));position:relative;overflow:hidden}
     .swiper{width:100%;height:100%}
-    .swiper-slide img{width:100%;height:100%;object-fit:cover}
-    .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:10}
+    .swiper-slide img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.02)}
+    .heroOverlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.24),rgba(0,0,0,.55));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding-inline:clamp(.75rem,2.2vw,1.25rem)}
+    .heroOverlay h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:.08em;margin-bottom:.5rem;text-shadow:0 6px 30px rgba(0,0,0,.45)}
+    .heroOverlay p{max-width:640px;margin-bottom:1rem;opacity:.95}
+    .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.88);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);z-index:10}
     .heroBtn svg{width:22px;height:22px;stroke:#000;stroke-width:2;fill:none}
     #prev{left:1rem} #next{right:1rem}
-    .heroOverlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.5));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding:0 1rem}
-    .heroOverlay h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:.08em;margin-bottom:.6rem}
-    .heroOverlay p{max-width:640px;margin-bottom:1.1rem}
-    .btn{display:inline-block;padding:.9rem 2rem;background:var(--ink);color:var(--bg);font-weight:700;border-radius:6px}
-    .btn:hover{opacity:.88}
-    .caption{position:absolute;bottom:0;left:0;width:100%;padding:.75rem 1rem;font-size:.85rem;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);opacity:0;color:#fff;transition:.3s}
+    .caption{position:absolute;bottom:0;left:0;width:100%;padding:.7rem 1rem;font-size:.86rem;background:linear-gradient(0deg,rgba(0,0,0,.65),transparent);opacity:0;transition:.3s}
     .swiper-slide:hover .caption{opacity:1}
+    .spacer{height:22px}
 
-    .spacer{height:32px}
+    /* =============== Sections =============== */
+    .news p,.mission p,.eventWrap p,.donateWrap p{line-height:1.7}
+    .news{margin:1.6rem 0}
+    .news .badge{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
+    .news.frame{padding:1.4rem 1.2rem}
 
-    /* ============================ SECTIONS ============================ */
-    section{position:relative}
-    .shell{max-width:var(--content-max);margin:0 auto}
-    .card{max-width:var(--content-max);margin:2rem auto;background:var(--surface);border-radius:1.2rem;box-shadow:var(--shadow);padding:3.2rem 2.4rem;text-align:center;overflow:hidden}
-    .card h2,
-    .news h2,
-    .mission h2,
-    .eventHeader,
-    .afterpartyWrap h2,
-    #donate-title,
-    #staff-title,
-    #about h2,
-    #elevation h2,
-    #weather h2,
-    .formCard h2{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em}
+    .mission{margin:2.2rem 0}
+    .mission .badge{background:rgba(243,112,33,.18);border-color:rgba(243,112,33,.35);color:#1b120a}
 
-    .news{max-width:var(--content-max);margin:2rem auto 0;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
-    .news .badge{display:inline-block;background:#1f3b64;color:#cfe0ff;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.7rem;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.75rem}
-    .news p{line-height:1.75;margin:.5rem 0}
-    .news a{color:#8db1ff;text-decoration:underline}
-
-    /* Decorative SVGs */
-    .deco{position:absolute;opacity:.7;pointer-events:none;user-select:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
-    .deco.leaf{width:60px;top:-12px;right:-12px;transform:rotate(-12deg)}
-    .deco.mountain{width:70px;top:-16px;right:-16px}
-
-    /* Mission */
-    .mission{max-width:var(--content-max);margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem;display:grid;gap:1.5rem}
-    @media(min-width:900px){.mission{grid-template-columns:1.05fr 1fr;align-items:start}}
-    .mission .badge{display:inline-block;background:var(--orange);color:#1b120a;font-weight:800;padding:.35rem .6rem;border-radius:.4rem;margin-bottom:.6rem;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem}
-    .mission p{line-height:1.68}
-
-    /* Event info */
-    .eventWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem}
-    .eventDate{color:var(--beige);font-size:1.05rem;margin:.5rem 0 1.25rem}
-    .eventGrid{display:grid;gap:1.75rem}
-    @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
-    .eventCol h3{color:#8db1ff;font-size:1.05rem;margin:1rem 0 .5rem;letter-spacing:.02em}
-    .eventCol p,.eventCol li{line-height:1.65}
+    .eventWrap .eventDate{color:var(--beige);margin:.2rem 0 1rem}
+    .eventGrid{display:grid;gap:var(--gap)}
+    @media (min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
+    .eventCol h3{color:#8db1ff;font-size:1.02rem;margin:1rem 0 .4rem;letter-spacing:.02em}
     .eventCol ul{padding-left:1.1rem}
-    .eventCol > :first-child{margin-top:0}
-    .note{color:var(--muted);font-size:.95rem;margin-top:.5rem}
-    .changed{color:#ff7a7a;font-weight:700;margin:.25rem 0 .5rem}
-    #meetMap{width:100%;height:240px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.25rem}
+    .note{color:var(--muted);font-size:.95rem;margin-top:.4rem}
+    .changed{color:#ff7a7a;font-weight:800;margin:.25rem 0 .5rem}
+    #meetMap{width:100%;height:240px;border-radius:1rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.2rem}
 
-    /* After-party */
-    .afterpartyWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem;display:grid;gap:1.5rem}
-    @media(min-width:900px){.afterpartyWrap{grid-template-columns:1fr 420px;align-items:start}}
-    .afterpartyWrap h2{margin-bottom:.25rem}
-    .afterMedia{margin:0}
-    .afterMedia img{border-radius:1rem;box-shadow:var(--shadow);display:block;margin:0}
-    .afterMedia figcaption{color:#a5b4d4;font-size:.85rem;margin-top:.5rem}
-    .dl{margin-top:1rem;display:grid;grid-template-columns:110px 1fr;gap:.45rem 1.25rem}
-    .dl dt{font-weight:700;color:#d1ddff}
-    .dl dd{margin:0}
+    .afterpartyWrap .dl{margin-top:1rem;display:grid;grid-template-columns:120px 1fr;gap:.5rem 1.25rem}
+    .afterMedia img{border-radius:1rem;box-shadow:var(--shadow)}
+    .miniMap{width:100%;height:220px;margin-top:.7rem;border-radius:1rem;border:1px solid rgba(255,255,255,.12);overflow:hidden}
 
-    /* Donation */
-    .donateWrap{max-width:var(--content-max);margin:4rem auto;background:#1a2e50;border-radius:1rem;box-shadow:var(--shadow);padding:2.4rem 2rem;display:grid;gap:1rem}
-    .donateWrap p{line-height:1.7}
-    .btnWide{display:inline-block;padding:1.1rem 2.4rem;border-radius:.75rem;font-size:1.05rem;font-weight:800}
-    .btnDonate{background:var(--orange);color:#1b120a}
-    .btnDonate:hover{filter:brightness(.95)}
+    .donateWrap{background:linear-gradient(180deg,#15284a,#142742)}
+    .goodsRow{display:flex;align-items:center;gap:1rem}
+    .goodsRow img{width:140px;border-radius:.7rem}
 
-    /* Goods layout */
-#goods .goodsRow{display:flex;align-items:center;gap:1rem}
-#goods .goodsRow img{width:140px;height:auto;border-radius:.5rem}
-#goods .goodsText{flex:1}
+    /* Staff grid — tight, futuristic cards */
+    .staffGrid{display:grid;gap:.9rem;margin-top:1rem;grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (min-width:640px){.staffGrid{grid-template-columns:repeat(3,1fr)}}
+    @media (min-width:980px){.staffGrid{grid-template-columns:repeat(6,1fr)}}
+    .cardStaff{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;overflow:hidden;box-shadow:var(--shadow)}
+    .cardStaff img{aspect-ratio:1/1;object-fit:cover}
+    .cardStaff .info{padding:.6rem .75rem}
+    .cardStaff .name{font-weight:900}
+    .chip{display:inline-block;margin-top:.3rem;padding:.2rem .5rem;border-radius:999px;font-size:.68rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
 
-    /* Staff */
-    .staffWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
-    .staffGrid{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:1.25rem;margin-top:1rem}
-    @media(min-width:640px){.staffGrid{grid-template-columns:repeat(2,1fr)}}
-    @media(min-width:900px){.staffGrid{grid-template-columns:repeat(4,1fr)}}
-    .cardStaff{background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.9rem;overflow:hidden;display:flex;flex-direction:column}
-    .cardStaff img{aspect-ratio:4/3;object-fit:cover;width:100%}
-    .cardStaff .info{padding:.85rem 1rem}
-    .cardStaff .name{font-weight:800}
-    .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
-
-/* --- Our Staff: smaller cards + 6 across on desktop --- */
-.staffGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
-@media (min-width:640px){.staffGrid{grid-template-columns:repeat(3,1fr)}}
-@media (min-width:900px){.staffGrid{grid-template-columns:repeat(6,1fr)}}
-.cardStaff img{aspect-ratio:1/1;object-fit:cover;object-position:center}
-.cardStaff .info{padding:.6rem .75rem}
-.cardStaff .name{font-weight:800;font-size:.95rem}
-.cardStaff .chip{font-size:.68rem;padding:.2rem .5rem}
-    
-    /* About (Reconnect + Gallery) */
-    #about{max-width:var(--content-max);margin:4rem auto}
-    .aboutGrid{display:grid;gap:1.5rem}
-    @media(min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
-    .aboutCard{background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem;text-align:center}
-    .aboutCard img{border-radius:.8rem;margin-bottom:1rem}
-    .postcard{display:grid;gap:1.25rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1.25rem}
-    @media(min-width:768px){.postcard{grid-template-columns:1.1fr .9fr;align-items:center}}
-    .postcard img{width:100%;border-radius:.9rem}
-    /* rounded blue image block above “Reconnect in Nature” */
-    .aboutImgCard{background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1rem;margin-bottom:1.25rem}
-    .aboutImgCard img{border-radius:.8rem}
-    /* force camaraderie card to stack: text first, image below */
+    /* About */
+    .aboutImgCard{background:rgba(13,24,44,.65);border:1px solid rgba(255,255,255,.1);border-radius:1rem;box-shadow:var(--shadow);padding:.9rem;margin-bottom:1rem}
+    .aboutGrid{display:grid;gap:var(--gap)}
+    @media (min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
+    .aboutCard{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;box-shadow:var(--shadow);padding:1.4rem;text-align:center}
+    .postcard{display:grid;gap:1rem;background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;box-shadow:var(--shadow);padding:1rem}
     .postcard.stack{grid-template-columns:1fr}
+    @media (min-width:768px){.postcard{grid-template-columns:1.15fr .85fr;align-items:center}}
+    .postcard img,.aboutCard img{border-radius:.85rem}
 
-    /* Elevation & Weather */
-    section[data-dark]{padding:3rem 1rem;text-align:center;background:#15284a}
-    section[data-dark] .shell{max-width:var(--content-max)}
-    #chart{display:block;max-width:900px;width:100%;height:auto;margin:0 auto}
-    #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.5rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
-    #weatherCard .t{font-size:2.4rem;font-weight:700}
+    /* Weather */
+    section[data-dark]{padding:2.2rem 0;background:linear-gradient(180deg,#142742,#15284a)}
+    #weatherCard{display:inline-block;background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.12);padding:1.7rem 2.2rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
+    #weatherCard .t{font-size:2.2rem;font-weight:900}
 
-    /* Register */
-    .formCard{max-width:var(--content-max);margin:5rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:3rem;text-align:center}
-    .formCard form{max-width:680px;margin:auto}
-    .formCard input,.formCard textarea{width:100%;padding:1rem;border:none;border-radius:.5rem;margin-top:.8rem;background:#172742;color:#fff}
-    .formCard button{margin-top:1rem;background:var(--accent);color:#fff;border:none;padding:1rem 2rem;border-radius:.5rem;font-weight:700;width:100%}
-    .formCard button:hover{opacity:.88}
+    /* Register (if used later) */
+    .formCard{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08)}
 
     /* Footer */
-    footer{background:#081425;color:#a5b4d4;text-align:center;padding:2.5rem 1rem;font-size:.85rem;font-style:italic}
+    footer{background:#081425;color:#a5b4d4;text-align:center;padding:1.8rem .8rem;font-size:.86rem}
 
-    /* Z layers */
-    nav{z-index:9999 !important}
-    #progress{z-index:10000 !important}
-    .leaflet-container{z-index:1 !important}
+    /* Reveal-on-scroll */
+    .reveal{opacity:0;transform:translateY(12px);transition:.45s ease}
+    .reveal.in{opacity:1;transform:none}
   </style>
 </head>
 <body>
 <a href="#main" id="skip">Skip to content</a>
 <div id="progress"></div>
 
-<!-- ============================= NAV ============================= -->
+<!-- =============== NAV =============== -->
 <nav id="siteNav">
-  <div class="nav-inner">
-    <!-- LEFT: Logo + Countdown -->
+  <div class="nav-inner shell">
     <div class="left">
-      <div class="brand">
-        <img src="TPLOGO.png" alt="Japan Trek logo">
-      </div>
+      <div class="brand"><img src="TPLOGO.png" alt="Japan Trek logo"></div>
       <div id="countBox" aria-live="polite"></div>
     </div>
 
-    <!-- CENTER: Links -->
     <div class="links" role="navigation" aria-label="Primary">
       <a href="#news">News</a>
       <a href="#mission">Mission</a>
       <a href="#event">Event</a>
       <a href="#afterparty">After-Party</a>
       <a href="#staff">Our Staff</a>
-      <!-- About removed per request -->
     </div>
 
-    <!-- RIGHT: Actions -->
     <div class="actions">
-      <a href="https://congrant.com/project/selfwalk/19450/form/step1" class="btn-nav secondary" target="_blank" rel="noopener">Donate</a>
-      <a href="https://forms.office.com/r/hmpPU0rHR3" class="btn-nav secondary" target="_blank" rel="noopener">Register</a>
+      <a class="btn" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">Donate</a>
+      <a class="btn" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank" rel="noopener">Register</a>
     </div>
   </div>
 </nav>
 
-<!-- ============================= HERO ============================= -->
+<!-- =============== HERO =============== -->
 <header id="hero" aria-label="Slideshow">
   <div class="swiper">
     <div class="swiper-wrapper">
@@ -298,50 +247,46 @@
     </div>
     <button id="prev" class="heroBtn" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
     <button id="next" class="heroBtn" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
-    <div class="swiper-pagination !bottom-8"></div>
     <div class="heroOverlay">
       <h1>TransPerfect Charity Trek 2025</h1>
       <p>Hike, connect, give back.</p>
-      <a href="https://forms.office.com/r/hmpPU0rHR3" class="btn-nav secondary" target="_blank" rel="noopener" class="btn">Register Now!</a>
+      <a href="https://forms.office.com/r/hmpPU0rHR3" class="btn" target="_blank" rel="noopener">Register Now</a>
     </div>
   </div>
 </header>
 
 <div class="spacer"></div>
 
-<main id="main">
-  <!-- ============================= NEWS ============================= -->
-  <section id="news" class="news shell" aria-labelledby="news-title">
-    <img class="deco leaf" src="https://upload.wikimedia.org/wikipedia/commons/2/21/OpenMoji-color_15.0.0_1F341.svg" alt="" />
+<main id="main" class="shell">
+  <!-- =============== NEWS =============== -->
+  <section id="news" class="section frame reveal" aria-labelledby="news-title">
     <span class="badge">Trek News</span>
-    <h2 id="news-title">TransPerfect Japan Charity Hike · Saturday, November 8</h2>
+    <h2 id="news-title" class="headline accent-line">TransPerfect Japan Charity Hike · Saturday, November 8</h2>
     <p>We’re excited to announce that TransPerfect Japan will be hosting a charity hiking event on <strong>Saturday, November 8</strong>.</p>
     <p><strong>Where are we going?</strong> Stay tuned. We will reveal the location soon. Not an extreme mountain.</p>
     <p>Over the past three years, we have welcomed more than <strong>80 participants</strong> each year, and the event keeps getting better. We add fun new activities annually, including last year’s popular after-party, and we continue to increase our <strong>donation</strong> contributions.</p>
-    <p>The trail we choose is beginner-friendly. It is a fun challenge for everyone and a chance to connect with colleagues, invite family and friends, and even bring overseas managers.</p>
-    <p>We hope you will join us for this meaningful day. Registration will open later. Thanks for bearing with us while we finalize details.</p>
+    <p>The trail we choose is beginner-friendly. It’s a fun challenge for everyone and a chance to connect with colleagues, invite family and friends, and even bring overseas managers.</p>
     <p>Questions? Email <a href="mailto:TransPerfectJapanTrek@transperfect.com">TransPerfectJapanTrek@transperfect.com</a>.</p>
-    <p>You, your family, and your friends are welcome. See you there.</p>
-    <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
+    <p class="subtle">You, your family, and your friends are welcome. See you there.</p>
   </section>
 
-  <!-- ============================= MISSION ============================= -->
-  <section id="mission" class="mission shell" aria-labelledby="mission-title">
+  <!-- =============== MISSION =============== -->
+  <section id="mission" class="section frame split reveal" aria-labelledby="mission-title">
     <div>
-      <span class="badge">Our Mission</span>
-      <h2 id="mission-title">Giving Back, Together</h2>
+      <span class="badge" style="background:rgba(243,112,33,.15);border-color:rgba(243,112,33,.35);color:#1b120a">Our Mission</span>
+      <h2 id="mission-title" class="headline accent-line">Giving Back, Together</h2>
       <p>One of the privileges of being a successful business is having the opportunity to give back. TransPerfect’s commitment to good corporate citizenship guides how we work every day.</p>
     </div>
     <div>
       <p>We support local communities and a diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts to make a difference.</p>
-      <p>This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life for cancer patients. <br><br><b><u><a class="btn-secondary" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a></u></b></p>
+      <p>This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life for cancer patients.</p>
+      <p><a class="btn" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a></p>
     </div>
   </section>
 
-  <!-- ============================= EVENT INFO ============================= -->
-  <section id="event" class="eventWrap shell" aria-labelledby="event-title">
-    <img class="deco mountain" src="https://upload.wikimedia.org/wikipedia/commons/8/83/OpenMoji-color_15.0.0_26F0.svg" alt="" />
-    <h2 id="event-title" class="eventHeader">Event Information</h2>
+  <!-- =============== EVENT =============== -->
+  <section id="event" class="section frame reveal" aria-labelledby="event-title">
+    <h2 id="event-title" class="headline accent-line">Event Information</h2>
     <p class="eventDate">Saturday, November 8, 2025</p>
 
     <div class="eventGrid">
@@ -361,22 +306,18 @@
         <h3>Registration Fee</h3>
         <ul>
           <li><strong>All participants:</strong> 3,000 JPY per person (T-shirt included)</li>
-          <li><strong>No fee required for kids.</li>
+          <li><strong>No fee required for kids.</strong></li>
         </ul>
         <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
-
       </div>
 
       <div class="eventCol">
-        <!-- MAP stays at the VERY TOP of the right column -->
         <div id="meetMap" aria-label="Map to Koma Bridge"></div>
-        <p class="note" style="margin:.4rem 0 0">
+        <p class="note" style="margin:.45rem 0 0">
           <a href="https://www.google.com/maps/search/?api=1&query=%E9%99%8D%E9%AD%94%E6%A9%8B%20%E5%8C%97%E9%8E%8C%E5%80%89" target="_blank" rel="noopener">Open precise location in Google Maps</a>
         </p>
-
-        <h3 style="margin-top:1rem">Meeting Point</h3>
+        <h3 style="margin-top:.9rem">Meeting Point</h3>
         <p>Koma Bridge (降魔橋) — short walk from JR Kita-Kamakura Station (West Exit).</p>
-
         <h3>Hiking Trail</h3>
         <ul><li><strong>Kamakura Daibutsu Hiking Trail</strong> (around 3km)</li></ul>
         <p>The trail is a scenic forest path linking Kita-Kamakura to the Great Buddha area. Expect packed dirt, roots, and some stairs with gentle to moderate inclines; allow ~60–90 minutes at a relaxed pace. Surfaces can be slippery after rain—wear shoes with grip and bring water.</p>
@@ -384,171 +325,106 @@
     </div>
   </section>
 
-  <!-- ============================= AFTER-PARTY ============================= -->
- <section id="afterparty" class="afterpartyWrap shell" aria-labelledby="afterparty-title">
-  <div>
-    <h2 id="afterparty-title">After-Party!</h2>
-    <p>Join the after-party.</p>
-    <p>
-      The company will cover food and drinks for employees. For non-TPT employees, we will collect the money on-site.
-      Adults: 5,500 JPY. Kids over 3: 3,000 JPY.
-    </p>
+  <!-- =============== AFTER-PARTY =============== -->
+  <section id="afterparty" class="section frame split reveal" aria-labelledby="afterparty-title">
+    <div>
+      <h2 id="afterparty-title" class="headline accent-line">After-Party!</h2>
+      <p>Join the after-party.</p>
+      <p>The company will cover food and drinks for employees. For non-TPT employees, we will collect the money on-site. Adults: 5,500 JPY. Kids over 3: 3,000 JPY.</p>
 
-    <dl class="dl">
-      <dt>Restaurant</dt><dd>カフェテラス 樹ガーデン（Cafe Terrace Itsuki-Garden）</dd>
-      <dt>Time</dt><dd>12:00 pm to 3:00 pm</dd>
-      <dt>Phone</dt><dd><a class="afterpartyLinks" href="tel:0426733917">042-673-3917</a></dd>
-      <dt>Address</dt><dd>1912 Takaomachi, Hachioji, Tokyo 193-0844</dd>
-    </dl>
+      <dl class="dl">
+        <dt>Restaurant</dt><dd>カフェテラス 樹ガーデン（Cafe Terrace Itsuki-Garden）</dd>
+        <dt>Time</dt><dd>12:00 pm to 3:00 pm</dd>
+        <dt>Phone</dt><dd><a class="subtle" href="tel:0426733917">042-673-3917</a></dd>
+        <dt>Address</dt><dd>1912 Takaomachi, Hachioji, Tokyo 193-0844</dd>
+      </dl>
 
-    <p class="afterpartyLinks" style="margin-top:.75rem">
-      <a href="https://maps.app.goo.gl/3hZjhvUUbRsP5kPbW8" target="_blank" rel="noopener">Open in Google Maps</a>
-    </p>
-
-    <!-- Mini map directly under the link -->
-    <div id="afterMap" class="miniMap" aria-label="After-party venue map"></div>
-  </div>
-
-  <figure class="afterMedia">
-    <img src="https://raw.githubusercontent.com/TPTREK/TPTREK/main/image.jpeg"
-         alt="After-party venue interior" loading="lazy" decoding="async">
-    <figcaption>After-party venue preview.</figcaption>
-  </figure>
-</section>
-
-  
-  <!-- ============================= DONATION ============================= -->
-  <section id="donate" class="donateWrap shell" aria-labelledby="donate-title">
-    <h2 id="donate-title">Donation Only</h2>
-    <p>Charity-only participation is welcome!</p>
-    <p>Please input the amount you are willing to donate from the organization’s page. Language can be changed from the top-right corner.</p>
-    <p style="margin-top:.25rem"><a class="btnWide btnDonate" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">Donate now</a></p>
-  </section>
-<section id="goods" class="donateWrap shell" aria-labelledby="goods-title">
-  <h2 id="goods-title">Goods</h2>
-
-  <!-- ============================= GOODS ============================= -->
-  <div class="goodsRow">
-    <img src="goods.png" alt="Goods preview">
-    <div class="goodsText">
-      <p><i>The proceeds of the goods will go to Relay for Life.</i></p>
-      <p style="margin-top:.25rem">
-        <a class="btnWide btnDonate" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">
-          Goods Shop
-        </a>
+      <p style="margin-top:.75rem">
+        <a class="btn" href="https://maps.app.goo.gl/3hZjhvUUbRsP5kPbW8" target="_blank" rel="noopener">Open in Google Maps</a>
       </p>
+      <div id="afterMap" class="miniMap" aria-label="After-party venue map"></div>
     </div>
-  </div>
-</section>
 
-  <!-- ============================= STAFF ============================= -->
-<section id="staff" class="staffWrap shell" aria-labelledby="staff-title">
-  <h2 id="staff-title">Our Staff</h2>
-  <div class="staffGrid">
+    <figure class="afterMedia">
+      <img src="https://raw.githubusercontent.com/TPTREK/TPTREK/main/image.jpeg" alt="After-party venue interior" loading="lazy" decoding="async">
+      <figcaption class="subtle">After-party venue preview.</figcaption>
+    </figure>
+  </section>
 
-    <!-- 1) Waing -->
-    <article class="cardStaff">
-      <img src="Waing.jpg" alt="Waing">
-      <div class="info">
-        <div class="name">Waing</div>
-        <div class="chip">Strategy Whisperer</div>
+  <!-- =============== DONATION =============== -->
+  <section id="donate" class="section frame reveal" aria-labelledby="donate-title">
+    <h2 id="donate-title" class="headline accent-line">Donation Only</h2>
+    <p>Charity-only participation is welcome! Please donate via our partner site (language can be changed at top-right on their page).</p>
+    <p style="margin-top:.6rem">
+      <a class="btn btnWide" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">Donate now</a>
+    </p>
+  </section>
+
+  <!-- =============== GOODS =============== -->
+  <section id="goods" class="tight frame reveal" aria-labelledby="goods-title">
+    <h2 id="goods-title" class="headline accent-line">Goods</h2>
+    <div class="goodsRow">
+      <img src="goods.png" alt="Goods preview">
+      <div class="goodsText">
+        <p><i>The proceeds of the goods will go to Relay for Life.</i></p>
+        <p style="margin-top:.5rem">
+          <a class="btn btnWide" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">Goods Shop</a>
+        </p>
       </div>
-    </article>
+    </div>
+  </section>
 
-    <!-- 2) Nana -->
-    <article class="cardStaff">
-      <img src="Nana.jpg" alt="Nana">
-      <div class="info">
-        <div class="name">Nana</div>
-        <div class="chip">Digital &amp; Dream Architect</div>
-      </div>
-    </article>
+  <!-- =============== STAFF =============== -->
+  <section id="staff" class="section frame reveal" aria-labelledby="staff-title">
+    <h2 id="staff-title" class="headline accent-line">Our Staff</h2>
+    <div class="staffGrid">
+      <article class="cardStaff"><img src="Waing.jpg" alt="Waing"><div class="info"><div class="name">Waing</div><div class="chip">Strategy Whisperer</div></div></article>
+      <article class="cardStaff"><img src="Nana.jpg" alt="Nana"><div class="info"><div class="name">Nana</div><div class="chip">Digital &amp; Dream Architect</div></div></article>
+      <article class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu"><div class="info"><div class="name">Peiyu</div><div class="chip">Chief Inspiration Officer</div></div></article>
+      <article class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="info"><div class="name">Yujiro</div><div class="chip">Maestro of Mayhem</div></div></article>
+      <article class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="info"><div class="name">Shin</div><div class="chip">Guru</div></div></article>
+      <article class="cardStaff"><img src="john.jpg" alt="John"><div class="info"><div class="name">John</div><div class="chip">Trailblazer</div></div></article>
+    </div>
+  </section>
 
-    <!-- 3) Peiyu -->
-    <article class="cardStaff">
-      <img src="Peiyu.jpg" alt="Peiyu">
-      <div class="info">
-        <div class="name">Peiyu</div>
-        <div class="chip">Chief Inspiration Officer</div>
-      </div>
-    </article>
-
-    <!-- 4) Yujiro -->
-    <article class="cardStaff">
-      <img src="Yujiro.jpg" alt="Yujiro">
-      <div class="info">
-        <div class="name">Yujiro</div>
-        <div class="chip">Maestro of Mayhem</div>
-      </div>
-    </article>
-
-    <!-- 5) Shin -->
-    <article class="cardStaff">
-      <img src="Shin-photo-1.jpg" alt="Shin">
-      <div class="info">
-        <div class="name">Shin</div>
-        <div class="chip">Guru</div>
-      </div>
-    </article>
-
-    <!-- 6) You (John) -->
-    <article class="cardStaff">
-      <img src="john.jpg" alt="John">
-      <div class="info">
-        <div class="name">John</div>
-        <div class="chip">Trailblazer</div>
-      </div>
-    </article>
-
-  </div>
-</section>
-
-  <!-- ============================= ABOUT (Reconnect + Gallery) ============================= -->
-  <section id="about" class="shell">
-    <!-- rounded blue image section ABOVE “Reconnect in Nature” -->
-    <article class="aboutImgCard">
-      <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Japan Trek graphic banner" />
-    </article>
-
+  <!-- =============== ABOUT =============== -->
+  <section id="about" class="section reveal">
+    <article class="aboutImgCard"><img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Japan Trek graphic banner" /></article>
     <div class="aboutGrid">
       <article class="aboutCard">
         <img src="20241109_c2_052.jpg" alt="Reconnect in Nature photo">
-        <h2>Reconnect in Nature</h2>
+        <h2 class="headline accent-line" style="margin-top:.2rem">Reconnect in Nature</h2>
         <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
       </article>
-
-      <!-- Camaraderie: text first, image below in same box -->
       <article class="postcard stack">
         <div>
-          <h2>Camaraderie</h2>
+          <h2 class="headline accent-line">Camaraderie</h2>
           <p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
         </div>
         <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
       </article>
     </div>
-
   </section>
 
-  <!-- ============================= WEATHER ============================= -->
-  <section id="weather" data-dark>
-    <div class="shell">
-      <h2>Live Weather</h2>
-      <div id="weatherCard"><p>Loading…</p></div>
+  <!-- =============== WEATHER =============== -->
+  <section id="weather" class="section reveal" data-dark>
+    <div class="shell" style="text-align:center">
+      <h2 class="headline accent-line" style="display:inline-block">Live Weather</h2>
+      <div id="weatherCard" style="margin-top:1rem"><p>Loading…</p></div>
     </div>
   </section>
-
 </main>
 
 <footer>© 2025 TransPerfect · Japan Trek · Built with ✨ & ☕</footer>
 
 <script>
-/* ===== Helper: recompute anchor offset from *actual* nav height ===== */
+/* ===== Layout offset ===== */
 const root = document.documentElement;
 const navEl = document.getElementById('siteNav');
-function setOffset(){ root.style.setProperty('--scroll-offset', (navEl.offsetHeight) + 'px'); }
+function setOffset(){ root.style.setProperty('--scroll-offset', navEl.offsetHeight + 'px'); }
 setOffset(); addEventListener('resize', setOffset);
 
-/* Precise anchor scrolling (accounts for live nav height) */
+/* Smooth in-page anchor scroll compensated for fixed nav */
 document.addEventListener('click', (e)=>{
   const a = e.target.closest('a[href^="#"]'); if(!a) return;
   const id = decodeURIComponent(a.getAttribute('href').slice(1));
@@ -559,11 +435,10 @@ document.addEventListener('click', (e)=>{
   history.pushState(null,'','#'+id);
 });
 
-/* Progress + compact nav + active link */
+/* Progress bar + compact nav + active links */
 const bar = document.getElementById('progress');
 const navLinks = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
 const sections = navLinks.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
-
 function setActive(){
   const y = scrollY + navEl.offsetHeight + 2;
   let cur = sections[0]?.id;
@@ -577,9 +452,15 @@ function onScroll(){
   setActive();
 }
 addEventListener('scroll', onScroll, {passive:true});
-addEventListener('load', ()=>{ onScroll(); setActive(); if(location.hash){ const el=document.getElementById(location.hash.slice(1)); if(el){ const y = el.getBoundingClientRect().top + pageYOffset - navEl.offsetHeight; scrollTo(0,y); }}});
+addEventListener('load', ()=>{ onScroll(); setActive(); });
 
-/* Hero slider */
+/* Reveal-on-scroll */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* Swiper hero */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 new Swiper('.swiper',{
   loop:true, preloadImages:false, lazy:{loadPrevNext:true},
@@ -599,19 +480,6 @@ function parts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math
 function tick(){ const r=deadline-Date.now(); if(r<=0){cb.textContent='Event Day!';return} const p=parts(r); d.textContent=pad(p.d); h.textContent=pad(p.h); m.textContent=pad(p.m); s.textContent=pad(p.s); }
 tick(); setInterval(tick,1000);
 
-/* Elevation chart — fixed dimensions; no responsive loops */
-new Chart(document.getElementById('chart'),{
-  type:'line',
-  data:{labels:['Start','Mid','Shrine','Summit'],
-        datasets:[{data:[200,360,480,599],borderColor:'#d30000',backgroundColor:'rgba(211,0,0,.25)',fill:true,tension:.35}]},
-  options:{
-    responsive:false,
-    animation:false,
-    plugins:{legend:{display:false}},
-    scales:{x:{ticks:{color:'#c8d8f8'}},y:{ticks:{color:'#c8d8f8'}}}
-  }
-});
-
 /* Weather */
 fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true&timezone=Asia%2FTokyo')
   .then(r=>r.json()).then(({current_weather:t})=>{
@@ -620,7 +488,7 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
       `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
   });
 
-/* Meeting point map (Kita-Kamakura Station area for Koma Bridge proximity) */
+/* Meeting point map (Koma Bridge area) */
 (function(){
   const el=document.getElementById('meetMap'); if(!el) return;
   const center=[35.33806,139.54444];
@@ -630,22 +498,13 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&
     .bindPopup('Koma Bridge (降魔橋)<br>Near JR Kita-Kamakura Station – West Exit');
 })();
 
-  /* After-party mini map (Leaflet) */
+/* After-party mini map */
 (function(){
-  const el = document.getElementById('afterMap');
-  if (!el) return;
-
-  const lat = 35.6255, lng = 139.2431; // Cafe Terrace Itsuki-Garden (approx)
-
-  const map = L.map(el, { zoomControl:false, scrollWheelZoom:false, dragging:true })
-               .setView([lat, lng], 15);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' })
-    .addTo(map);
-
-  L.marker([lat, lng], { title:'Cafe Terrace Itsuki-Garden' })
-    .addTo(map)
-    .bindPopup('Cafe Terrace Itsuki-Garden');
+  const el = document.getElementById('afterMap'); if (!el) return;
+  const lat = 35.6255, lng = 139.2431; // approx
+  const map = L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([lat,lng],15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
+  L.marker([lat,lng],{title:'Cafe Terrace Itsuki-Garden'}).addTo(map).bindPopup('Cafe Terrace Itsuki-Garden');
 })();
 </script>
 </body>
