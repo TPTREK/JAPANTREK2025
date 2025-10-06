@@ -196,6 +196,15 @@
     .cardStaff .name{font-weight:800}
     .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.25rem .6rem;font-size:.75rem;margin-top:.35rem}
 
+/* --- Our Staff: smaller cards + 6 across on desktop --- */
+.staffGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (min-width:640px){.staffGrid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:900px){.staffGrid{grid-template-columns:repeat(6,1fr)}}
+.cardStaff img{aspect-ratio:1/1;object-fit:cover;object-position:center}
+.cardStaff .info{padding:.6rem .75rem}
+.cardStaff .name{font-weight:800;font-size:.95rem}
+.cardStaff .chip{font-size:.68rem;padding:.2rem .5rem}
+    
     /* About (Reconnect + Gallery) */
     #about{max-width:var(--content-max);margin:4rem auto}
     .aboutGrid{display:grid;gap:1.5rem}
@@ -409,35 +418,66 @@
 </section>
 
   <!-- ============================= STAFF ============================= -->
-  <section id="staff" class="staffWrap shell" aria-labelledby="staff-title">
-    <h2 id="staff-title">Our Staff</h2>
-    <div class="staffGrid">
-      <article class="cardStaff">
-        <img src="Yujiro.jpg" alt="Yujiro" />
-        <div class="info"><div class="name">Yujiro</div><div class="chip">Maestro of Mayhem</div></div>
-      </article>
-      <article class="cardStaff">
-        <img src="Peiyu.jpg" alt="Peiyu" />
-        <div class="info"><div class="name">Peiyu</div><div class="chip">Chief Inspiration Officer</div></div>
-      </article>
-      <article class="cardStaff">
-        <img src="Shin-photo-1.jpg" alt="Shin" />
-        <div class="info"><div class="name">Shin</div><div class="chip">Guru</div></div>
-      </article>
-      <article class="cardStaff">
-        <img src="Nana.jpg" alt="Nana" />
-        <div class="info"><div class="name">Nana</div><div class="chip">Digital & Dream Architect</div></div>
-      </article>
-      <article class="cardStaff">
-        <img src="Waing.jpg" alt="Waing" />
-        <div class="info"><div class="name">Waing</div><div class="chip">Strategy Whisperer</div></div>
-      </article>
-      <article class="cardStaff">
-        <img src="john.jpg" alt="John" />
-        <div class="info"><div class="name">John</div><div class="chip">Trailblazer</div></div>
-      </article>
-    </div>
-  </section>
+<section id="staff" class="staffWrap shell" aria-labelledby="staff-title">
+  <h2 id="staff-title">Our Staff</h2>
+  <div class="staffGrid">
+
+    <!-- 1) Waing -->
+    <article class="cardStaff">
+      <img src="Waing.jpg" alt="Waing">
+      <div class="info">
+        <div class="name">Waing</div>
+        <div class="chip">Strategy Whisperer</div>
+      </div>
+    </article>
+
+    <!-- 2) Nana -->
+    <article class="cardStaff">
+      <img src="Nana.jpg" alt="Nana">
+      <div class="info">
+        <div class="name">Nana</div>
+        <div class="chip">Digital &amp; Dream Architect</div>
+      </div>
+    </article>
+
+    <!-- 3) Peiyu -->
+    <article class="cardStaff">
+      <img src="Peiyu.jpg" alt="Peiyu">
+      <div class="info">
+        <div class="name">Peiyu</div>
+        <div class="chip">Chief Inspiration Officer</div>
+      </div>
+    </article>
+
+    <!-- 4) Yujiro -->
+    <article class="cardStaff">
+      <img src="Yujiro.jpg" alt="Yujiro">
+      <div class="info">
+        <div class="name">Yujiro</div>
+        <div class="chip">Maestro of Mayhem</div>
+      </div>
+    </article>
+
+    <!-- 5) Shin -->
+    <article class="cardStaff">
+      <img src="Shin-photo-1.jpg" alt="Shin">
+      <div class="info">
+        <div class="name">Shin</div>
+        <div class="chip">Guru</div>
+      </div>
+    </article>
+
+    <!-- 6) You (John) -->
+    <article class="cardStaff">
+      <img src="john.jpg" alt="John">
+      <div class="info">
+        <div class="name">John</div>
+        <div class="chip">Trailblazer</div>
+      </div>
+    </article>
+
+  </div>
+</section>
 
   <!-- ============================= ABOUT (Reconnect + Gallery) ============================= -->
   <section id="about" class="shell">
