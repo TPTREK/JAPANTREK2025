@@ -2,272 +2,266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Japan Trek 2025 | TransPerfect</title>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 
-  <!-- Swiper / Leaflet -->
+  <!-- Swiper / Leaflet (CDN) -->
   <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script defer src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    /* =============== Theme =============== */
     :root{
-      --bg:#0b1424;               /* deeper navy */
-      --bg-2:#0f1c34;             /* panel base */
+      --bg:#0e1a2b;
+      --surface:#12213a;
+      --surface-2:#172742;
       --ink:#fff;
-      --ink-dim:#cfe0ff;
       --muted:#a5b4d4;
       --beige:#e8dcc7;
       --orange:#f37021;
-      --orange-2:#ff9a4c;
-      --accent:#d30000;
-      --shadow:0 10px 30px rgba(0,0,0,.25);
-      --r:14px;                   /* radius */
-      --gap:1.1rem;               /* global gap */
-      --content-max:1120px;
-      --h2:clamp(1.45rem,3.2vw,2.05rem);
-      --scroll-offset:56px;       /* updated by JS */
+      --orange-2:#ff974d;
+      --glow:0 10px 30px rgba(243,112,33,.28);
+      --shadow:0 12px 28px rgba(0,0,0,.18);
+      --h2:clamp(1.6rem,3.8vw,2.2rem);
+      --content-max:1100px;
+      --scroll-offset:64px; /* updated live from JS */
     }
 
-    /* =============== Base =============== */
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(1200px 600px at -10% -10%, rgba(243,112,33,.08), transparent 50%),
-        radial-gradient(1000px 500px at 110% -20%, rgba(255,154,76,.07), transparent 45%),
-        var(--bg);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-    }
-    a{color:inherit;text-decoration:none}
+    body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
     img{max-width:100%;display:block;height:auto}
+    a{color:inherit;text-decoration:none}
     [id]{scroll-margin-top:var(--scroll-offset)}
     .sr-only{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0)}
-    :focus-visible{outline:3px solid rgba(243,112,33,.9);outline-offset:3px;border-radius:10px}
+    :focus-visible{outline:3px solid rgba(243,112,33,.9);outline-offset:2px;border-radius:6px}
 
-    /* =============== Helpers =============== */
-    .shell{max-width:var(--content-max);margin-inline:auto;padding-inline:clamp(.75rem,2.2vw,1.25rem)}
-    .section{margin:2.4rem 0}
-    .tight{margin:1.6rem 0}
-    .badge{display:inline-block;padding:.35rem .6rem;border-radius:999px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
-    .headline{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em;line-height:1.2;margin:.35rem 0 1rem}
-    .subtle{color:var(--muted)}
-    .split{display:grid;gap:var(--gap)}
-    @media (min-width:900px){.split{grid-template-columns:1fr 1fr}}
+    /* Progress bar */
+    #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:10000}
 
-    /* === GIVE (Donation + Goods) two-column layout === */
-#give { max-width: var(--content-max); margin: 4rem auto; }
-#give .giveGrid { display: grid; gap: 1.5rem; align-items: stretch; }
-@media (min-width: 900px){
-  #give .giveGrid { grid-template-columns: 1fr 1fr; }
-}
-/* Remove the big outer margins when used inside the grid */
-#give .donateWrap { margin: 0; height: 100%; }
-
-/* (Already there, but keeping for clarity) */
-#goods .goodsRow{display:flex;align-items:center;gap:1rem}
-#goods .goodsRow img{width:140px;height:auto;border-radius:.5rem}
-#goods .goodsText{flex:1}
-
-    /* Glass + neon frame */
-    .frame{
-      position:relative;background:rgba(13,24,44,.6);
-      border-radius:var(--r);padding:clamp(1.2rem,2.2vw,1.8rem);
-      box-shadow:var(--shadow);backdrop-filter:blur(8px) saturate(120%);
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .frame::before{
-      content:"";position:absolute;inset:-1px;border-radius:inherit;
-      padding:1px;
-      background:linear-gradient(120deg,rgba(255,255,255,.08),rgba(243,112,33,.35),rgba(255,255,255,.08));
-      -webkit-mask:
-        linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;mask-composite:exclude;
-      pointer-events:none;
-    }
-
-    /* Orange line accent under headings */
-    .accent-line{position:relative;padding-top:.35rem;margin-top:.1rem}
-    .accent-line::before{
-      content:"";position:absolute;top:0;left:0;width:92px;height:4px;
-      background:linear-gradient(90deg,var(--orange),var(--orange-2));
-      border-radius:999px;box-shadow:0 0 18px rgba(243,112,33,.55);
-    }
-
-    /* =============== Skip + Progress =============== */
-    #skip{position:absolute;top:-40px;left:0;background:var(--orange);color:#1b120a;padding:.5rem 1rem;font-weight:800;z-index:200}
-    #skip:focus{top:0}
-    #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),#ffd9c2,var(--orange));transform-origin:0 0;z-index:150}
-
-    /* =============== NAV =============== */
+    /* ========================= NAV ========================= */
     nav{
       position:fixed;top:0;left:0;width:100%;
-      background:rgba(1,8,20,.7);backdrop-filter:blur(10px) saturate(120%);
-      border-bottom:1px solid rgba(255,255,255,.06);z-index:120;
+      background:rgba(2,10,20,.8);backdrop-filter:blur(8px) saturate(120%);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      z-index:9999;
     }
     .nav-inner{
-      height:auto;display:grid;align-items:center;
-      grid-template-columns:auto 1fr auto;gap:.9rem;
-      padding:.55rem clamp(.75rem,2.2vw,1.25rem);
+      max-width:var(--content-max);margin:0 auto;
+      display:grid;grid-template-columns:auto 1fr auto;align-items:center;
+      gap:1rem;padding:.6rem 1rem;
     }
-    .left{display:flex;align-items:center;gap:.6rem}
-    .brand img{height:75px;width:auto}
+    .left{display:flex;align-items:center;gap:.7rem}
+    .brand img{height:75px;width:auto;display:block} /* requested logo size */
     #countBox{display:flex;align-items:center;gap:.25rem;font-variant-numeric:tabular-nums}
-    #countBox .num{font-weight:900;font-size:clamp(.95rem,2vw,1.1rem);line-height:1}
+    #countBox .num{font-weight:800;font-size:clamp(.92rem,2vw,1.05rem);line-height:1}
     #countBox .sep{opacity:.6;margin:0 .1rem}
-    .links{display:flex;justify-content:center;gap:clamp(.5rem,2.2vw,.95rem);text-transform:uppercase;letter-spacing:.12em;font-size:.84rem}
-    .links a{opacity:.92;font-weight:800;padding:.35rem .25rem;border-radius:.35rem;position:relative}
+
+    .links{display:flex;justify-content:center;align-items:center;gap:clamp(.5rem,2vw,1rem);font-size:.88rem;letter-spacing:.12em;text-transform:uppercase}
+    .links a{font-weight:800;opacity:.92;line-height:1;display:inline-flex;align-items:center;padding:.4rem .3rem;border-radius:.25rem}
     .links a:hover{opacity:1}
-    .links a.is-active::after{content:"";position:absolute;left:12%;right:12%;bottom:-6px;height:2px;background:linear-gradient(90deg,var(--orange),var(--orange-2));border-radius:2px}
-    .actions{display:flex;align-items:center;gap:.5rem}
-    nav.compact .brand img{height:60px}
-    nav.compact .links{gap:.6rem;font-size:.78rem}
-    nav.compact .nav-inner{padding:.35rem clamp(.75rem,2.2vw,1.25rem)}
+    .links a.is-active{position:relative}
+    .links a.is-active::after{content:"";position:absolute;left:12%;right:12%;bottom:-6px;height:2px;background:var(--orange);border-radius:2px}
 
-    /* Buttons — unified orange */
-    :root{--btn-bg:linear-gradient(180deg,var(--orange),var(--orange-2));--btn-ink:#1b120a}
-    .btn,.btnWide,.btn-nav,.btnDonate,.formCard button,.btn-secondary{
-      background:var(--btn-bg)!important;color:var(--btn-ink)!important;
-      border:1px solid rgba(255,255,255,.05)!important;border-radius:.65rem;
-      padding:.75rem 1.05rem;font-weight:900;line-height:1;display:inline-block;
-      box-shadow:0 8px 26px rgba(243,112,33,.28);transition:transform .15s ease,filter .15s ease;
-      text-decoration:none
+    .actions{display:flex;align-items:center;gap:.55rem}
+
+    /* Buttons (unified orange treatment) */
+    .btn,.btn-nav,.btnWide{
+      display:inline-block; font-weight:800; border-radius:.7rem;
+      background:linear-gradient(180deg,var(--orange-2),var(--orange));
+      color:#1b120a; border:1px solid rgba(0,0,0,.06);
+      box-shadow:var(--glow);
+      transition:transform .12s ease, filter .12s ease, box-shadow .12s ease;
     }
-    .btn:hover,.btnWide:hover,.btn-nav:hover,.btnDonate:hover,.formCard button:hover,.btn-secondary:hover{filter:brightness(.95);transform:translateY(-1px)}
-    .btnWide{padding:1rem 1.6rem;border-radius:.8rem}
+    .btn{padding:.9rem 1.4rem}
+    .btn-nav{padding:.55rem .9rem;font-size:.88rem}
+    .btnWide{padding:1rem 2.1rem}
+    .btn:hover,.btn-nav:hover,.btnWide:hover{filter:brightness(.95)}
+    .btn:active,.btn-nav:active,.btnWide:active{transform:translateY(1px);box-shadow:0 6px 20px rgba(243,112,33,.22)}
 
-    /* =============== HERO =============== */
-    header{margin-top:var(--scroll-offset);height:calc(92svh - var(--scroll-offset));position:relative;overflow:hidden}
+    /* Hamburger + mobile panel */
+    .hamburger{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.15);border-radius:.6rem;background:rgba(255,255,255,.06)}
+    .hamburger span{display:block;width:18px;height:2px;background:#fff;margin:3px 0;transition:transform .22s ease,opacity .22s ease}
+    nav.open .hamburger span:nth-child(1){transform:translateY(5px) rotate(45deg)}
+    nav.open .hamburger span:nth-child(2){opacity:0}
+    nav.open .hamburger span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+    .mobileMenu{
+      position:fixed;left:0;right:0;top:var(--scroll-offset);
+      background:rgba(6,14,26,.98);backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      transform:translateY(-6px);opacity:0;visibility:hidden;
+      transition:opacity .2s ease, transform .2s ease;
+      padding:1rem 1rem 1.25rem;display:flex;flex-direction:column;gap:.75rem;z-index:1000;
+    }
+    .mobileMenu a{padding:.9rem 1rem;border-radius:.7rem;background:rgba(255,255,255,.06);font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+    .mobileMenu .mobileActions{display:flex;gap:.6rem}
+    .mobileMenu .btnWide{flex:1;text-align:center}
+    nav.open .mobileMenu{opacity:1;transform:translateY(0);visibility:visible}
+    body.menu-lock{overflow:hidden}
+
+    /* Compact state on scroll */
+    nav.compact .nav-inner{padding:.42rem 1rem}
+    nav.compact .brand img{height:60px}
+    nav.compact .links{gap:.6rem;font-size:.84rem}
+
+    /* ========================= HERO ========================= */
+    header{position:relative;overflow:hidden;margin-top:var(--scroll-offset);height:calc(100svh - var(--scroll-offset))}
     .swiper{width:100%;height:100%}
-    .swiper-slide img{width:100%;height:100%;object-fit:cover;filter:saturate(1.05) contrast(1.02)}
-    .heroOverlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.24),rgba(0,0,0,.55));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding-inline:clamp(.75rem,2.2vw,1.25rem)}
-    .heroOverlay h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:.08em;margin-bottom:.5rem;text-shadow:0 6px 30px rgba(0,0,0,.45)}
-    .heroOverlay p{max-width:640px;margin-bottom:1rem;opacity:.95}
-    .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.88);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);z-index:10}
+    .swiper-slide img{width:100%;height:100%;object-fit:cover}
+    .heroBtn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.88);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:10}
     .heroBtn svg{width:22px;height:22px;stroke:#000;stroke-width:2;fill:none}
     #prev{left:1rem} #next{right:1rem}
-    .caption{position:absolute;bottom:0;left:0;width:100%;padding:.7rem 1rem;font-size:.86rem;background:linear-gradient(0deg,rgba(0,0,0,.65),transparent);opacity:0;transition:.3s}
-    .swiper-slide:hover .caption{opacity:1}
-    .spacer{height:22px}
+    .heroOverlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28),rgba(0,0,0,.55));display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:5;padding:0 1rem}
+    .heroOverlay h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:.08em;margin-bottom:.6rem;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+    .heroOverlay p{max-width:640px;margin-bottom:1.1rem;opacity:.95}
 
-    /* =============== Sections =============== */
-    .news p,.mission p,.eventWrap p,.donateWrap p{line-height:1.7}
-    .news{margin:1.6rem 0}
-    .news .badge{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12)}
-    .news.frame{padding:1.4rem 1.2rem}
+    .spacer{height:24px}
 
-    .mission{margin:2.2rem 0}
-    .mission .badge{background:rgba(243,112,33,.18);border-color:rgba(243,112,33,.35);color:#1b120a}
+    /* ===================== SECTIONS & CARDS ===================== */
+    section{position:relative}
+    .shell{max-width:var(--content-max);margin:0 auto}
+    .card{max-width:var(--content-max);margin:2rem auto;background:var(--surface);border-radius:1.2rem;box-shadow:var(--shadow);padding:3rem 2.2rem;text-align:center;overflow:hidden}
+    .card h2,
+    .news h2,
+    .mission h2,
+    .eventHeader,
+    .afterpartyWrap h2,
+    #donate-title,
+    #goods-title,
+    #staff-title,
+    #about h2,
+    #weather h2,
+    .formCard h2{font-size:var(--h2);text-transform:uppercase;letter-spacing:.02em}
 
-    .eventWrap .eventDate{color:var(--beige);margin:.2rem 0 1rem}
-    .eventGrid{display:grid;gap:var(--gap)}
-    @media (min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
-    .eventCol h3{color:#8db1ff;font-size:1.02rem;margin:1rem 0 .4rem;letter-spacing:.02em}
+    .news{max-width:var(--content-max);margin:2rem auto 0;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
+    .news .badge{display:inline-block;background:var(--orange);color:#1b120a;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.72rem;padding:.35rem .6rem;border-radius:.5rem;margin-bottom:.75rem}
+    .news p{line-height:1.75;margin:.5rem 0}
+    .news a{color:#8db1ff;text-decoration:underline}
+
+    /* Decorative OpenMoji */
+    .deco{position:absolute;opacity:.7;pointer-events:none;user-select:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+    .deco.leaf{width:60px;top:-12px;right:-12px;transform:rotate(-12deg)}
+    .deco.mountain{width:70px;top:-16px;right:-16px}
+
+    /* Mission */
+    .mission{max-width:var(--content-max);margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:2.2rem;display:grid;gap:1.5rem}
+    @media(min-width:900px){.mission{grid-template-columns:1.05fr 1fr;align-items:start}}
+    .mission p{line-height:1.68}
+    .btn-secondary{display:inline-block;border:2px solid var(--beige);color:var(--beige);padding:.72rem 1.1rem;border-radius:.55rem;font-weight:800;margin-top:.6rem}
+
+    /* Event info */
+    .eventWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:2.2rem}
+    .eventHeader{margin-bottom:.25rem}
+    .eventDate{color:var(--beige);font-size:1.05rem;margin:.4rem 0 1.25rem}
+    .eventGrid{display:grid;gap:1.6rem}
+    @media(min-width:900px){.eventGrid{grid-template-columns:1fr 1fr}}
+    .eventCol h3{color:#8db1ff;font-size:1.05rem;margin:1rem 0 .5rem}
+    .eventCol p,.eventCol li{line-height:1.65}
     .eventCol ul{padding-left:1.1rem}
-    .note{color:var(--muted);font-size:.95rem;margin-top:.4rem}
-    .changed{color:#ff7a7a;font-weight:800;margin:.25rem 0 .5rem}
-    #meetMap{width:100%;height:240px;border-radius:1rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.2rem}
+    .note{color:var(--muted);font-size:.95rem;margin-top:.35rem}
+    #meetMap{width:100%;height:240px;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.12);margin-top:.25rem}
 
-    .afterpartyWrap .dl{margin-top:1rem;display:grid;grid-template-columns:120px 1fr;gap:.5rem 1.25rem}
+    /* After-party */
+    .afterpartyWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.2rem;display:grid;gap:1.2rem}
+    @media(min-width:900px){.afterpartyWrap{grid-template-columns:1fr 420px;align-items:start}}
+    .dl{margin-top:1rem;display:grid;grid-template-columns:110px 1fr;gap:.45rem 1.25rem}
+    .dl dt{font-weight:800;color:#d1ddff}
+    .dl dd{margin:0}
     .afterMedia img{border-radius:1rem;box-shadow:var(--shadow)}
-    .miniMap{width:100%;height:220px;margin-top:.7rem;border-radius:1rem;border:1px solid rgba(255,255,255,.12);overflow:hidden}
+    .afterMedia figcaption{color:#a5b4d4;font-size:.85rem;margin-top:.45rem}
+    .miniMap{width:100%;height:220px;margin-top:.6rem;border-radius:1rem;border:1px solid rgba(255,255,255,.12);overflow:hidden}
 
-    .donateWrap{background:linear-gradient(180deg,#15284a,#142742)}
-    .goodsRow{display:flex;align-items:center;gap:1rem}
-    .goodsRow img{width:140px;border-radius:.7rem}
+    /* Donate + Goods duo */
+    .duoWrap{max-width:var(--content-max);margin:4rem auto;display:grid;gap:1.2rem}
+    @media(min-width:900px){.duoWrap{grid-template-columns:1fr 1fr}}
+    .duoCard{background:linear-gradient(180deg,#13233d 0%, #0f1d34 100%);border:1px solid rgba(255,255,255,.06);border-radius:1rem;box-shadow:var(--shadow);padding:1.8rem;position:relative;overflow:hidden}
+    .duoCard h2{margin-bottom:.6rem}
+    .duoFlex{display:flex;gap:1.2rem;align-items:center}
+    .duoFlex .text{flex:1}
+    .duoFlex img{width:150px;height:auto;border-radius:.7rem;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+    .duoCard .btnWide{margin-top:.9rem}
 
-    /* Staff grid — tight, futuristic cards */
-    .staffGrid{display:grid;gap:.9rem;margin-top:1rem;grid-template-columns:repeat(2,minmax(0,1fr))}
-    @media (min-width:640px){.staffGrid{grid-template-columns:repeat(3,1fr)}}
-    @media (min-width:980px){.staffGrid{grid-template-columns:repeat(6,1fr)}}
-    .cardStaff{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;overflow:hidden;box-shadow:var(--shadow)}
-    .cardStaff img{aspect-ratio:1/1;object-fit:cover}
+    /* Staff — 6 across desktop, small cards */
+    .staffWrap{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2rem}
+    .staffGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1rem}
+    @media(min-width:640px){.staffGrid{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:900px){.staffGrid{grid-template-columns:repeat(6,1fr)}}
+    .cardStaff{background:#0f203a;border:1px solid rgba(255,255,255,.08);border-radius:.9rem;overflow:hidden;display:flex;flex-direction:column}
+    .cardStaff img{aspect-ratio:1/1;object-fit:cover;object-position:center;width:100%}
     .cardStaff .info{padding:.6rem .75rem}
-    .cardStaff .name{font-weight:900}
-    .chip{display:inline-block;margin-top:.3rem;padding:.2rem .5rem;border-radius:999px;font-size:.68rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+    .cardStaff .name{font-weight:800;font-size:.95rem}
+    .chip{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:.2rem .5rem;font-size:.68rem;margin-top:.3rem}
 
-    /* About */
-    .aboutImgCard{background:rgba(13,24,44,.65);border:1px solid rgba(255,255,255,.1);border-radius:1rem;box-shadow:var(--shadow);padding:.9rem;margin-bottom:1rem}
-    .aboutGrid{display:grid;gap:var(--gap)}
-    @media (min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
-    .aboutCard{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;box-shadow:var(--shadow);padding:1.4rem;text-align:center}
-    .postcard{display:grid;gap:1rem;background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;box-shadow:var(--shadow);padding:1rem}
+    /* About (Reconnect + Camaraderie) */
+    #about{max-width:var(--content-max);margin:4rem auto}
+    .aboutImgCard{background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1rem;margin-bottom:1.25rem}
+    .aboutImgCard img{border-radius:.8rem}
+    .aboutGrid{display:grid;gap:1.5rem}
+    @media(min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
+    .aboutCard{background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:1.5rem}
+    .aboutCard img{border-radius:.9rem;margin-bottom:1rem}
+    .postcard{display:grid;gap:1.25rem;background:var(--surface-2);border-radius:1rem;box-shadow:var(--shadow);padding:1.25rem}
+    @media(min-width:768px){.postcard{grid-template-columns:1.1fr .9fr;align-items:center}}
+    .postcard img{width:100%;border-radius:.9rem}
     .postcard.stack{grid-template-columns:1fr}
-    @media (min-width:768px){.postcard{grid-template-columns:1.15fr .85fr;align-items:center}}
-    .postcard img,.aboutCard img{border-radius:.85rem}
 
     /* Weather */
-    section[data-dark]{padding:2.2rem 0;background:linear-gradient(180deg,#142742,#15284a)}
-    #weatherCard{display:inline-block;background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.12);padding:1.7rem 2.2rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
-    #weatherCard .t{font-size:2.2rem;font-weight:900}
+    section[data-dark]{padding:3rem 1rem;text-align:center;background:#15284a}
+    section[data-dark] .shell{max-width:var(--content-max)}
+    #weatherCard{display:inline-block;background:#1a2e50;padding:2rem 2.2rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
+    #weatherCard .t{font-size:2.4rem;font-weight:800}
 
-    /* Register (if used later) */
-    .formCard{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08)}
+    /* Register */
+    .formCard{max-width:var(--content-max);margin:4rem auto;background:var(--surface);border-radius:1rem;box-shadow:var(--shadow);padding:2.5rem;text-align:center}
+    .formCard form{max-width:680px;margin:auto}
+    .formCard input,.formCard textarea{width:100%;padding:1rem;border:none;border-radius:.6rem;margin-top:.8rem;background:#172742;color:#fff}
+    .formCard button{margin-top:1rem}
+    .btnSubmit{width:100%}
 
     /* Footer */
-    footer{background:#081425;color:#a5b4d4;text-align:center;padding:1.8rem .8rem;font-size:.86rem}
+    footer{background:#081425;color:#a5b4d4;text-align:center;padding:2rem 1rem;font-size:.85rem;font-style:italic}
 
-    /* Reveal-on-scroll */
-    .reveal{opacity:0;transform:translateY(12px);transition:.45s ease}
+    /* Mobile adjustments */
+    @media(max-width:900px){
+      .hamburger{display:inline-flex}
+      .links{display:none}
+      .nav-inner{gap:.65rem;padding:.5rem .75rem}
+      .brand img{height:58px}
+      #countBox .num{font-size:.9rem}
+      .actions .btn-nav{padding:.45rem .72rem;font-size:.82rem}
+    }
+
+    /* Reveal animations (respect reduced motion) */
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease, transform .5s ease}
     .reveal.in{opacity:1;transform:none}
-
-    /* ===== GIVE (Donation + Goods) — polished two-column cards ===== */
-#give{max-width:var(--content-max);margin:4rem auto}
-#give .giveGrid{display:grid;gap:1.25rem}
-@media(min-width:900px){#give .giveGrid{grid-template-columns:1fr 1fr}}
-
-.giveCard{
-  background:linear-gradient(145deg,#132440,#0f1d34);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:1rem; box-shadow:var(--shadow);
-  padding:1.75rem 1.75rem 1.5rem; 
-  display:flex; flex-direction:column; min-height:320px;
-}
-.giveCard h2{font-size:var(--h2);margin:0 0 .35rem}
-.giveLead{color:#d6e3ff;line-height:1.6;margin:.25rem 0 1rem 0}
-.giveActions{margin-top:auto} /* pins the button to the bottom edge */
-
-.giveCard .content{display:grid;gap:1.25rem;align-items:center}
-.giveCard.goods .content{
-  grid-template-columns:140px 1fr;
-}
-@media(min-width:1100px){
-  .giveCard.goods .content{grid-template-columns:180px 1fr}
-}
-
-.giveImg{
-  width:100%; aspect-ratio:1/1; object-fit:contain;
-  border-radius:.6rem; background:rgba(255,255,255,.06);
-  padding:.5rem; box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
-}
-
-/* Buttons: consistent orange + tighter */
-.btnWide{padding:.9rem 1.4rem;border-radius:.7rem;font-weight:800}
-.btnDonate{background:var(--orange);color:#1b120a;border:none}
-.btnDonate:hover{filter:brightness(.95);transform:translateY(-1px)}
+    @media (prefers-reduced-motion: reduce){
+      .reveal{opacity:1;transform:none}
+    }
   </style>
 </head>
 <body>
+<a href="#main" class="sr-only" id="skip">Skip to content</a>
 <div id="progress"></div>
 
-<!-- =============== NAV =============== -->
-<nav id="siteNav">
-  <div class="nav-inner shell">
+<!-- ========================= NAV ========================= -->
+<nav id="siteNav" class="reveal in">
+  <div class="nav-inner">
+    <!-- LEFT: hamburger + logo + countdown -->
     <div class="left">
-      <div class="brand"><img src="TPLOGO.png" alt="Japan Trek logo"></div>
+      <button id="menuBtn" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="brand"><img src="TPLOGO.png" alt="Japan Trek logo" decoding="async"></div>
       <div id="countBox" aria-live="polite"></div>
     </div>
 
+    <!-- CENTER: links -->
     <div class="links" role="navigation" aria-label="Primary">
       <a href="#news">News</a>
       <a href="#mission">Mission</a>
@@ -276,66 +270,84 @@
       <a href="#staff">Our Staff</a>
     </div>
 
+    <!-- RIGHT: actions -->
     <div class="actions">
-      <a class="btn" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">Donate</a>
-      <a class="btn" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank" rel="noopener">Register</a>
+      <a href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener" class="btn-nav">Donate</a>
+      <a href="https://forms.office.com/r/hmpPU0rHR3" target="_blank" rel="noopener" class="btn-nav">Register</a>
+    </div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" class="mobileMenu" hidden>
+    <a href="#news">News</a>
+    <a href="#mission">Mission</a>
+    <a href="#event">Event</a>
+    <a href="#afterparty">After-Party</a>
+    <a href="#staff">Our Staff</a>
+    <div class="mobileActions">
+      <a href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener" class="btnWide">Donate</a>
+      <a href="https://forms.office.com/r/hmpPU0rHR3" target="_blank" rel="noopener" class="btnWide">Register</a>
     </div>
   </div>
 </nav>
 
-<!-- =============== HERO =============== -->
-<header id="hero" aria-label="Slideshow">
+<!-- ========================= HERO ========================= -->
+<header id="hero" class="reveal" aria-label="Slideshow">
   <div class="swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt="Trailhead"><div class="caption">Trailhead meetup</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Camaraderie"><div class="caption">Camaraderie on the climb</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine"><div class="caption">Shrine respite</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Switchbacks"><div class="caption">Forest switchbacks</div></div>
-      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit"><div class="caption">Summit celebration</div></div>
+      <div class="swiper-slide"><img src="20241109_c1_100.jpg" alt="Trailhead" fetchpriority="high"><div class="caption sr-only">Trailhead meetup</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Camaraderie"><div class="caption sr-only">Camaraderie on the climb</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_031.jpg" alt="Shrine"><div class="caption sr-only">Shrine respite</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Switchbacks"><div class="caption sr-only">Forest switchbacks</div></div>
+      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit"><div class="caption sr-only">Summit celebration</div></div>
     </div>
     <button id="prev" class="heroBtn" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
     <button id="next" class="heroBtn" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
     <div class="heroOverlay">
       <h1>TransPerfect Charity Trek 2025</h1>
       <p>Hike, connect, give back.</p>
-      <a href="https://forms.office.com/r/hmpPU0rHR3" class="btn" target="_blank" rel="noopener">Register Now</a>
+      <a href="https://forms.office.com/r/hmpPU0rHR3" target="_blank" rel="noopener" class="btn">Register Now</a>
     </div>
   </div>
 </header>
 
 <div class="spacer"></div>
 
-<main id="main" class="shell">
-  <!-- =============== NEWS =============== -->
-  <section id="news" class="section frame reveal" aria-labelledby="news-title">
-    <span class="badge">Trek News</span><BR>
-    <h2 id="news-title" class="headline accent-line">TransPerfect Japan Charity Hike · Saturday, November 8</h2>
-    <p>We’re excited to announce that TransPerfect Japan will be hosting a charity hiking event on <strong>Saturday, November 8</strong>.</p><br>
-    <p><strong>Where are we going?</strong> Kamakura Daibutsu Hiking Trail! A beautiful trek full of beauty and memories.</p>
-    <p>Over the past three years, we have welcomed more than <strong>80 participants</strong>, and the event keeps getting better. We add fun new activities annually, including last year’s popular after-party, and we continue to increase our <strong>donation</strong> contributions.</p>
-    <p>The trail we choose is always beginner-friendly. It’s a fun challenge for everyone and a chance to meet and connect with colleagues, bring along family and friends, and even hang out with some overseas managers!</p>
-    <BR><p>Any questions? Please Email <a href="mailto:TransPerfectJapanTrek@transperfect.com">TransPerfectJapanTrek@transperfect.com</a>.</p>
-   <br> <p class="subtle">You, your family, and your friends are welcome. See you there.</p>
+<main id="main">
+  <!-- ========================= NEWS ========================= -->
+  <section id="news" class="news shell reveal" aria-labelledby="news-title">
+    <img class="deco leaf" src="https://upload.wikimedia.org/wikipedia/commons/2/21/OpenMoji-color_15.0.0_1F341.svg" alt="" />
+    <span class="badge">Trek News</span>
+    <h2 id="news-title">TransPerfect Japan Charity Hike · Saturday, November 8</h2>
+    <p>We’re excited to announce that TransPerfect Japan will be hosting a charity hiking event on <strong>Saturday, November 8</strong>.</p>
+    <p><strong>Where are we going?</strong> Stay tuned. We will reveal the location soon. Not an extreme mountain.</p>
+    <p>Over the past three years, we have welcomed more than <strong>80 participants</strong> each year, and the event keeps getting better. We add fun new activities annually, including last year’s popular after-party, and we continue to increase our <strong>donation</strong> contributions.</p>
+    <p>The trail we choose is beginner-friendly. It is a fun challenge for everyone and a chance to connect with colleagues, invite family and friends, and even bring overseas managers.</p>
+    <p>We hope you will join us for this meaningful day. Registration will open later. Thanks for bearing with us while we finalize details.</p>
+    <p>Questions? Email <a href="mailto:TransPerfectJapanTrek@transperfect.com">TransPerfectJapanTrek@transperfect.com</a>.</p>
+    <p>You, your family, and your friends are welcome. See you there.</p>
+    <p style="margin-top:.6rem"><em>Sincerely, The TransPerfect Japan Trek Team</em></p>
   </section>
 
-  <!-- =============== MISSION =============== -->
-  <section id="mission" class="section frame split reveal" aria-labelledby="mission-title">
+  <!-- ========================= MISSION ========================= -->
+  <section id="mission" class="mission shell reveal" aria-labelledby="mission-title">
     <div>
-    <span class="badge">Our Mission</span><BR>
-      <h2 id="mission-title" class="headline accent-line">Giving Back, Together</h2>
+      <span class="badge" style="background:var(--orange);color:#1b120a;font-weight:800;padding:.35rem .6rem;border-radius:.5rem">Our Mission</span>
+      <h2 id="mission-title">Giving Back, Together</h2>
       <p>One of the privileges of being a successful business is having the opportunity to give back. TransPerfect’s commitment to good corporate citizenship guides how we work every day.</p>
     </div>
     <div>
-      <p>We support local communities and a diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts to make a difference.</p><BR>
-      <p>This year, we are collaborating with <strong>Relay For Life</strong>. <BR><BR>All proceeds will benefit Relay For Life for cancer patients.</p><BR><BR>
-      <p><a class="btn" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a></p>
+      <p>We support local communities and a diverse group of non-profit organizations. We also commit both time and money to our employees’ efforts to make a difference.</p>
+      <p>This year, we are collaborating with <strong>Relay For Life</strong>. All proceeds will benefit Relay For Life for cancer patients.</p>
+      <a class="btn-secondary" href="https://www.cancer.org/involved/fundraise/relay-for-life.html" target="_blank" rel="noopener">Read more about Relay For Life</a>
     </div>
   </section>
 
-  <!-- =============== EVENT =============== -->
-  <section id="event" class="section frame reveal" aria-labelledby="event-title">
-    <h2 id="event-title" class="headline accent-line">Event Information</h2>
-    <p class="eventDate"><b><i>Saturday, November 8, 2025</i></b></p><br><br>
+  <!-- ========================= EVENT INFO ========================= -->
+  <section id="event" class="eventWrap shell reveal" aria-labelledby="event-title">
+    <img class="deco mountain" src="https://upload.wikimedia.org/wikipedia/commons/8/83/OpenMoji-color_15.0.0_26F0.svg" alt="" />
+    <h2 id="event-title" class="eventHeader">Event Information</h2>
+    <p class="eventDate">Saturday, November 8, 2025</p>
 
     <div class="eventGrid">
       <div class="eventCol">
@@ -343,234 +355,250 @@
           <li><strong>Meeting Time:</strong> 10:00 am</li>
           <li><strong>Starting Time:</strong> 10:30 am</li>
           <li><strong>Place:</strong> Koma Bridge (降魔橋) near Kita-Kamakura Station (JR West Exit)</li>
-          <li><strong>Participation Conditions:</strong> TransPerfect employees, employee family or friends</li>
-        </ul><br>
-        <p class="note">* Please bring water and portable fan</p>
-        <p class="note">* Surfaces can be slippery after rain. Wear shoes with grip and bring water. </p>
+          <li><strong>Participation Conditions:</strong> TransPerfect employee, employee’s family or friends</li>
+        </ul>
+        <p class="note">* Please bring water.</p>
         <p class="note">* Transportation costs to and from the event are self covered.</p>
-
-        <h3 id="after-party">After-Party</h3>
-        <p>Please move to the restaurant after hiking. Details are below <a href="#afterparty"><i>(Afterparty)</i></a>.</p>
 
         <h3>Registration Fee</h3>
         <ul>
-          <li><strong>Japan Trekkers:</strong> 3,000 JPY per person (T-shirt included)</li>
-          <li><strong><i>No fee required for kids.</i></strong></li>
-        </ul><br>
-        <p class="note"><i>Additional donation or charity-only participation is welcome.</i></p>
+          <li><strong>All participants:</strong> 3,000 JPY per person (T-shirt included)</li>
+          <li><strong>No fee required for kids.</strong></li>
+        </ul>
+        <p class="note">Donation: Additional charity or charity-only participation is welcome.</p>
+
+        <h3>Hiking Trail</h3>
+        <ul><li><strong>Kamakura Daibutsu Hiking Trail</strong> (around 3 km)</li></ul>
+        <p>The route is a scenic forest path linking Kita-Kamakura to the Great Buddha area. Expect packed dirt, roots, and some steps with gentle to moderate inclines. Allow about 60–90 minutes at a relaxed pace. Surfaces can be slippery after rain—wear shoes with grip and bring water.</p>
       </div>
 
       <div class="eventCol">
+        <!-- Map sits at the top of right column per request -->
         <div id="meetMap" aria-label="Map to Koma Bridge"></div>
         <p class="note" style="margin:.45rem 0 0">
-           <a class="btn" href="https://www.google.com/maps/search/?api=1&query=%E9%99%8D%E9%AD%94%E6%A9%8B%20%E5%8C%97%E9%8E%8C%E5%80%89" target="_blank" rel="noopener">Open in Google Maps</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E9%99%8D%E9%AD%94%E6%A9%8B%20%E5%8C%97%E9%8E%8C%E5%80%89" target="_blank" rel="noopener">Open precise location in Google Maps</a>
         </p>
-        <h3 style="margin-top:.9rem">Meeting Point</h3>
-        <p>Koma Bridge (降魔橋) — short walk from JR Kita-Kamakura Station (West Exit).</p>
-        <h3>Hiking Trail</h3>
-        <ul><li><strong>Kamakura Daibutsu Hiking Trail</strong> (around 3km)</li></ul>
-        <p>This trail is a scenic forest path linking Kita-Kamakura to the Great Buddha area. Expect packed dirt, roots, and some stairs with gentle to moderate inclines; allow ~60–90 minutes at a relaxed pace. </p>
       </div>
     </div>
   </section>
 
-  <!-- =============== AFTER-PARTY =============== -->
-  <section id="afterparty" class="section frame split reveal" aria-labelledby="afterparty-title">
+  <!-- ========================= AFTER-PARTY ========================= -->
+  <section id="afterparty" class="afterpartyWrap shell reveal" aria-labelledby="afterparty-title">
     <div>
-      <h2 id="afterparty-title" class="headline accent-line">After-Party!</h2>
-      <p>Join the after-party.</p><br>
-      <p>The company will cover food and drinks for employees. For non-TPT employees, we will collect the money on-site. <br><Br><b>Adults: 5,500 JPY. <Br>Kids over 3: 3,000 JPY.</b></p>
+      <h2 id="afterparty-title">After-Party!</h2>
+      <p>Join the after-party. The company will cover food and drinks for employees. For non-TPT employees, we will collect the money on-site.</p>
+      <p><strong>Adults:</strong> 5,500 JPY. <strong>Kids over 3:</strong> 3,000 JPY.</p>
 
+      <dl class="dl">
+        <dt>Restaurant</dt><dd>カフェテラス 樹ガーデン（Cafe Terrace Itsuki-Garden）</dd>
+        <dt>Time</dt><dd>12:00 pm to 3:00 pm</dd>
+        <dt>Phone</dt><dd><a class="afterpartyLinks" href="tel:0426733917">042-673-3917</a></dd>
+        <dt>Address</dt><dd>1912 Takaomachi, Hachioji, Tokyo 193-0844</dd>
+      </dl>
 
-      <p style="margin-top:.75rem">
-       
+      <p class="afterpartyLinks" style="margin-top:.75rem">
+        <a href="https://maps.app.goo.gl/3hZjhvUUbRsP5kPbW8" target="_blank" rel="noopener">Open in Google Maps</a>
       </p>
-      <div id="afterMap" class="miniMap" aria-label="After-party venue map"></div><BR>
-       <a class="btn" href="https://maps.app.goo.gl/M8dqqTtLwzrzWTdJ7" target="_blank" rel="noopener">Open in Google Maps</a>
+
+      <!-- Mini map directly under the link -->
+      <div id="afterMap" class="miniMap" aria-label="After-party venue map"></div>
     </div>
 
     <figure class="afterMedia">
-      <img src="https://static.tokyo-np.co.jp/image/article/size1/9/0/6/a/906a51441efc1b17c1f3010b4b192f88_2.jpg" alt="After-party venue interior" loading="lazy" decoding="async">
-      <figcaption class="subtle"><i>After-party venue preview.</i></figcaption>
-<br>
-      <dl class="dl">
-        <dd>カフェテラス 樹ガーデン（Cafe Terrace Itsuki-Garden）</dd>
-        <dt><b>Time:</b></dt><dd>12:00 pm to 3:00 pm</dd>
-        <dt><b>Phone:</b></dt><dd><a class="subtle" href="tel:0426733917">042-673-3917</a></dd>
-        <dt><b>Address:</b></dt><dd>〒248-0022 神奈川県鎌倉市常盤９１７</dd>
-      </dl>
+      <img src="https://raw.githubusercontent.com/TPTREK/TPTREK/main/image.jpeg" alt="After-party venue interior" loading="lazy" decoding="async">
+      <figcaption>After-party venue preview.</figcaption>
     </figure>
   </section>
-<!-- ====================== GIVE (Donate + Goods side-by-side) ====================== -->
-<section id="give" class="shell" aria-label="Support the cause">
-  <div class="giveGrid">
 
-    <!-- DONATION -->
-    <article class="giveCard donate" id="donate" aria-labelledby="donate-title">
+  <!-- ========================= DONATE + GOODS (duo) ========================= -->
+  <section class="duoWrap shell reveal" aria-label="Support">
+    <article id="donate" class="duoCard" aria-labelledby="donate-title">
       <h2 id="donate-title">Donation Only</h2>
-      <p class="giveLead">
-        Charity-only participation is welcome! Please donate via our partner site
-        (language can be changed at top-right on their page).
-
-      <div class="giveActions">
-        <a class="btnWide btnDonate"
-           href="https://congrant.com/project/selfwalk/19450/form/step1"
-           target="_blank" rel="noopener">Donate now</a>
-              </p>
-      </div>
-    </article>
-
-    <!-- GOODS -->
-    <article class="giveCard goods" id="goods" aria-labelledby="goods-title">
-      <h2 id="goods-title">Goods</h2>
-
-      <div class="content">
-        <img class="giveImg" src="goods.png" alt="Goods preview">
-        <div>
-          <p class="giveLead">The proceeds of the goods will go to Relay for Life.</p>
-          <div class="giveActions">
-            <a class="btnWide btnDonate"
-               href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04"
-               target="_blank" rel="noopener">Goods Shop</a>
-          </div>
+      <div class="duoFlex">
+        <div class="text">
+          <p>Charity-only participation is welcome! Please donate via our partner site (language can be changed at top-right on their page).</p>
+          <p><a class="btnWide" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" rel="noopener">Donate now</a></p>
         </div>
       </div>
     </article>
 
-  </div>
-</section>
-  <!-- =============== STAFF =============== -->
-  <section id="staff" class="section frame reveal" aria-labelledby="staff-title">
-    <h2 id="staff-title" class="headline accent-line">Our Staff</h2>
+    <article id="goods" class="duoCard" aria-labelledby="goods-title">
+      <h2 id="goods-title">Goods</h2>
+      <div class="duoFlex">
+        <img src="goods.png" alt="Trek T-shirt" loading="lazy" decoding="async">
+        <div class="text">
+          <p><em>The proceeds of the goods will go to Relay for Life.</em></p>
+          <p><a class="btnWide" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" rel="noopener">Goods Shop</a></p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ========================= STAFF ========================= -->
+  <section id="staff" class="staffWrap shell reveal" aria-labelledby="staff-title">
+    <h2 id="staff-title">Our Staff</h2>
     <div class="staffGrid">
-      <article class="cardStaff"><img src="Waing.jpg" alt="Waing"><div class="info"><div class="name">Waing</div><div class="chip">Strategy Whisperer</div></div></article>
-      <article class="cardStaff"><img src="Nana.jpg" alt="Nana"><div class="info"><div class="name">Nana</div><div class="chip">Digital &amp; Dream Architect</div></div></article>
-      <article class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu"><div class="info"><div class="name">Peiyu</div><div class="chip">Chief Inspiration Officer</div></div></article>
-      <article class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="info"><div class="name">Yujiro</div><div class="chip">Maestro of Mayhem</div></div></article>
-      <article class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="info"><div class="name">Shin</div><div class="chip">Guru</div></div></article>
-      <article class="cardStaff"><img src="john.jpg" alt="John"><div class="info"><div class="name">John</div><div class="chip">Trailblazer</div></div></article>
+      <article class="cardStaff"><img src="Waing.jpg" alt="Waing" loading="lazy"><div class="info"><div class="name">Waing</div><div class="chip">Strategy Whisperer</div></div></article>
+      <article class="cardStaff"><img src="Nana.jpg" alt="Nana" loading="lazy"><div class="info"><div class="name">Nana</div><div class="chip">Digital & Dream Architect</div></div></article>
+      <article class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu" loading="lazy"><div class="info"><div class="name">Peiyu</div><div class="chip">Chief Inspiration Officer</div></div></article>
+      <article class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro" loading="lazy"><div class="info"><div class="name">Yujiro</div><div class="chip">Maestro of Mayhem</div></div></article>
+      <article class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin" loading="lazy"><div class="info"><div class="name">Shin</div><div class="chip">Guru</div></div></article>
+      <article class="cardStaff"><img src="john.jpg" alt="John" loading="lazy"><div class="info"><div class="name">John</div><div class="chip">Trailblazer</div></div></article>
     </div>
   </section>
 
-  <!-- =============== ABOUT =============== -->
-  <section id="about" class="section reveal">
-    <article class="aboutImgCard"><img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Japan Trek graphic banner" /></article>
+  <!-- ========================= ABOUT (Reconnect + Camaraderie) ========================= -->
+  <section id="about" class="shell reveal">
+    <!-- Rounded blue image block above Reconnect -->
+    <article class="aboutImgCard">
+      <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Japan Trek graphic banner" loading="lazy" decoding="async" />
+    </article>
+
     <div class="aboutGrid">
       <article class="aboutCard">
-        <img src="20241109_c2_052.jpg" alt="Reconnect in Nature photo">
-        <h2 class="headline accent-line" style="margin-top:.2rem">Reconnect in Nature</h2>
+        <img src="20241109_c2_052.jpg" alt="Reconnect in Nature photo" loading="lazy" decoding="async">
+        <h2>Reconnect in Nature</h2>
         <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
       </article>
+
       <article class="postcard stack">
         <div>
-          <h2 class="headline accent-line">Camaraderie</h2>
+          <h2>Camaraderie</h2>
           <p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
         </div>
-        <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
+        <img src="20241109_c2_041.jpg" alt="Trail camaraderie" loading="lazy" decoding="async">
       </article>
     </div>
   </section>
 
-  <!-- =============== WEATHER =============== -->
-  <section id="weather" class="section reveal" data-dark>
-    <div class="shell" style="text-align:center">
-      <h2 class="headline accent-line" style="display:inline-block">Live Weather</h2><BR>
-      <div id="weatherCard" style="margin-top:1rem"><p>Loading…</p></div>
+  <!-- ========================= WEATHER ========================= -->
+  <section id="weather" data-dark class="reveal">
+    <div class="shell">
+      <h2>Live Weather</h2>
+      <div id="weatherCard"><p>Loading…</p></div>
     </div>
+  </section>
+
+  <!-- ========================= REGISTER ========================= -->
+  <section id="register" class="formCard shell reveal">
+    <h2>Register</h2>
+    <form action="https://formspree.io/f/your-id" method="POST">
+      <label class="sr-only">Name<input name="name" placeholder="Full Name" required /></label>
+      <label class="sr-only">Email<input type="email" name="email" placeholder="Email" required /></label>
+      <textarea rows="4" name="note" placeholder="Preferred date and time"></textarea>
+      <button class="btn btnSubmit">Submit</button>
+    </form>
   </section>
 </main>
 
 <footer>© 2025 TransPerfect · Japan Trek · Built with ✨ & ☕</footer>
 
 <script>
-/* ===== Layout offset ===== */
-const root = document.documentElement;
-const navEl = document.getElementById('siteNav');
-function setOffset(){ root.style.setProperty('--scroll-offset', navEl.offsetHeight + 'px'); }
-setOffset(); addEventListener('resize', setOffset);
+  // ===== util refs
+  const root = document.documentElement;
+  const navEl = document.getElementById('siteNav');
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-/* Smooth in-page anchor scroll compensated for fixed nav */
-document.addEventListener('click', (e)=>{
-  const a = e.target.closest('a[href^="#"]'); if(!a) return;
-  const id = decodeURIComponent(a.getAttribute('href').slice(1));
-  const target = id && document.getElementById(id); if(!target) return;
-  e.preventDefault();
-  const y = target.getBoundingClientRect().top + window.pageYOffset - navEl.offsetHeight;
-  window.scrollTo({top:y, behavior:'smooth'});
-  history.pushState(null,'','#'+id);
-});
+  // ===== scroll offset from actual nav height
+  function setOffset(){ root.style.setProperty('--scroll-offset', (navEl.offsetHeight) + 'px'); }
+  setOffset(); addEventListener('resize', setOffset);
 
-/* Progress bar + compact nav + active links */
-const bar = document.getElementById('progress');
-const navLinks = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
-const sections = navLinks.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
-function setActive(){
-  const y = scrollY + navEl.offsetHeight + 2;
-  let cur = sections[0]?.id;
-  for(const s of sections){ if(s.offsetTop <= y) cur = s.id; }
-  navLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href').slice(1) === cur));
-}
-function onScroll(){
-  const max = document.body.scrollHeight - innerHeight;
-  bar.style.transform = `scaleX(${Math.max(0, Math.min(1, scrollY / max))})`;
-  navEl.classList.toggle('compact', scrollY > 80);
-  setActive();
-}
-addEventListener('scroll', onScroll, {passive:true});
-addEventListener('load', ()=>{ onScroll(); setActive(); });
-
-/* Reveal-on-scroll */
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-},{threshold:.15});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-/* Swiper hero */
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-new Swiper('.swiper',{
-  loop:true, preloadImages:false, lazy:{loadPrevNext:true},
-  autoplay: reduce ? false : {delay:5200,disableOnInteraction:false},
-  speed: reduce ? 0 : 900, effect: reduce ? 'slide' : 'fade',
-  navigation:{nextEl:'#next',prevEl:'#prev'},
-  pagination:{el:'.swiper-pagination',clickable:true}
-});
-
-/* Countdown — Nov 8, 2025 09:30 JST */
-const cb = document.getElementById('countBox');
-cb.innerHTML = '<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
-const deadline = new Date('2025-11-08T09:30:00+09:00');
-const d=document.getElementById('d'),h=document.getElementById('h'),m=document.getElementById('m'),s=document.getElementById('s');
-const pad=n=>String(n).padStart(2,'0');
-function parts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60}}
-function tick(){ const r=deadline-Date.now(); if(r<=0){cb.textContent='Event Day!';return} const p=parts(r); d.textContent=pad(p.d); h.textContent=pad(p.h); m.textContent=pad(p.m); s.textContent=pad(p.s); }
-tick(); setInterval(tick,1000);
-
-/* Weather */
-fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true&timezone=Asia%2FTokyo')
-  .then(r=>r.json()).then(({current_weather:t})=>{
-    const label={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'};
-    document.getElementById('weatherCard').innerHTML =
-      `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
+  // ===== smooth anchor scrolling (accounts for fixed nav)
+  document.addEventListener('click', (e)=>{
+    const a = e.target.closest('a[href^="#"]'); if(!a) return;
+    const id = decodeURIComponent(a.getAttribute('href').slice(1));
+    const target = id && document.getElementById(id); if(!target) return;
+    e.preventDefault();
+    closeMenu();
+    const y = target.getBoundingClientRect().top + window.pageYOffset - navEl.offsetHeight;
+    window.scrollTo({top:y, behavior:'smooth'});
+    history.pushState(null,'','#'+id);
   });
 
-/* Meeting point map (Koma Bridge area) */
-(function(){
-  const el=document.getElementById('meetMap'); if(!el) return;
-  const center=[35.33806,139.54444];
-  const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView(center,16);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-  L.marker(center,{title:'Koma Bridge (降魔橋) – near JR Kita-Kamakura West Exit'}).addTo(map)
-    .bindPopup('Koma Bridge (降魔橋)<br>Near JR Kita-Kamakura Station – West Exit');
-})();
+  // ===== progress + compact nav + active link
+  const bar = document.getElementById('progress');
+  const navLinks = Array.from(document.querySelectorAll('nav .links a[href^="#"]'));
+  const sections = navLinks.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  function setActive(){
+    const y = scrollY + navEl.offsetHeight + 2;
+    let cur = sections[0]?.id;
+    for(const s of sections){ if(s.offsetTop <= y) cur = s.id; }
+    navLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href').slice(1) === cur));
+  }
+  function onScroll(){
+    const max = Math.max(1, document.body.scrollHeight - innerHeight);
+    bar.style.transform = `scaleX(${Math.min(1, Math.max(0, scrollY / max))})`;
+    navEl.classList.toggle('compact', scrollY > 80);
+    setActive();
+  }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('load', ()=>{ onScroll(); setActive(); if(location.hash){ const el=document.getElementById(location.hash.slice(1)); if(el){ const y = el.getBoundingClientRect().top + pageYOffset - navEl.offsetHeight; scrollTo(0,y); }}});
 
-/* After-party mini map */
-(function(){
-  const el = document.getElementById('afterMap'); if (!el) return;
-  const lat = 35.6255, lng = 139.2431; // approx
-  const map = L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView([lat,lng],15);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-  L.marker([lat,lng],{title:'Cafe Terrace Itsuki-Garden'}).addTo(map).bindPopup('Cafe Terrace Itsuki-Garden');
-})();
+  // ===== hero slider
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  new Swiper('.swiper',{
+    loop:true, preloadImages:false, lazy:{loadPrevNext:true},
+    autoplay: reduce ? false : {delay:5200,disableOnInteraction:false},
+    speed: reduce ? 0 : 900, effect: reduce ? 'slide' : 'fade',
+    navigation:{nextEl:'#next',prevEl:'#prev'},
+    pagination:{el:'.swiper-pagination',clickable:true}
+  });
+
+  // ===== countdown — Nov 8, 2025 09:30 JST
+  const cb = document.getElementById('countBox');
+  cb.innerHTML = '<strong class="sr-only">Countdown</strong><span class="num" id="d"></span><span class="sep">:</span><span class="num" id="h"></span><span class="sep">:</span><span class="num" id="m"></span><span class="sep">:</span><span class="num" id="s"></span>';
+  const deadline = new Date('2025-11-08T09:30:00+09:00');
+  const d=document.getElementById('d'),h=document.getElementById('h'),m=document.getElementById('m'),s=document.getElementById('s');
+  const pad=n=>String(n).padStart(2,'0');
+  function parts(ms){return{d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60}}
+  function tick(){ const r=deadline-Date.now(); if(r<=0){cb.textContent='Event Day!';return} const p=parts(r); d.textContent=pad(p.d); h.textContent=pad(p.h); m.textContent=pad(p.m); s.textContent=pad(p.s); }
+  tick(); setInterval(tick,1000);
+
+  // ===== weather (Mt. Takao area coords kept from earlier as example)
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=35.625&longitude=139.243&current_weather=true&timezone=Asia%2FTokyo')
+    .then(r=>r.json()).then(({current_weather:t})=>{
+      const label={0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',51:'Drizzle',61:'Rain',71:'Snow',95:'Thunderstorms'};
+      document.getElementById('weatherCard').innerHTML =
+        `<div class="t">${t.temperature}°C</div><p>${label[t.weathercode]||'Weather'}</p><p>${new Date(t.time).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'})}</p>`;
+    }).catch(()=>{document.getElementById('weatherCard').innerHTML='<p>Weather unavailable.</p>'});
+
+  // ===== meeting point map (Koma Bridge vicinity)
+  (function(){
+    const el=document.getElementById('meetMap'); if(!el) return;
+    const center=[35.33806,139.54444];
+    const map=L.map(el,{zoomControl:false,scrollWheelZoom:false,dragging:true}).setView(center,16);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
+    L.marker(center,{title:'Koma Bridge (降魔橋) – near JR Kita-Kamakura West Exit'}).addTo(map)
+      .bindPopup('Koma Bridge (降魔橋)<br>Near JR Kita-Kamakura Station – West Exit');
+  })();
+
+  // ===== after-party mini map
+  (function(){
+    const el = document.getElementById('afterMap'); if(!el) return;
+    const lat = 35.6255, lng = 139.2431; // approx
+    const map = L.map(el, { zoomControl:false, scrollWheelZoom:false, dragging:true }).setView([lat, lng], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution:'© OpenStreetMap' }).addTo(map);
+    L.marker([lat, lng], { title:'Cafe Terrace Itsuki-Garden' }).addTo(map).bindPopup('Cafe Terrace Itsuki-Garden');
+  })();
+
+  // ===== mobile menu open/close
+  function closeMenu(){
+    navEl.classList.remove('open'); document.body.classList.remove('menu-lock');
+    mobileMenu.hidden = true; menuBtn?.setAttribute('aria-expanded','false'); setOffset();
+  }
+  function openMenu(){
+    navEl.classList.add('open'); document.body.classList.add('menu-lock');
+    mobileMenu.hidden = false; menuBtn?.setAttribute('aria-expanded','true'); setOffset();
+  }
+  menuBtn?.addEventListener('click', ()=> navEl.classList.contains('open') ? closeMenu() : openMenu());
+  addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
+
+  // ===== reveal on view
+  const io = 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches
+    ? new IntersectionObserver((ents)=>{ ents.forEach(ent=>{ if(ent.isIntersecting){ ent.target.classList.add('in'); io.unobserve(ent.target);} }); }, {threshold:.12})
+    : null;
+  document.querySelectorAll('.reveal').forEach(el=>{ if(io && !el.classList.contains('in')) io.observe(el); else el.classList.add('in'); });
 </script>
 </body>
 </html>
