@@ -317,6 +317,39 @@ section p{ margin:.45rem 0 !important; }              /* rein in paragraph spaci
 section[data-dark]{ padding:1.4rem 0 !important; }
 /* Footer */
 footer{ padding:1.2rem .8rem !important; }
+
+
+/* 3-up grid between Reconnect and Camaraderie with weather centered */
+.aboutGrid.aboutGrid--tri{
+ display:grid;
+ gap:var(--gap);
+ grid-template-columns: 1fr minmax(260px, 340px) 1fr;
+ align-items:start;
+}
+/* Alignment helpers */
+.align-left{ text-align:left; }
+.align-center{ text-align:center; }
+.align-right{ text-align:right; }
+/* Make the right card’s content visually right-justified */
+.postcard.align-right{ justify-items:end; }
+/* Weather card sizing so it stays compact and centered */
+#weatherCard{
+ display:inline-block;
+ margin-inline:auto;
+ width:100%;
+ max-width:340px;
+ background:rgba(13,24,44,.7);
+ border:1px solid rgba(255,255,255,.12);
+ padding:1.2rem 1.6rem;
+ border-radius:1rem;
+ box-shadow:var(--shadow);
+}
+/* Mobile: stack nicely (Reconnect → Weather → Camaraderie) */
+@media (max-width: 900px){
+ .aboutGrid.aboutGrid--tri{ grid-template-columns:1fr; }
+ .postcard.align-right{ justify-items:stretch; } /* avoid awkward right-edge on narrow screens */
+ .align-right{ text-align:left; }                 /* readable on phones */
+}
     
   </style>
 </head>
@@ -526,32 +559,36 @@ footer{ padding:1.2rem .8rem !important; }
     </div>
   </section>
 
-  <!-- =============== ABOUT =============== -->
-  <section id="about" class="section reveal">
-    <article class="aboutImgCard"><img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Japan Trek graphic banner" /></article>
-    <div class="aboutGrid">
-      <article class="aboutCard">
-        <img src="20241109_c2_052.jpg" alt="Reconnect in Nature photo">
-        <h2 class="headline accent-line" style="margin-top:.2rem">Reconnect in Nature</h2>
-        <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
-      </article>
-      <article class="postcard stack">
-        <div>
-          <h2 class="headline accent-line">Camaraderie</h2>
-          <p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
-        </div>
-        <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
-      </article>
-    </div>
-  </section>
-
-  <!-- =============== WEATHER =============== -->
-  <section id="weather" class="section reveal" data-dark>
-    <div class="shell" style="text-align:center">
-      <h2 class="headline accent-line" style="display:inline-block">Live Weather</h2><BR>
-      <div id="weatherCard" style="margin-top:1rem"><p>Loading…</p></div>
-    </div>
-  </section>
+  <!-- =============== ABOUT (Reconnect • Weather • Camaraderie) =============== -->
+<section id="about" class="section reveal">
+<article class="aboutImgCard">
+<img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png"
+        alt="Japan Trek graphic banner" />
+</article>
+<!-- 3-column grid: left=reconnect, middle=weather, right=camaraderie -->
+<div class="aboutGrid aboutGrid--tri">
+<!-- LEFT: Reconnect (left-aligned) -->
+<article class="aboutCard align-left">
+<img src="20241109_c2_052.jpg" alt="Reconnect in Nature photo">
+<h2 class="headline accent-line" style="margin-top:.2rem">Reconnect in Nature</h2>
+<p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
+</article>
+<!-- MIDDLE: Live Weather (centered) -->
+<article class="aboutCard align-center" aria-labelledby="weather-inline-title">
+<h2 id="weather-inline-title" class="headline accent-line" style="margin-top:.2rem">Live Weather</h2>
+<!-- keep same id so your JS continues to update it -->
+<div id="weatherCard"><p>Loading…</p></div>
+</article>
+<!-- RIGHT: Camaraderie (right-aligned) -->
+<article class="postcard align-right">
+<div>
+<h2 class="headline accent-line">Camaraderie</h2>
+<p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
+</div>
+<img src="20241109_c2_041.jpg" alt="Trail camaraderie">
+</article>
+</div>
+</section>
 </main>
 
 <footer>© 2025 TransPerfect · Japan Trek · Built with ✨ & ☕</footer>
