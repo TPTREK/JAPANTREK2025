@@ -627,7 +627,8 @@ footer{ padding:1.2rem .8rem !important; }
 <!-- Middle (Weather) -->
 <article class="triCard align-center">
 <h2 class="headline accent-line">Live Weather</h2>
-<div class="grow">
+<div class="grow"><BR>
+  <p>Below you can find the live forecast for Koma Bridge.</p>
 <div id="weatherCard"><p>Loading…</p></div>
 </div>
 </article>
@@ -748,7 +749,7 @@ tick(); setInterval(tick,1000);
    return WX_ICONS.cloud;
  }
  // Koma Bridge vicinity (same area you used before)
- const url = 'https://api.open-meteo.com/v1/forecast?latitude=35.3381&longitude=139.5444&current_weather=true&timezone=Asia%2FTokyo';
+ const url = 'https://api.open-meteo.com/v1/forecast?latitude=35.33806&longitude=139.54444&current_weather=true&timezone=Asia%2FTokyo';
  fetch(url)
    .then(r => r.json())
    .then(data => {
