@@ -196,20 +196,6 @@
     .cardStaff .name{font-weight:900}
     .chip{display:inline-block;margin-top:.3rem;padding:.2rem .5rem;border-radius:999px;font-size:.68rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
 
-    /* About */
-    .aboutImgCard{background:rgba(13,24,44,.65);border:1px solid rgba(255,255,255,.1);border-radius:1rem;box-shadow:var(--shadow);padding:.9rem;margin-bottom:1rem}
-    .aboutGrid{display:grid;gap:var(--gap)}
-    @media (min-width:900px){.aboutGrid{grid-template-columns:1fr 1fr}}
-    .aboutCard{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;box-shadow:var(--shadow);padding:1.4rem;text-align:center}
-    .postcard{display:grid;gap:1rem;background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08);border-radius:1rem;box-shadow:var(--shadow);padding:1rem}
-    .postcard.stack{grid-template-columns:1fr}
-    @media (min-width:768px){.postcard{grid-template-columns:1.15fr .85fr;align-items:center}}
-    .postcard img,.aboutCard img{border-radius:.85rem}
-
-    /* Weather */
-    section[data-dark]{padding:2.2rem 0;background:linear-gradient(180deg,#142742,#15284a)}
-    #weatherCard{display:inline-block;background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.12);padding:1.7rem 2.2rem;border-radius:1rem;box-shadow:var(--shadow);min-width:260px}
-    #weatherCard .t{font-size:2.2rem;font-weight:900}
 
     /* Register (if used later) */
     .formCard{background:rgba(13,24,44,.7);border:1px solid rgba(255,255,255,.08)}
@@ -307,10 +293,8 @@ section p{ margin:.45rem 0 !important; }              /* rein in paragraph spaci
 }
 .giveCard .content{ gap:1rem !important; }
 .giveImg{ max-width:160px; }
-/* About area */
-.aboutImgCard{ margin-bottom:.6rem !important; padding:.7rem !important; }
-.aboutGrid{ gap:1rem !important; }
-.aboutCard,.postcard{ padding:1.05rem !important; }
+
+    
 /* Staff grid */
 .staffGrid{ gap:.9rem !important; }
 /* Dark sections (Weather) */
@@ -318,7 +302,50 @@ section[data-dark]{ padding:1.4rem 0 !important; }
 /* Footer */
 footer{ padding:1.2rem .8rem !important; }
 
-
+/* ===== ABOUT TRIO (Reconnect | Weather | Camaraderie) ===== */
+.aboutTri{
+ display:grid;
+ gap:1rem;
+ grid-template-columns:repeat(3,minmax(0,1fr)); /* always 3 on desktop */
+ align-items:stretch;
+}
+@media (max-width:1100px){
+ .aboutTri{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:680px){
+ .aboutTri{ grid-template-columns:1fr; }
+}
+.triCard{
+ background:linear-gradient(145deg,#132440,#0f1d34);
+ border:1px solid rgba(255,255,255,.08);
+ border-radius:1rem;
+ box-shadow:0 10px 30px rgba(0,0,0,.25);
+ padding:1rem 1.1rem;
+ display:flex; flex-direction:column;
+ min-height:300px;                 /* equal height baseline */
+}
+.triCard .headline{margin:.2rem 0 .5rem}
+.heroImgWrap{
+ border-radius:.85rem; overflow:hidden;
+ aspect-ratio:16/10;               /* consistent, not tall */
+ max-height:220px;                 /* hard cap so it never gets huge */
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.heroImgWrap img{width:100%;height:100%;object-fit:cover}
+.triCard p{line-height:1.55;margin-top:.4rem}
+.triCard .grow{flex:1}
+.align-left{text-align:left}
+.align-center{text-align:center}
+.align-right{text-align:right}
+.align-right .accent-line::before{left:auto;right:0}
+/* Weather tile centered & compact */
+#weatherCard{
+ width:100%; max-width:360px; margin:0 auto;
+ padding:1rem 1.2rem; border-radius:.8rem;
+ background:rgba(13,24,44,.7);
+ border:1px solid rgba(255,255,255,.12);
+ box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
 /* 3-up grid between Reconnect and Camaraderie with weather centered */
 .aboutGrid.aboutGrid--tri{
  display:grid;
@@ -559,14 +586,8 @@ footer{ padding:1.2rem .8rem !important; }
     </div>
   </section>
 
- <!-- =============== ABOUT (Equal-sized trio) =============== -->
-<section id="about" class="section reveal">
-<article class="aboutImgCard">
-<img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png"
-        alt="Japan Trek graphic banner" />
-</article>
 <div class="aboutTri">
-<!-- LEFT -->
+<!-- Left -->
 <article class="triCard align-left">
 <h2 class="headline accent-line">Reconnect in Nature</h2>
 <div class="heroImgWrap">
@@ -575,15 +596,14 @@ footer{ padding:1.2rem .8rem !important; }
 <p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
 <div class="grow"></div>
 </article>
-<!-- MIDDLE (WEATHER) -->
+<!-- Middle (Weather) -->
 <article class="triCard align-center">
 <h2 class="headline accent-line">Live Weather</h2>
 <div class="grow">
-<!-- keep same id so your JS updates this -->
 <div id="weatherCard"><p>Loading…</p></div>
 </div>
 </article>
-<!-- RIGHT -->
+<!-- Right -->
 <article class="triCard align-right">
 <h2 class="headline accent-line">Camaraderie</h2>
 <div class="heroImgWrap">
@@ -593,6 +613,7 @@ footer{ padding:1.2rem .8rem !important; }
 <div class="grow"></div>
 </article>
 </div>
+  
 </section>
 </main>
 
