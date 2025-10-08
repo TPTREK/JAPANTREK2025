@@ -559,33 +559,38 @@ footer{ padding:1.2rem .8rem !important; }
     </div>
   </section>
 
-  <!-- =============== ABOUT (Reconnect • Weather • Camaraderie) =============== -->
+ <!-- =============== ABOUT (Equal-sized trio) =============== -->
 <section id="about" class="section reveal">
 <article class="aboutImgCard">
 <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png"
         alt="Japan Trek graphic banner" />
 </article>
-<!-- 3-column grid: left=reconnect, middle=weather, right=camaraderie -->
-<div class="aboutGrid aboutGrid--tri">
-<!-- LEFT: Reconnect (left-aligned) -->
-<article class="aboutCard align-left">
+<div class="aboutTri">
+<!-- LEFT -->
+<article class="triCard align-left">
+<h2 class="headline accent-line">Reconnect in Nature</h2>
+<div class="heroImgWrap">
 <img src="20241109_c2_052.jpg" alt="Reconnect in Nature photo">
-<h2 class="headline accent-line" style="margin-top:.2rem">Reconnect in Nature</h2>
-<p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
-</article>
-<!-- MIDDLE: Live Weather (centered) -->
-<article class="aboutCard align-center" aria-labelledby="weather-inline-title">
-<h2 id="weather-inline-title" class="headline accent-line" style="margin-top:.2rem">Live Weather</h2>
-<!-- keep same id so your JS continues to update it -->
-<div id="weatherCard"><p>Loading…</p></div>
-</article>
-<!-- RIGHT: Camaraderie (right-aligned) -->
-<article class="postcard align-right">
-<div>
-<h2 class="headline accent-line">Camaraderie</h2>
-<p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
 </div>
+<p>Challenge yourself on a scenic trail, forge new friendships, and raise funds for a worthy cause.</p>
+<div class="grow"></div>
+</article>
+<!-- MIDDLE (WEATHER) -->
+<article class="triCard align-center">
+<h2 class="headline accent-line">Live Weather</h2>
+<div class="grow">
+<!-- keep same id so your JS updates this -->
+<div id="weatherCard"><p>Loading…</p></div>
+</div>
+</article>
+<!-- RIGHT -->
+<article class="triCard align-right">
+<h2 class="headline accent-line">Camaraderie</h2>
+<div class="heroImgWrap">
 <img src="20241109_c2_041.jpg" alt="Trail camaraderie">
+</div>
+<p>Walk shoulder to shoulder with colleagues, friends, and family.</p>
+<div class="grow"></div>
 </article>
 </div>
 </section>
