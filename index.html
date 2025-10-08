@@ -283,6 +283,41 @@
       nav .links{display:none}
       nav .actions{display:none}
     }
+/* ===== Compact spacing across ALL viewports (safe overrides) ===== */
+:root{ --gap:1rem; }
+/* Global rhythm */
+section p{ margin:.45rem 0 !important; }              /* rein in paragraph spacing */
+.section{ margin:1.4rem 0 !important; }               /* was larger */
+.frame{ padding:1.15rem 1.1rem !important; }          /* trim card padding */
+.headline{ margin:.2rem 0 .55rem !important; }
+.badge{ margin-bottom:.45rem !important; }
+.spacer{ height:10px !important; }
+/* Event block */
+.eventGrid{ gap:1.05rem !important; }
+.eventCol h3{ margin:.8rem 0 .35rem !important; }
+.eventCol ul{ margin:.25rem 0 !important; }
+.note{ margin-top:.25rem !important; }
+#meetMap,.miniMap{ margin-top:.5rem !important; }
+/* GIVE (Donation + Goods) two-up */
+#give{ margin:1.6rem auto !important; }
+#give .giveGrid{ gap:1rem !important; }
+.giveCard{
+ padding:1.15rem 1.15rem 1rem !important;
+ min-height:auto !important;                          /* drop hard 320px height */
+}
+.giveCard .content{ gap:1rem !important; }
+.giveImg{ max-width:160px; }
+/* About area */
+.aboutImgCard{ margin-bottom:.6rem !important; padding:.7rem !important; }
+.aboutGrid{ gap:1rem !important; }
+.aboutCard,.postcard{ padding:1.05rem !important; }
+/* Staff grid */
+.staffGrid{ gap:.9rem !important; }
+/* Dark sections (Weather) */
+section[data-dark]{ padding:1.4rem 0 !important; }
+/* Footer */
+footer{ padding:1.2rem .8rem !important; }
+    
   </style>
 </head>
 <body>
