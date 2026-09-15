@@ -545,7 +545,7 @@
     <span class="badge"><span class="en">The Cause</span><span class="ja">目的</span></span>
     <h2 class="headline"><span class="en">Hike for Education</span><span class="ja">教育のためのハイキング</span></h2>
     <p><span class="en">Since 1985, <strong>P.U.S. JAPAN</strong> has been supporting children who are unable to attend school in Bangladesh, Nepal, and Myanmar. They have already built 40 schools.</span><span class="ja"><strong>P.U.S. JAPAN</strong>は1985年以来、バングラデシュ、ネパール、ミャンマーで学校に通えない子供たちを支援しており、すでに40校の学校を建設しています。</span></p>
-    <p><span class="en">Small Steps. Big Impact. With approximately 2,000 JPY per month, one child can attend school. Based on past donation amounts, we could potentially help send dozens of children to school, and building a new school together may not be out of reach!</span><span class="ja">小さな一歩が、大きな力に。月額約2,000円で1人の子供が学校に通うことができます。過去の寄付実績から、何十人もの子供たちを学校へ送り出すことができ、さらには新しい学校を共に建設することも夢ではありません！</span></p>
+    <p><span class="en"><strong>Small Steps. Big Impact.</strong> Every step helps a child learn. Every ¥2,000 helps one child attend school for one month. Based on past donation amounts, we could potentially help send dozens of children to school, and building a new school together may not be out of reach!</span><span class="ja"><strong>小さな一歩が、大きな力に。</strong>皆様の一歩が子供の学びを助けます。2,000円で1人の子供が1ヶ月学校に通えます。過去の寄付実績から、何十人もの子供たちを学校へ送り出すことができ、さらには新しい学校を共に建設することも夢ではありません！</span></p>
     <a class="btn btn-outline" style="margin-top: 1rem;" href="https://www.pusjapan.org/" target="_blank"><span class="en">Read about P.U.S. JAPAN</span><span class="ja">P.U.S. JAPANについて</span></a>
   </div>
   <div>
@@ -633,9 +633,9 @@
       <div>
         <span class="badge"><span class="en">Donate</span><span class="ja">寄付</span></span>
         <h3 class="headline" style="font-size: 1.5rem;"><span class="en">Direct Contribution</span><span class="ja">直接寄付</span></h3>
-        <p><span class="en"><strong>Small Steps. Big Impact.</strong> Every step helps a child learn. Every ¥2,000 helps one child attend school for one month. 100% of proceeds go directly to P.U.S. JAPAN.</span><span class="ja"><strong>小さな一歩が、大きな力に。</strong>皆様の一歩が子供の学びを助けます。2,000円で1人の子供が1ヶ月学校に通えます。収益の100%はP.U.S. JAPANへ直接寄付されます。</span></p>
+        <p><span class="en">100% of proceeds go directly to P.U.S. JAPAN to support children's education.</span><span class="ja">収益の100%は、子供たちの教育支援のためP.U.S. JAPANへ直接寄付されます。</span></p>
       </div>
-      <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank"><span class="en">Donate via Congrant</span><span class="ja">Congrantから寄付する</span></a>
+      <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://www.pusjapan.org/" target="_blank"><span class="en">Donate to P.U.S. Japan</span><span class="ja">P.U.S. JAPANに寄付する</span></a>
     </div>
 
     <div class="card giveCard">
@@ -788,7 +788,7 @@
         if(newSection !== activeSection && sectionHints[newSection]) {
            activeSection = newSection;
            hintIndex = 0; 
-           if (!isClimbing && !isPreparingClimb) {
+           if (!isClimbing && !isPreparingClimb && !isHovered) {
              speechEl.innerHTML = sectionHints[activeSection][0];
              speechEl.classList.add('show');
            }
@@ -810,6 +810,7 @@
   let isClimbing = false;
   let isPreparingClimb = false;
   let hasReachedSummit = false;
+  let isHovered = false;
   let climbProgress = 0;
   
   let mouseX = window.innerWidth / 2;
@@ -821,8 +822,39 @@
   let isAttracted = false;
   let flip = 1;
 
+  // Hover logic for DONATE button injection
+  turtleImg.addEventListener('mouseenter', () => {
+    const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 800;
+    const isAtTop = window.scrollY < 200;
+    
+    if (!isAtBottom && !isAtTop && !isClimbing && !isPreparingClimb) {
+      isHovered = true;
+      speechEl.innerHTML = "<a href='https://www.pusjapan.org/' target='_blank' style='text-decoration: underline; color: inherit; pointer-events: auto; display: block;'><span class='ja'>寄付する！</span><span class='en'>DONATE!</span></a>";
+      speechEl.style.pointerEvents = 'auto';
+      speechEl.classList.add('show');
+    }
+  });
+
+  turtleImg.addEventListener('mouseleave', (e) => {
+    if (e.relatedTarget === speechEl || speechEl.contains(e.relatedTarget)) return;
+    endHover();
+  });
+
+  speechEl.addEventListener('mouseleave', (e) => {
+    if (e.relatedTarget === turtleImg) return;
+    endHover();
+  });
+
+  function endHover() {
+    isHovered = false;
+    speechEl.style.pointerEvents = "none";
+    if (!isClimbing && !isPreparingClimb) {
+      speechEl.classList.remove('show');
+    }
+  }
+
   // Execute backflip and trigger specific logic based on scroll position
-  turtleImg.addEventListener('click', () => {
+  turtleImg.addEventListener('click', (e) => {
     if (isClimbing || isPreparingClimb) return;
     
     // Check if user is near the bottom of the page
@@ -840,6 +872,8 @@
     isPreparingClimb = true;
     isAttracted = false;
     hasReachedSummit = false;
+    isHovered = false;
+    speechEl.style.pointerEvents = "none";
     speechEl.classList.remove('show');
     
     // Trigger Cinema Mode
@@ -895,20 +929,13 @@
           speechEl.innerHTML = "<span class='ja'>お疲れ様！</span><span class='en'>Great job!</span>";
           speechEl.classList.add('show');
           
-          // Wait to display message before fading out
+          // Wait to display message before fading out and redirecting
           setTimeout(() => {
             turtleWrap.style.transition = 'opacity 1s ease';
             turtleWrap.style.opacity = '0';
             setTimeout(() => {
-              isClimbing = false;
-              currentScale = 1;
-              targetScale = 1;
-              currentX = -200;
-              currentY = -200;
-              turtleWrap.style.opacity = '1';
-              turtleWrap.style.transition = 'none';
-              document.body.classList.remove('cinema-mode');
-              speechEl.classList.remove('show');
+              // Push the final redirect to the PUS Donation Page
+              window.location.href = "https://www.pusjapan.org/";
             }, 1500);
           }, 2000); 
         }
@@ -968,9 +995,9 @@
   }
   animateTurtle();
 
-  /* Mascot Cycling Hints (JP + EN ONLY) triggered by Observer context */
+  /* Mascot Cycling Hints */
   setInterval(() => {
-    if (!isClimbing && !isPreparingClimb) {
+    if (!isClimbing && !isPreparingClimb && !isHovered) {
       speechEl.classList.remove('show');
       setTimeout(() => {
         const hints = sectionHints[activeSection] || sectionHints['hero'];
