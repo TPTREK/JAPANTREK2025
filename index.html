@@ -71,8 +71,6 @@
     /* =============== Localization Toggle Logic =============== */
     :root[lang="en"] .ja { display: none !important; }
     :root[lang="ja"] .en { display: none !important; }
-    
-    #langToggle { font-style: normal; font-family: var(--font-body); font-weight: 800; }
 
     /* =============== Dynamic Mountain Trail Backdrop (Z-Index 1) =============== */
     .trail-backdrop {
@@ -108,7 +106,8 @@
       transition: filter 0.5s ease;
     }
     [data-theme="vaporwave"] .turtle-img {
-      filter: brightness(0) saturate(100%) invert(64%) sepia(61%) saturate(5185%) hue-rotate(293deg) brightness(101%) contrast(106%) drop-shadow(0 0 15px rgba(255, 113, 206, 0.8));
+      /* Removed the brightness/invert filter, leaving only the neon pink shadow */
+      filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.8));
     }
 
     /* Backflip Animation */
@@ -172,7 +171,7 @@
       transition: background-color 0.5s ease, color 0.5s ease; overflow-x: hidden; position: relative;
     }
     
-    /* Cinematic Mode Fade Out Transitions */
+    /* Cinematic Mode Fade Out Transitions - EXCLUDING Foreground Mountains */
     #siteNav, #mobileMenu, header, section, footer {
       transition: opacity 1s ease;
     }
@@ -310,9 +309,14 @@
 
     #themeToggle, #langToggle { 
       font-size: 1.2rem; cursor: pointer; background: none; border: none; 
-      transition: transform 0.3s; margin-right: 0.5rem; 
+      transition: filter 0.3s, transform 0.3s; margin-right: 0.5rem; 
     }
     #themeToggle:hover, #langToggle:hover { transform: rotate(15deg) scale(1.1); }
+
+    /* Apply pink neon drop shadow to the language emoji toggle in night mode */
+    [data-theme="vaporwave"] #langToggle, [data-theme="vaporwave"] #langToggleMobile {
+      filter: drop-shadow(0 0 8px var(--primary));
+    }
     
     /* Mobile Menu */
     .hamburger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: 0.5rem; z-index: 2; }
@@ -522,7 +526,7 @@
     <a href="#guide"><span class="en">Preparation</span><span class="ja">準備</span></a>
     <a href="#give"><span class="en">Support</span><span class="ja">サポート</span></a>
     <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
-      <button id="langToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; font-style: normal; font-size: 1.2rem; flex: 1;">🇯🇵</button>
+      <button id="langToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; font-style: normal; font-size: 1.2rem; flex: 1;" id="langToggleMobile">🇯🇵</button>
       <button id="themeToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; font-size: 1.2rem; flex: 1;">☀️</button>
     </div>
     <a class="btnWide" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank"><span class="en">Register</span><span class="ja">登録する</span></a>
@@ -645,7 +649,7 @@
   </div>
   
   <!-- APP TABS CARD -->
-  <div class="card appTabsCard" id="app">
+  <div class="card appTabsCard" id="appCard">
     <div style="padding: 2rem 2rem 1rem; text-align: center; border-bottom: 1px solid var(--border);">
         <span class="badge"><span class="en">Digital Setup</span><span class="ja">デジタル設定</span></span>
         <h3 class="headline" style="font-size: 1.5rem; margin-bottom: 0.5rem;"><span class="en">Download the dedicated app</span><span class="ja">専用アプリのダウンロード</span></h3>
@@ -852,6 +856,7 @@
   let targetScale = 1;
   let isClimbing = false;
   let isPreparingClimb = false;
+  let hasReachedSummit = false;
   let climbProgress = 0;
   
   let mouseX = window.innerWidth / 2;
@@ -868,6 +873,7 @@
     if (isClimbing || isPreparingClimb) return;
     isPreparingClimb = true;
     isAttracted = false;
+    hasReachedSummit = false;
     speechEl.classList.remove('show');
     
     // Trigger Cinema Mode & scroll to Mission block
@@ -921,23 +927,36 @@
       currentY += (targetY - currentY) * 0.1;
       
     } else if (isClimbing && pathEl) {
-      climbProgress += 0.0035; 
-      
       if (climbProgress >= 1) {
-        // Reached the summit
-        isClimbing = false;
-        turtleWrap.style.transition = 'opacity 1s ease';
-        turtleWrap.style.opacity = '0';
-        setTimeout(() => {
-          currentScale = 1;
-          targetScale = 1;
-          currentX = -200;
-          currentY = -200;
-          turtleWrap.style.opacity = '1';
-          turtleWrap.style.transition = 'none';
-          document.body.classList.remove('cinema-mode');
-        }, 1500);
+        if (!hasReachedSummit) {
+          hasReachedSummit = true;
+          speechEl.innerHTML = "お疲れ様！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Otsukaresama! / Great job!</span>";
+          speechEl.classList.add('show');
+          
+          // Wait to display message before fading out
+          setTimeout(() => {
+            turtleWrap.style.transition = 'opacity 1s ease';
+            turtleWrap.style.opacity = '0';
+            setTimeout(() => {
+              isClimbing = false;
+              currentScale = 1;
+              targetScale = 1;
+              currentX = -200;
+              currentY = -200;
+              turtleWrap.style.opacity = '1';
+              turtleWrap.style.transition = 'none';
+              document.body.classList.remove('cinema-mode');
+              speechEl.classList.remove('show');
+            }, 1500);
+          }, 2000); 
+        }
+        
+        // Hold position at the summit while speaking
+        targetX = currentX;
+        targetY = currentY;
       } else {
+        climbProgress += 0.0035; 
+        
         // Sample exact coordinate on the curved SVG path
         const pt = pathEl.getPointAtLength(climbProgress * pathLen);
         targetX = pt.x * S + offsetX;
@@ -973,8 +992,8 @@
     else if (currentX < prevX - 0.5) flip = 1;
 
     // Changes his idle floating into a bouncy run when climbing
-    const wobble = isClimbing ? Math.sin(Date.now() / 150) * 15 : Math.sin(Date.now() / 400) * 6; 
-    const floatY = isClimbing ? -Math.abs(Math.sin(Date.now() / 150) * 15) : Math.sin(Date.now() / 800) * 12;
+    const wobble = (isClimbing && !hasReachedSummit) ? Math.sin(Date.now() / 150) * 15 : Math.sin(Date.now() / 400) * 6; 
+    const floatY = (isClimbing && !hasReachedSummit) ? -Math.abs(Math.sin(Date.now() / 150) * 15) : Math.sin(Date.now() / 800) * 12;
 
     turtleWrap.style.left = currentX + 'px';
     turtleWrap.style.top = currentY + 'px';
