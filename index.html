@@ -136,7 +136,6 @@
     }
     [data-theme="vaporwave"] .toko-container { color: var(--primary); text-shadow: 0 0 6px var(--primary); }
     
-    /* Slower, softer toko toko with subtle rotation */
     .toko { opacity: 0; animation: tokoFlash 5s ease-in-out infinite; }
     .toko.left { --rot: -8deg; animation-delay: 0s; }
     .toko.right { --rot: 8deg; animation-delay: 2.5s; }
@@ -212,9 +211,7 @@
     }
 
     /* =============== Buttons & Rollovers =============== */
-    .btn, .btnWide, .tab-btn, .btn-outline {
-      font-style: italic;
-    }
+    .btn, .btnWide, .tab-btn, .btn-outline { font-style: italic; }
 
     .btn, .btnWide {
       background: var(--accent); color: #fff; border: 2px solid transparent;
@@ -253,11 +250,7 @@
     }
     .brand img { height: 36px; width: auto; transition: filter 0.3s; }
     
-    /* Neon Pink branding for Night Mode */
-    [data-theme="vaporwave"] .brand {
-      color: var(--primary);
-      text-shadow: 0 0 12px rgba(255, 113, 206, 0.8);
-    }
+    [data-theme="vaporwave"] .brand { color: var(--primary); text-shadow: 0 0 12px rgba(255, 113, 206, 0.8); }
     [data-theme="vaporwave"] .brand img { 
       filter: brightness(0) saturate(100%) invert(64%) sepia(61%) saturate(5185%) hue-rotate(293deg) brightness(101%) contrast(106%) drop-shadow(0 0 10px rgba(255, 113, 206, 0.8));
     }
@@ -273,9 +266,7 @@
     .actions { display: none; gap: 1rem; align-items: center; z-index: 2; }
     
     @media (min-width: 900px) {
-      .links { 
-        display: flex; gap: 1.5rem; position: absolute; left: 50%; transform: translateX(-50%); 
-      }
+      .links { display: flex; gap: 1.5rem; position: absolute; left: 50%; transform: translateX(-50%); }
       .actions { display: flex; align-items: center; }
       #menuBtn { display: none; }
     }
@@ -313,7 +304,36 @@
     [data-theme="vaporwave"] .heroOverlay { background: linear-gradient(180deg, rgba(11, 12, 16, 0.4) 0%, rgba(255, 113, 206, 0.2) 100%); }
 
     .heroOverlay h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-    .heroOverlay p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; }
+    .heroOverlay p { font-size: 1.2rem; max-width: 600px; margin-bottom: 1.5rem; }
+
+    /* =============== CYBER COUNTDOWN =============== */
+    .cyber-countdown {
+      display: flex; gap: 1rem; margin-bottom: 2rem;
+      background: rgba(0,0,0,0.4); padding: 1rem 1.5rem;
+      border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+    }
+    [data-theme="vaporwave"] .cyber-countdown {
+      background: rgba(11, 12, 16, 0.6); border: 1px solid var(--accent);
+      box-shadow: 0 0 15px rgba(1, 205, 254, 0.3), inset 0 0 10px rgba(1, 205, 254, 0.2);
+    }
+    
+    .time-block { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+    .time-block span:first-child { 
+      font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800; line-height: 1; 
+      color: var(--accent); text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    [data-theme="vaporwave"] .time-block span:first-child {
+      color: var(--primary); text-shadow: 0 0 10px var(--primary);
+    }
+    
+    .time-block .label { 
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; 
+      color: #fff; opacity: 0.8; margin-top: 0.3rem; font-family: var(--font-body);
+    }
+    
+    .cd-separator { font-family: var(--font-heading); font-size: 2rem; color: rgba(255,255,255,0.5); align-self: center; margin-top: -15px; }
+    [data-theme="vaporwave"] .cd-separator { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
 
     /* =============== SECTIONS =============== */
     .mission-text p, .event-text p { margin-bottom: 1rem; }
@@ -520,6 +540,18 @@
     <div class="heroOverlay">
       <h1>Walk With Purpose</h1>
       <p>TransPerfect Japan Charity Trek</p>
+
+      <!-- NEW: Cyber Countdown Timer -->
+      <div class="cyber-countdown" id="cyberCountdown">
+        <div class="time-block"><span id="cd-days">00</span><span class="label">Days</span></div>
+        <div class="cd-separator">:</div>
+        <div class="time-block"><span id="cd-hours">00</span><span class="label">Hrs</span></div>
+        <div class="cd-separator">:</div>
+        <div class="time-block"><span id="cd-mins">00</span><span class="label">Min</span></div>
+        <div class="cd-separator">:</div>
+        <div class="time-block"><span id="cd-secs">00</span><span class="label">Sec</span></div>
+      </div>
+
       <a href="#event" class="btn">Get Details</a>
     </div>
   </div>
@@ -819,6 +851,35 @@
     speechEl.innerHTML = mascotHints[0];
     speechEl.classList.add('show');
   }, 2000);
+
+  /* 8. Cyber Countdown Timer */
+  const targetDate = new Date('2026-11-07T10:00:00+09:00').getTime();
+  const cdDays = document.getElementById('cd-days');
+  const cdHours = document.getElementById('cd-hours');
+  const cdMins = document.getElementById('cd-mins');
+  const cdSecs = document.getElementById('cd-secs');
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const dist = targetDate - now;
+
+    if (dist <= 0) {
+      document.getElementById('cyberCountdown').innerHTML = "<div class='time-block'><span style='font-size:1.5rem;'>SYSTEM READY. BEGIN ASCENT.</span></div>";
+      return;
+    }
+
+    const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+    const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((dist % (1000 * 60)) / 1000);
+
+    cdDays.textContent = d.toString().padStart(2, '0');
+    cdHours.textContent = h.toString().padStart(2, '0');
+    cdMins.textContent = m.toString().padStart(2, '0');
+    cdSecs.textContent = s.toString().padStart(2, '0');
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 </script>
 </body>
 </html>
