@@ -40,12 +40,10 @@
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-body); color: var(--ink); background-color: var(--bg); -webkit-font-smoothing: antialiased; line-height: 1.6; transition: background-color 0.5s ease, color 0.5s ease; overflow-x: hidden; position: relative; }
     
-    /* Subtle pink glow on main text in dark mode */
     [data-theme="vaporwave"] body, [data-theme="vaporwave"] p, [data-theme="vaporwave"] li, [data-theme="vaporwave"] span {
       text-shadow: 0 0 4px rgba(255, 113, 206, 0.25);
     }
 
-    /* Soft black drop shadow for mission text and prep intro in night mode */
     [data-theme="vaporwave"] .mission-text p,
     [data-theme="vaporwave"] #guide .subtle {
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
@@ -64,8 +62,14 @@
     .waypoint-ping { animation: pingGlow 2s ease-in-out infinite alternate; }
     @keyframes pingGlow { from { r: 5px; opacity: 0.6; } to { r: 10px; opacity: 1; } }
 
-    .fg-mountains { position: fixed; bottom: 0; left: 0; width: 100vw; height: 25vh; pointer-events: none; z-index: 3; transition: opacity 1s ease, transform 0.2s ease-out; will-change: transform; overflow: visible; }
-    [data-theme="vaporwave"] .fg-mountains polygon { filter: drop-shadow(0 0 10px rgba(1, 205, 254, 0.2)); }
+    /* Localized Hero and Footer Mountains */
+    .hero-mountains, .footer-mountains {
+      width: 100%; height: 25vh; pointer-events: none; overflow: visible; display: block;
+    }
+    [data-theme="vaporwave"] .hero-mountains polygon,
+    [data-theme="vaporwave"] .footer-mountains polygon {
+      filter: drop-shadow(0 0 10px rgba(1, 205, 254, 0.2));
+    }
 
     .turtle-wrapper { position: fixed; width: 90px; z-index: 4; pointer-events: none; top: -200px; left: -200px; transform: translate(-50%, -50%); }
     .turtle-img { width: 100%; height: auto; cursor: pointer; pointer-events: auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4)); transition: filter 0.5s ease; }
@@ -207,19 +211,6 @@
   </svg>
 </div>
 
-<!-- =============== FOREGROUND MOUNTAIN FRAMING (Z-INDEX 3) =============== -->
-<!-- Pyramids made 70 percent sharper: narrow base, high steep peak -->
-<svg class="fg-mountains" id="fgMountains" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <g>
-    <polygon points="180,400 250,-260 320,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
-    <line x1="250" y1="-260" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
-  </g>
-  <g>
-    <polygon points="1130,400 1200,-230 1270,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
-    <line x1="1200" y1="-230" x2="1200" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
-  </g>
-</svg>
-
 <!-- =============== TURTLE MASCOT & TOOLTIPS (Z-INDEX 4) =============== -->
 <div class="turtle-wrapper" id="turtleMascot">
   <div class="turtle-speech" id="turtleSpeech"></div>
@@ -267,7 +258,7 @@
 </nav>
 
 <!-- =============== HERO =============== -->
-<header id="hero">
+<header id="hero" style="position: relative;">
   <div class="swiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="tps-110.jpg_compressed.jpg" alt="Trek"></div>
@@ -292,6 +283,17 @@
       <a href="#event" class="btn"><span class="en">Get Details</span><span class="ja">詳細を見る</span></a>
     </div>
   </div>
+  <!-- Splash Intro Screen Mountains (70 percent sharper peaks) -->
+  <svg class="hero-mountains" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position: absolute; bottom: 0; left: 0; pointer-events: none; z-index: 3;">
+    <g>
+      <polygon points="50,400 250,-260 320,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+      <line x1="250" y1="-260" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    </g>
+    <g>
+      <polygon points="1130,400 1200,-230 1270,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+      <line x1="1200" y1="-230" x2="1200" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    </g>
+  </svg>
 </header>
 
 <!-- =============== MISSION =============== -->
@@ -395,10 +397,22 @@
     <div class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="name">Yujiro</div><div class="chip"><span class="en">Logistics</span><span class="ja">ロジスティクス</span></div></div>
     <div class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="name">Shin</div><div class="chip"><span class="en">Guru</span><span class="ja">グル</span></div></div>
     <div class="cardStaff"><img src="john.jpg" alt="John"><div class="name">John</div><div class="chip"><span class="en">Trailblazer</span><span class="ja">トレイルブレイザー</span></div></div>
-    <div class="cardStaff"><img src="turtle.png" alt="Daniel"><div class="name">Daniel</div><div class="chip"><span class="en">Design</span><span class="ja">デザイン</span></div></div>
   </div>
 </section>
 
+<!-- =============== FOOTER WITH MOUNTAINS =============== -->
+<div style="position: relative; width: 100%; height: 0; pointer-events: none; z-index: 3;">
+  <svg class="footer-mountains" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position: absolute; bottom: 0; left: 0; width: 100vw; height: 25vh;">
+    <g>
+      <polygon points="50,400 250,-260 320,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+      <line x1="250" y1="-260" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    </g>
+    <g>
+      <polygon points="1130,400 1200,-230 1270,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+      <line x1="1200" y1="-230" x2="1200" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    </g>
+  </svg>
+</div>
 <footer>
   <p><span class="en">TRANSPERFECT / JAPAN TREK 2026</span><span class="ja">トランスパーフェクト / ジャパントレック 2026</span></p>
 </footer>
@@ -484,13 +498,6 @@
       document.getElementById('wxDescDisplay').innerHTML = `<span class="en">Weather offline</span><span class="ja">天気情報オフライン</span>`;
     });
 
-  const fgMountains = document.getElementById('fgMountains');
-  window.addEventListener('scroll', () => {
-    if(!fgMountains || document.body.classList.contains('cinema-mode')) return;
-    const pushDown = Math.min((window.scrollY / (document.body.scrollHeight - window.innerHeight || 1)) * 15, 15); 
-    fgMountains.style.transform = `translateY(${pushDown}vh)`;
-  });
-
   const sectionHints = {
     'hero': ["<span class='ja'>一緒に歩こう！</span><span class='en'>Let's walk together!</span>", "<span class='ja'>下へスクロール！</span><span class='en'>Scroll down!</span>"],
     'mission': ["<span class='ja'>小さな一歩が、大きな力に！</span><span class='en'>Small steps. Big impact!</span>", "<span class='ja'>教育を支援しよう！</span><span class='en'>Support education!</span>"],
@@ -508,7 +515,7 @@
         if(entry.target.id !== activeSection && sectionHints[entry.target.id]) {
            activeSection = entry.target.id;
            hintIndex = 0; 
-           if (!window.isClimbing && !window.isPreparingClimb && !window.isHovered) {
+           if (!window.isClimbing && !window.isPreparingClimb) {
              const speechEl = document.getElementById('turtleSpeech');
              if(speechEl) { speechEl.innerHTML = sectionHints[activeSection][0]; speechEl.classList.add('show'); }
            }
@@ -524,7 +531,7 @@
   const speechEl = document.getElementById('turtleSpeech');
   
   let currentScale = 1, targetScale = 1;
-  window.isClimbing = false; window.isPreparingClimb = false; window.isHovered = false;
+  window.isClimbing = false; window.isPreparingClimb = false;
   let hasReachedSummit = false, climbProgress = 0;
   let currentX = window.innerWidth * 0.9, currentY = window.innerHeight * 0.8;
   let targetX = currentX, targetY = currentY, mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -542,7 +549,7 @@
         const missionEl = document.getElementById('mission');
         if (missionEl) window.scrollTo({ top: missionEl.offsetTop - 70, behavior: 'auto' });
       } else if (scrollY >= (maxScroll - 800)) {
-        window.isPreparingClimb = true; isAttracted = false; hasReachedSummit = false; window.isHovered = false;
+        window.isPreparingClimb = true; isAttracted = false; hasReachedSummit = false;
         speechEl.classList.remove('show');
         document.body.classList.add('cinema-mode');
         const flipWrap = document.getElementById('turtleFlipWrap');
@@ -620,7 +627,7 @@
     animateTurtle();
 
     setInterval(() => {
-      if (!window.isClimbing && !window.isPreparingClimb && !window.isHovered) {
+      if (!window.isClimbing && !window.isPreparingClimb) {
         speechEl.classList.remove('show');
         setTimeout(() => {
           const hints = sectionHints[activeSection] || sectionHints['hero'];
@@ -646,7 +653,7 @@
       const speech = document.getElementById('turtleSpeech');
       if(wrap) { wrap.style.opacity = '1'; wrap.style.transition = 'none'; }
       if(speech) speech.classList.remove('show');
-      window.isClimbing = false; window.isPreparingClimb = false; window.isHovered = false;
+      window.isClimbing = false; window.isPreparingClimb = false;
     }
   });
 </script>
