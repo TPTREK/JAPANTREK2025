@@ -213,7 +213,7 @@
 
     /* =============== Buttons & Rollovers (Now Italic) =============== */
     .btn, .btnWide, .tab-btn, .btn-outline {
-      font-style: italic; /* Added Italic to all buttons as requested */
+      font-style: italic;
     }
 
     .btn, .btnWide {
@@ -242,7 +242,6 @@
       border-bottom: 1px solid var(--border); z-index: 120; transition: all 0.3s ease;
     }
     
-    /* Made nav-inner relative to support absolute centering of links */
     .nav-inner {
       display: flex; align-items: center; justify-content: space-between;
       height: var(--scroll-offset); padding: 0 clamp(1rem, 4vw, 2rem);
@@ -259,7 +258,6 @@
     .actions { display: none; gap: 1rem; align-items: center; z-index: 2; }
     
     @media (min-width: 900px) {
-      /* Perfect dead-center alignment for desktop nav links */
       .links { 
         display: flex; gap: 1.5rem; position: absolute; left: 50%; transform: translateX(-50%); 
       }
@@ -267,7 +265,6 @@
       #menuBtn { display: none; }
     }
 
-    /* Softened Light/Dark mode text */
     .theme-label {
       opacity: 0.3; font-size: 0.65rem; text-transform: lowercase; font-weight: 600;
       letter-spacing: 0.05em; pointer-events: none; margin-right: 0.2rem;
@@ -486,8 +483,17 @@
 <header id="hero">
   <div class="swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Forest Trail"></div>
-      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit"></div>
+      <div class="swiper-slide"><img src="tps-206.jpg_compressed.JPEG" alt="Trek 1"></div>
+      <div class="swiper-slide"><img src="tps-215.jpg_compressed.JPEG" alt="Trek 2"></div>
+      <div class="swiper-slide"><img src="tps-217.jpg_compressed.JPEG" alt="Trek 3"></div>
+      <div class="swiper-slide"><img src="tps-110.jpg_compressed.jpg" alt="Trek 4"></div>
+      <div class="swiper-slide"><img src="20241109_c1_242.jpg" alt="Trek 5"></div>
+      <div class="swiper-slide"><img src="20241109_c1_283.jpg" alt="Trek 6"></div>
+      <div class="swiper-slide"><img src="20241109_c2_024.jpg" alt="Trek 7"></div>
+      <div class="swiper-slide"><img src="tps-206.jpg_compressed.jpg" alt="Trek 8"></div>
+      <div class="swiper-slide"><img src="tps-215.jpg_compressed.jpg" alt="Trek 9"></div>
+      <div class="swiper-slide"><img src="tps-217.jpg_compressed.jpg" alt="Trek 10"></div>
+      <div class="swiper-slide"><img src="20241109_c2_034.jpg" alt="Trek 11"></div>
     </div>
     <div class="heroOverlay">
       <h1>Walk With Purpose</h1>
@@ -730,46 +736,38 @@
   let isAttracted = false;
   let flip = 1;
 
-  // Track the mouse and calculate if it is close enough to bait the turtle
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     const dist = Math.hypot(mouseX - currentX, mouseY - currentY);
     if (dist < 200) isAttracted = true;
-    if (dist > 400) isAttracted = false; // Snap back to patrol if you move the mouse away fast
+    if (dist > 400) isAttracted = false; 
   });
 
-  // Main animation frame loop
   function animateTurtle() {
     if (!turtleWrap) return;
     
     if (isAttracted) {
       targetX = mouseX;
-      targetY = mouseY + 40; // Float slightly below cursor so he does not block your clicks
+      targetY = mouseY + 40; 
     } else {
-      // Calculate a large patrol route based on how far the user has scrolled
       const scrollP = window.scrollY / (document.body.scrollHeight - window.innerHeight || 1);
       targetX = window.innerWidth * 0.5 + Math.sin(scrollP * Math.PI * 4) * (window.innerWidth * 0.4);
       targetY = window.innerHeight * 0.5 + Math.cos(scrollP * Math.PI * 3) * (window.innerHeight * 0.35);
     }
 
-    // Smooth lerp movement toward the target
     currentX += (targetX - currentX) * 0.04;
     currentY += (targetY - currentY) * 0.04;
 
-    // Flip logic based on direction of movement
     if (targetX > currentX + 5) flip = -1;
     else if (targetX < currentX - 5) flip = 1;
 
-    // Wobble and float calculations based on time
     const wobble = Math.sin(Date.now() / 200) * 8; 
     const floatY = Math.sin(Date.now() / 500) * 10;
 
-    // Move the wrapper position
     turtleWrap.style.left = currentX + 'px';
     turtleWrap.style.top = currentY + 'px';
     
-    // Apply flip and wobble to the image/text ONLY so the speech bubble doesn't get rendered backward
     turtleImg.style.transform = `scaleX(${flip}) rotate(${wobble}deg) translateY(${floatY}px)`;
     tokoContainer.style.transform = `scaleX(${flip})`;
 
@@ -777,7 +775,7 @@
   }
   animateTurtle();
 
-  // Mascot Cycling Hints (JP + Romaji + EN)
+  /* Mascot Cycling Hints (JP + Romaji + EN) */
   const mascotHints = [
     "スクロールしてね！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Sukurōru shite ne! / Scroll down!</span>",
     "寄付をお願いします！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Kifu o onegaishimasu! / Please donate!</span>",
