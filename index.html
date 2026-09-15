@@ -68,6 +68,12 @@
       --sun-fill: #ff71ce;
     }
 
+    /* =============== Localization Toggle Logic =============== */
+    :root[lang="en"] .ja { display: none !important; }
+    :root[lang="ja"] .en { display: none !important; }
+    
+    #langToggle { font-style: normal; font-family: var(--font-body); font-weight: 800; }
+
     /* =============== Dynamic Mountain Trail Backdrop (Z-Index 1) =============== */
     .trail-backdrop {
       position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none;
@@ -102,8 +108,7 @@
       transition: filter 0.5s ease;
     }
     [data-theme="vaporwave"] .turtle-img {
-      /* Reverted color removal, added heavy pink aura instead */
-      filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.8));
+      filter: brightness(0) saturate(100%) invert(64%) sepia(61%) saturate(5185%) hue-rotate(293deg) brightness(101%) contrast(106%) drop-shadow(0 0 15px rgba(255, 113, 206, 0.8));
     }
 
     /* Backflip Animation */
@@ -304,14 +309,24 @@
       #menuBtn { display: none; }
     }
 
-    .theme-label {
-      opacity: 0.3; font-size: 0.65rem; text-transform: lowercase; font-weight: 600;
-      letter-spacing: 0.05em; pointer-events: none; margin-right: 0.2rem;
-      font-style: italic; color: var(--muted);
-    }
-    #themeToggle { font-size: 1.2rem; cursor: pointer; background: none; border: none; transition: transform 0.3s; }
+    #themeToggle { font-size: 1.2rem; cursor: pointer; background: none; border: none; transition: transform 0.3s; margin-right: 0.5rem; }
     #themeToggle:hover { transform: rotate(15deg) scale(1.1); }
     
+    #langToggle, #langToggleMobile {
+      background: transparent; color: var(--primary);
+      border: 1px solid var(--primary); border-radius: 6px;
+      padding: 0.2rem 0.6rem; font-size: 0.8rem; cursor: pointer; transition: 0.3s;
+    }
+    [data-theme="vaporwave"] #langToggle, [data-theme="vaporwave"] #langToggleMobile {
+      color: var(--accent); border-color: var(--accent);
+    }
+    #langToggle:hover, #langToggleMobile:hover {
+      background: var(--primary); color: var(--bg);
+    }
+    [data-theme="vaporwave"] #langToggle:hover, [data-theme="vaporwave"] #langToggleMobile:hover {
+      background: var(--accent); color: #000; box-shadow: 0 0 10px var(--accent);
+    }
+
     /* Mobile Menu */
     .hamburger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 4px; padding: 0.5rem; z-index: 2; }
     .hamburger span { display: block; width: 24px; height: 2px; background: var(--primary); transition: 0.3s; }
@@ -418,7 +433,7 @@
 
 <!-- =============== BACKGROUND MOUNTAIN TRAIL (Z-INDEX 1) =============== -->
 <div class="trail-backdrop" aria-hidden="true">
-  <svg class="trail-svg" id="trailSvgLayer" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+  <svg class="trail-svg" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <pattern id="sunStripes" width="100" height="8" patternUnits="userSpaceOnUse">
         <rect width="100" height="4" fill="var(--sun-fill)" opacity="0.85" />
@@ -496,30 +511,33 @@
   <div class="nav-inner">
     <div class="brand">
       <img src="TPLOGO.png" alt="TransPerfect Logo">
-      <span>TRANSPERFECT JAPAN TREK</span>
+      <span class="en">TRANSPERFECT JAPAN TREK</span>
+      <span class="ja">トランスパーフェクト ジャパントレック</span>
     </div>
     <div class="links">
-      <a href="#mission">Mission</a>
-      <a href="#event">The Trek</a>
-      <a href="#give">Support</a>
-      <a href="#app">Get The App</a>
+      <a href="#mission"><span class="en">Mission</span><span class="ja">ミッション</span></a>
+      <a href="#event"><span class="en">The Trek</span><span class="ja">トレック詳細</span></a>
+      <a href="#give"><span class="en">Support</span><span class="ja">サポート</span></a>
+      <a href="#app"><span class="en">Get The App</span><span class="ja">アプリ連携</span></a>
     </div>
     <div class="actions">
-      <span class="theme-label">light / dark mode</span>
+      <button id="langToggle" aria-label="Toggle Language" class="btn-outline" style="padding: 0.3rem 0.6rem; border-radius: 6px; font-style: normal; margin-right: 0.5rem; font-family: var(--font-sans); font-size: 0.8rem; border-width: 1px;">JP</button>
       <button id="themeToggle" aria-label="Toggle Night Mode">☀️</button>
-      <a class="btn" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
+      <a class="btn" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank"><span class="en">Register</span><span class="ja">登録する</span></a>
     </div>
     <button id="menuBtn" class="hamburger"><span></span><span></span><span></span></button>
   </div>
 
   <div id="mobileMenu" class="mobileMenu">
-    <a href="#mission">Mission</a>
-    <a href="#event">The Trek</a>
-    <a href="#give">Support</a>
-    <a href="#app">Get The App</a>
-    <span class="theme-label" style="text-align: center; display: block; margin-bottom: -0.5rem;">light / dark mode</span>
-    <button id="themeToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px;">☀️ Toggle Theme</button>
-    <a class="btnWide" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
+    <a href="#mission"><span class="en">Mission</span><span class="ja">ミッション</span></a>
+    <a href="#event"><span class="en">The Trek</span><span class="ja">トレック詳細</span></a>
+    <a href="#give"><span class="en">Support</span><span class="ja">サポート</span></a>
+    <a href="#app"><span class="en">Get The App</span><span class="ja">アプリ連携</span></a>
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+      <button id="langToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; font-style: normal; font-family: var(--font-sans); flex: 1;">JP</button>
+      <button id="themeToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; flex: 1;">☀️</button>
+    </div>
+    <a class="btnWide" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank"><span class="en">Register</span><span class="ja">登録する</span></a>
   </div>
 </nav>
 
@@ -544,9 +562,9 @@
       <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Trek"></div>
     </div>
     <div class="heroOverlay">
-      <h1>Walk With Purpose</h1>
-      <p>TransPerfect Japan Charity Trek</p>
-      <a href="#event" class="btn">Get Details</a>
+      <h1><span class="en">Walk With Purpose</span><span class="ja">目的と共に歩む</span></h1>
+      <p><span class="en">TransPerfect Japan Charity Trek</span><span class="ja">トランスパーフェクト・ジャパン チャリティートレック</span></p>
+      <a href="#event" class="btn"><span class="en">Get Details</span><span class="ja">詳細を見る</span></a>
     </div>
   </div>
 </header>
@@ -554,11 +572,11 @@
 <!-- =============== MISSION =============== -->
 <section id="mission" class="section shell split">
   <div class="mission-text">
-    <span class="badge">The Cause</span>
-    <h2 class="headline">Giving Back, Together</h2>
-    <p>One of the privileges of being a successful business is having the opportunity to give back. We are deeply committed to uplifting local communities and supporting a wide range of non-profit organizations.</p>
-    <p>This year, TransPerfect has partnered with <strong>Relay For Life</strong>, a dynamic movement devoted to supporting cancer patients and their loved ones.</p>
-    <a class="btn btn-outline" style="margin-top: 1rem;" href="https://relayforlife.jp/selfwalk/2025/index.html" target="_blank">Read about Relay For Life</a>
+    <span class="badge"><span class="en">The Cause</span><span class="ja">目的</span></span>
+    <h2 class="headline"><span class="en">Giving Back, Together</span><span class="ja">共に社会へ還元する</span></h2>
+    <p><span class="en">One of the privileges of being a successful business is having the opportunity to give back. We are deeply committed to uplifting local communities and supporting a wide range of non-profit organizations.</span><span class="ja">成功した企業の特権の一つは、社会へ還元する機会を持てることです。私たちは、地域社会の向上と幅広い非営利団体の支援に深くコミットしています。</span></p>
+    <p><span class="en">This year, TransPerfect has partnered with <strong>Relay For Life</strong>, a dynamic movement devoted to supporting cancer patients and their loved ones.</span><span class="ja">今年、トランスパーフェクトは、がん患者とそのご家族を支援する活動である「<strong>リレー・フォー・ライフ</strong>」と提携しました。</span></p>
+    <a class="btn btn-outline" style="margin-top: 1rem;" href="https://relayforlife.jp/selfwalk/2025/index.html" target="_blank"><span class="en">Read about Relay For Life</span><span class="ja">リレー・フォー・ライフについて</span></a>
   </div>
   <div>
     <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Charity Banner" class="charity-banner">
@@ -567,35 +585,38 @@
 
 <!-- =============== EVENT =============== -->
 <section id="event" class="section shell card">
-  <span class="badge">Logistics</span>
-  <h2 class="headline">Tenran-Tonosu Mountain Trail</h2>
-  <p class="subtle">Saturday, November 7th</p>
+  <span class="badge"><span class="en">Logistics</span><span class="ja">イベント詳細</span></span>
+  <h2 class="headline"><span class="en">Tenran-Tonosu Mountain Trail</span><span class="ja">天覧山〜多峯主山ハイキングコース</span></h2>
+  <p class="subtle"><span class="en">Saturday, November 7th</span><span class="ja">11月7日 土曜日</span></p>
 
   <div class="eventGrid">
     <div class="eventCol">
-      <p>A scenic climb linking Mount Tenran and Mount Tonosu. The path offers switchback forest tracks, natural viewpoints over Hanno, and an accessible ascent suitable for beginners and experienced walkers alike.</p>
+      <p><span class="en">A scenic climb linking Mount Tenran and Mount Tonosu. The path offers switchback forest tracks, natural viewpoints over Hanno, and an accessible ascent suitable for beginners and experienced walkers alike.</span><span class="ja">天覧山と多峯主山を結ぶ絶景のコース。つづら折りの林道、飯能を見渡す自然の展望台があり、初心者から経験者まで楽しめる登りやすいルートです。</span></p>
       <br>
-      <h3>Schedule</h3>
+      <h3><span class="en">Schedule</span><span class="ja">スケジュール</span></h3>
       <ul>
-        <li><strong>Meeting Time:</strong> 10:00 AM</li>
-        <li><strong>Start Time:</strong> 10:30 AM</li>
-        <li><strong>Location:</strong> Hanno Station</li>
-        <li><strong>Fee:</strong> 3,000 JPY (Includes T-shirt, Kids are free)</li>
+        <li><span class="en"><strong>Meeting Time:</strong> 10:00 AM</span><span class="ja"><strong>集合時間:</strong> 午前10:00</span></li>
+        <li><span class="en"><strong>Start Time:</strong> 10:30 AM</span><span class="ja"><strong>出発時間:</strong> 午前10:30</span></li>
+        <li><span class="en"><strong>Location:</strong> Hanno Station</span><span class="ja"><strong>集合場所:</strong> 飯能駅</span></li>
+        <li><span class="en"><strong>Fee:</strong> 3,000 JPY (Includes T-shirt, Kids are free)</span><span class="ja"><strong>参加費:</strong> 3,000円 (Tシャツ込み、子供は無料)</span></li>
       </ul>
-      <p class="subtle" style="font-size: 0.85rem;">Note: Surfaces can be slippery after rain. Wear grip shoes and bring water. Transport costs are self-covered.</p>
+      <p class="subtle" style="font-size: 0.85rem;"><span class="en">Note: Surfaces can be slippery after rain. Wear grip shoes and bring water. Transport costs are self-covered.</span><span class="ja">注記: 雨上がりは路面が滑りやすくなります。グリップ力のある靴を履き、水を持参してください。交通費は自己負担となります。</span></p>
       
       <div id="weatherCard">
         <div class="wxTemp" id="wxTempDisplay">--°</div>
         <div class="wxDetails">
-          <strong id="wxDescDisplay">Loading weather...</strong>
-          <span class="subtle" style="font-size: 0.85rem;">Live from Hanno Station</span>
+          <strong id="wxDescDisplay">
+            <span class="en">Loading weather...</span>
+            <span class="ja">天気を読み込み中...</span>
+          </strong>
+          <span class="subtle" style="font-size: 0.85rem;"><span class="en">Live from Hanno Station</span><span class="ja">飯能駅のライブ天気</span></span>
         </div>
       </div>
     </div>
 
     <div class="eventCol">
       <div id="meetMap"></div>
-      <a class="btn btnWide" style="margin-top: 1rem;" href="https://www.google.com/maps/search/?api=1&query=Hanno+Station" target="_blank">Open in Google Maps</a>
+      <a class="btn btnWide" style="margin-top: 1rem;" href="https://www.google.com/maps/search/?api=1&query=Hanno+Station" target="_blank"><span class="en">Open in Google Maps</span><span class="ja">Googleマップで開く</span></a>
     </div>
   </div>
 </section>
@@ -605,56 +626,62 @@
   <div class="giveGrid">
     <div class="card giveCard">
       <div>
-        <span class="badge">Donate</span>
-        <h3 class="headline" style="font-size: 1.5rem;">Direct Contribution</h3>
-        <p>Charity-only participation is welcome. 100% of proceeds go directly to Relay for Life to support cancer patients.</p>
+        <span class="badge"><span class="en">Donate</span><span class="ja">寄付</span></span>
+        <h3 class="headline" style="font-size: 1.5rem;"><span class="en">Direct Contribution</span><span class="ja">直接寄付</span></h3>
+        <p><span class="en">Charity-only participation is welcome. 100% of proceeds go directly to Relay for Life to support cancer patients.</span><span class="ja">チャリティーのみの参加も歓迎します。収益の100%は、がん患者支援のためリレー・フォー・ライフへ直接寄付されます。</span></p>
       </div>
-      <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank">Donate via Congrant</a>
+      <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank"><span class="en">Donate via Congrant</span><span class="ja">Congrantから寄付する</span></a>
     </div>
 
     <div class="card giveCard">
       <div>
-        <span class="badge">Merch</span>
-        <h3 class="headline" style="font-size: 1.5rem;">Charity Goods</h3>
+        <span class="badge"><span class="en">Merch</span><span class="ja">グッズ</span></span>
+        <h3 class="headline" style="font-size: 1.5rem;"><span class="en">Charity Goods</span><span class="ja">チャリティーグッズ</span></h3>
         <img src="SampleTShirt.png" alt="T-Shirt Preview">
-        <p>Grab the official Trek T-Shirt. All profit goes to our charity partners.</p>
+        <p><span class="en">Grab the official Trek T-Shirt. All profit goes to our charity partners.</span><span class="ja">公式トレックTシャツを手に入れましょう。利益はすべてチャリティーパートナーへ寄付されます。</span></p>
       </div>
-      <a class="btn btnWide btn-outline" style="margin-top: 1.5rem;" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank">Visit Goods Shop</a>
+      <a class="btn btnWide btn-outline" style="margin-top: 1.5rem;" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank"><span class="en">Visit Goods Shop</span><span class="ja">グッズショップを見る</span></a>
     </div>
   </div>
 </section>
 
 <!-- =============== APP DOWNLOAD SECTION =============== -->
 <section id="app" class="section shell">
-  <h2 class="headline" style="text-align: center;">Download the dedicated app</h2>
+  <h2 class="headline" style="text-align: center;"><span class="en">Download the dedicated app</span><span class="ja">専用アプリのダウンロード</span></h2>
   <div style="text-align: center; margin-bottom: 2rem;">
-    <p class="subtle text-glow">You can participate using the charity walking app "minpo"</p>
+    <p class="subtle text-glow">
+      <span class="en">You can participate using the charity walking app "minpo"</span>
+      <span class="ja">チャリティーウォーキングアプリ「minpo」を使って参加できます</span>
+    </p>
   </div>
   
   <div class="card appTabsCard">
     <div class="tab-buttons">
-      <button class="tab-btn active" data-target="tab-android">▶ Android users</button>
-      <button class="tab-btn" data-target="tab-ios"> iPhone users</button>
+      <button class="tab-btn active" data-target="tab-android"><span class="en">▶ Android users</span><span class="ja">▶ Androidの方</span></button>
+      <button class="tab-btn" data-target="tab-ios"><span class="en"> iPhone users</span><span class="ja"> iPhoneの方</span></button>
     </div>
     
     <!-- ANDROID TAB -->
     <div id="tab-android" class="tab-content active">
-      <p class="accent-text">Two apps, Google fit and minpo, are required.</p>
+      <p class="accent-text"><span class="en">Two apps, Google fit and minpo, are required.</span><span class="ja">Google Fitとminpoの2つのアプリが必要です。</span></p>
       <ol class="app-steps">
         <li>
-          <strong>Install Google fit</strong> (if you have already installed it, go to step 2)
+          <span class="en"><strong>Install Google fit</strong> (if you have already installed it, go to step 2)</span>
+          <span class="ja"><strong>Google Fitをインストール</strong> (すでにインストール済みの場合はステップ2へ)</span>
           <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=ja&gl=US&pli=1" target="_blank" class="btn btn-outline">Get Google Fit</a>
+            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=ja&gl=US&pli=1" target="_blank" class="btn btn-outline"><span class="en">Get Google Fit</span><span class="ja">Google Fitを入手</span></a>
           </div>
         </li>
         <li>
-          <strong>Download the step measurement app "minpo"</strong>
+          <span class="en"><strong>Download the step measurement app "minpo"</strong></span>
+          <span class="ja"><strong>歩数計アプリ「minpo」をダウンロード</strong></span>
           <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=com.congrant.minpo.app&hl=ja&gl=US" target="_blank" class="btn btn-outline">Get minpo</a>
+            <a href="https://play.google.com/store/apps/details?id=com.congrant.minpo.app&hl=ja&gl=US" target="_blank" class="btn btn-outline"><span class="en">Get minpo</span><span class="ja">minpoを入手</span></a>
           </div>
         </li>
         <li>
-          <strong>Register for the event according to the steps in the video</strong>
+          <span class="en"><strong>Register for the event according to the steps in the video</strong></span>
+          <span class="ja"><strong>動画の手順に従ってイベントに登録</strong></span>
           <div class="video-container">
             <iframe src="https://www.youtube.com/embed/t_ZNkG5uN6Q" allowfullscreen></iframe>
           </div>
@@ -666,13 +693,15 @@
     <div id="tab-ios" class="tab-content">
       <ol class="app-steps">
         <li>
-          <strong>Download the step measurement app "minpo"</strong>
+          <span class="en"><strong>Download the step measurement app "minpo"</strong></span>
+          <span class="ja"><strong>歩数計アプリ「minpo」をダウンロード</strong></span>
           <div class="app-links">
-            <a href="https://apps.apple.com/us/app/minpo-%E3%83%81%E3%83%A3%E3%83%AA%E3%83%86%E3%82%A3%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA/id1569178883" target="_blank" class="btn btn-outline">Get minpo on the App Store</a>
+            <a href="https://apps.apple.com/us/app/minpo-%E3%83%81%E3%83%A3%E3%83%AA%E3%83%86%E3%82%A3%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA/id1569178883" target="_blank" class="btn btn-outline"><span class="en">Get minpo on the App Store</span><span class="ja">App Storeでminpoを入手</span></a>
           </div>
         </li>
         <li>
-          <strong>Register for the event according to the steps in the video</strong>
+          <span class="en"><strong>Register for the event according to the steps in the video</strong></span>
+          <span class="ja"><strong>動画の手順に従ってイベントに登録</strong></span>
           <div class="video-container">
             <iframe src="https://www.youtube.com/embed/3NjqO_BMQ8M" allowfullscreen></iframe>
           </div>
@@ -684,41 +713,60 @@
 
 <!-- =============== STAFF =============== -->
 <section id="staff" class="section shell">
-  <h2 class="headline" style="text-align: center;">The Trek Committee</h2>
+  <h2 class="headline" style="text-align: center;"><span class="en">The Trek Committee</span><span class="ja">トレック実行委員会</span></h2>
   <div class="staffGrid">
-    <div class="cardStaff"><img src="Waing.jpg" alt="Waing"><div class="name">Waing</div><div class="chip">Strategy</div></div>
-    <div class="cardStaff"><img src="Nana.jpg" alt="Nana"><div class="name">Nana</div><div class="chip">Architect</div></div>
-    <div class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu"><div class="name">Peiyu</div><div class="chip">Inspiration</div></div>
-    <div class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="name">Yujiro</div><div class="chip">Logistics</div></div>
-    <div class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="name">Shin</div><div class="chip">Guru</div></div>
-    <div class="cardStaff"><img src="john.jpg" alt="John"><div class="name">John</div><div class="chip">Trailblazer</div></div>
+    <div class="cardStaff"><img src="Waing.jpg" alt="Waing"><div class="name">Waing</div><div class="chip"><span class="en">Strategy</span><span class="ja">戦略</span></div></div>
+    <div class="cardStaff"><img src="Nana.jpg" alt="Nana"><div class="name">Nana</div><div class="chip"><span class="en">Architect</span><span class="ja">設計</span></div></div>
+    <div class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu"><div class="name">Peiyu</div><div class="chip"><span class="en">Inspiration</span><span class="ja">インスピレーション</span></div></div>
+    <div class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="name">Yujiro</div><div class="chip"><span class="en">Logistics</span><span class="ja">ロジスティクス</span></div></div>
+    <div class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="name">Shin</div><div class="chip"><span class="en">Guru</span><span class="ja">グル</span></div></div>
+    <div class="cardStaff"><img src="john.jpg" alt="John"><div class="name">John</div><div class="chip"><span class="en">Trailblazer</span><span class="ja">トレイルブレイザー</span></div></div>
   </div>
 </section>
 
 <footer>
-  <p>TRANSPERFECT / JAPAN TREK 2026</p>
+  <p><span class="en">TRANSPERFECT / JAPAN TREK 2026</span><span class="ja">トランスパーフェクト / ジャパントレック 2026</span></p>
 </footer>
 
 <script>
-  /* 1. Theme Toggle */
-  const toggleBtn = document.getElementById('themeToggle');
-  const toggleBtnMob = document.getElementById('themeToggleMobile');
+  /* 1. Theme & Language Toggles */
+  const themeToggle = document.getElementById('themeToggle');
+  const themeToggleMob = document.getElementById('themeToggleMobile');
   
   function toggleTheme() {
     const isVapor = document.documentElement.getAttribute('data-theme') === 'vaporwave';
     if (isVapor) {
       document.documentElement.removeAttribute('data-theme');
-      toggleBtn.textContent = '🌙';
-      if(toggleBtnMob) toggleBtnMob.innerHTML = '🌙 Toggle Theme';
+      themeToggle.textContent = '🌙';
+      if(themeToggleMob) themeToggleMob.innerHTML = '🌙';
     } else {
       document.documentElement.setAttribute('data-theme', 'vaporwave');
-      toggleBtn.textContent = '☀️';
-      if(toggleBtnMob) toggleBtnMob.innerHTML = '☀️ Toggle Theme';
+      themeToggle.textContent = '☀️';
+      if(themeToggleMob) themeToggleMob.innerHTML = '☀️';
     }
   }
   
-  toggleBtn.addEventListener('click', toggleTheme);
-  if(toggleBtnMob) toggleBtnMob.addEventListener('click', toggleTheme);
+  themeToggle.addEventListener('click', toggleTheme);
+  if(themeToggleMob) themeToggleMob.addEventListener('click', toggleTheme);
+
+  const langToggle = document.getElementById('langToggle');
+  const langToggleMob = document.getElementById('langToggleMobile');
+
+  function toggleLang() {
+    const currentLang = document.documentElement.getAttribute('lang');
+    if (currentLang === 'en') {
+      document.documentElement.setAttribute('lang', 'ja');
+      if(langToggle) langToggle.textContent = 'EN';
+      if(langToggleMob) langToggleMob.innerHTML = 'EN';
+    } else {
+      document.documentElement.setAttribute('lang', 'en');
+      if(langToggle) langToggle.textContent = 'JP';
+      if(langToggleMob) langToggleMob.innerHTML = 'JP';
+    }
+  }
+
+  if(langToggle) langToggle.addEventListener('click', toggleLang);
+  if(langToggleMob) langToggleMob.addEventListener('click', toggleLang);
 
   /* 2. Mobile Menu */
   const menuBtn = document.getElementById('menuBtn');
@@ -753,23 +801,29 @@
   }).addTo(map);
   L.marker(mapCenter).addTo(map).bindPopup('Hanno Station');
 
-  /* 6. Weather Fetch (Hanno coordinates) */
+  /* 6. Weather Fetch (Hanno coordinates) with i18n support */
+  const wxCodesEn = {
+    0: 'Clear Sky', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+    45: 'Fog', 51: 'Drizzle', 61: 'Rain', 71: 'Snow', 95: 'Thunderstorm'
+  };
+  const wxCodesJa = {
+    0: '快晴', 1: '晴れ', 2: '一部曇り', 3: '曇り',
+    45: '霧', 51: '霧雨', 61: '雨', 71: '雪', 95: '雷雨'
+  };
+
   fetch('https://api.open-meteo.com/v1/forecast?latitude=35.8506&longitude=139.3188&current_weather=true&timezone=Asia%2FTokyo')
     .then(r => r.json())
     .then(data => {
       const w = data.current_weather;
       document.getElementById('wxTempDisplay').textContent = Math.round(w.temperature) + '°C';
-      
-      const codes = {
-        0: 'Clear Sky', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
-        45: 'Fog', 51: 'Drizzle', 61: 'Rain', 71: 'Snow', 95: 'Thunderstorm'
-      };
-      document.getElementById('wxDescDisplay').textContent = codes[w.weathercode] || 'Variable';
+      const descEn = wxCodesEn[w.weathercode] || 'Variable';
+      const descJa = wxCodesJa[w.weathercode] || '変わりやすい';
+      document.getElementById('wxDescDisplay').innerHTML = `<span class="en">${descEn}</span><span class="ja">${descJa}</span>`;
     }).catch(() => {
-      document.getElementById('wxDescDisplay').textContent = 'Weather offline';
+      document.getElementById('wxDescDisplay').innerHTML = `<span class="en">Weather offline</span><span class="ja">天気情報オフライン</span>`;
     });
 
-  /* 7. Mascot Advanced Rendering Loop & SVG Path Logic */
+  /* 7. Mascot Advanced Rendering Loop & Logic */
   const turtleWrap = document.getElementById('turtleMascot');
   const turtleImg = document.getElementById('turtleImg');
   const tokoContainer = document.getElementById('tokoContainer');
@@ -778,9 +832,8 @@
   let currentScale = 1;
   let targetScale = 1;
   let isClimbing = false;
-  let trailPath = null;
-  let pathLength = 0;
-  let climbDistance = 0;
+  let waypoints = [];
+  let currentWaypoint = 0;
   
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
@@ -791,7 +844,7 @@
   let isAttracted = false;
   let flip = 1;
 
-  // Execute backflip and start true SVG path climbing sequence on click
+  // Execute backflip and start climbing sequence on click
   turtleImg.addEventListener('click', () => {
     if (isClimbing) return;
     isClimbing = true;
@@ -808,22 +861,22 @@
     const flipWrap = document.getElementById('turtleFlipWrap');
     flipWrap.classList.add('do-backflip');
     
-    // Grab the exact SVG path data for perfect alignment
-    trailPath = document.getElementById('mountainTrail');
-    pathLength = trailPath.getTotalLength();
-    climbDistance = 0;
-    
     setTimeout(() => {
       flipWrap.classList.remove('do-backflip');
       
-      // Teleport turtle exactly to the base of the SVG trail path
-      const pt = trailPath.getPointAtLength(0);
-      const scale = Math.max(window.innerWidth / 1440, window.innerHeight / 1000);
-      const offsetX = (window.innerWidth - 1440 * scale) / 2;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
       
-      currentX = pt.x * scale + offsetX;
-      currentY = pt.y * scale;
-      currentScale = 1;
+      waypoints = [
+        { x: w * 0.50, y: h * 1.05, s: 1.0 },
+        { x: w * 0.50, y: h * 0.95, s: 0.95 },
+        { x: w * 0.40, y: h * 0.84, s: 0.8 },
+        { x: w * 0.47, y: h * 0.70, s: 0.65 },
+        { x: w * 0.58, y: h * 0.54, s: 0.5 },
+        { x: w * 0.46, y: h * 0.39, s: 0.35 },
+        { x: w * 0.50, y: h * 0.24, s: 0.1 }
+      ];
+      currentWaypoint = 0;
     }, 600);
   });
 
@@ -841,70 +894,50 @@
     
     let speed = 0.015;
 
-    if (isClimbing && trailPath) {
-      // Calculate exact coordinates along the SVG curve
-      climbDistance += 4; // Climb speed
-      if (climbDistance >= pathLength) {
-         // Reached the summit
-         isClimbing = false;
-         turtleWrap.style.transition = 'opacity 1s ease';
-         turtleWrap.style.opacity = '0';
-         setTimeout(() => {
-           currentScale = 1;
-           targetScale = 1;
-           currentX = -200;
-           currentY = -200;
-           turtleWrap.style.opacity = '1';
-           turtleWrap.style.transition = 'none';
-           // Exit Cinema Mode
-           document.body.classList.remove('cinema-mode');
-         }, 1500);
-      } else {
-         const pt = trailPath.getPointAtLength(climbDistance);
-         
-         // Map internal SVG coordinates exactly to the current browser viewport size
-         const scale = Math.max(window.innerWidth / 1440, window.innerHeight / 1000);
-         const offsetX = (window.innerWidth - 1440 * scale) / 2;
-         
-         targetX = pt.x * scale + offsetX;
-         targetY = pt.y * scale; 
-         targetScale = 1 - (climbDistance / pathLength) * 0.9;
-         
-         // Look-ahead slightly for smooth flipping on switchbacks
-         const ptAhead = trailPath.getPointAtLength(Math.min(climbDistance + 10, pathLength));
-         const targetAheadX = ptAhead.x * scale + offsetX;
-         if (targetAheadX > targetX + 1) flip = -1;
-         else if (targetAheadX < targetX - 1) flip = 1;
+    if (isClimbing && waypoints.length > 0) {
+      speed = 0.04;
+      targetX = waypoints[currentWaypoint].x;
+      targetY = waypoints[currentWaypoint].y;
+      targetScale = waypoints[currentWaypoint].s;
 
-         // Instantly update current position to perfectly hug the path vector
-         currentX = targetX;
-         currentY = targetY;
-         currentScale = targetScale;
+      const dist = Math.hypot(targetX - currentX, targetY - currentY);
+      if (dist < 30) {
+        if (currentWaypoint < waypoints.length - 1) {
+          currentWaypoint++;
+        } else {
+          // Reached the summit
+          isClimbing = false;
+          turtleWrap.style.transition = 'opacity 1s ease';
+          turtleWrap.style.opacity = '0';
+          setTimeout(() => {
+            currentScale = 1;
+            targetScale = 1;
+            currentX = -200;
+            currentY = -200;
+            turtleWrap.style.opacity = '1';
+            turtleWrap.style.transition = 'none';
+            // Exit Cinema Mode
+            document.body.classList.remove('cinema-mode');
+          }, 1500);
+        }
       }
     } else if (isAttracted) {
       targetX = mouseX;
       targetY = mouseY + 40; 
       targetScale = 1;
-      
-      currentX += (targetX - currentX) * speed;
-      currentY += (targetY - currentY) * speed;
-      currentScale += (targetScale - currentScale) * speed;
-      
-      if (targetX > currentX + 5) flip = -1;
-      else if (targetX < currentX - 5) flip = 1;
     } else {
       const scrollP = window.scrollY / (document.body.scrollHeight - window.innerHeight || 1);
       targetX = window.innerWidth * 0.5 + Math.sin(scrollP * Math.PI * 4) * (window.innerWidth * 0.4);
       targetY = window.innerHeight * 0.5 + Math.cos(scrollP * Math.PI * 3) * (window.innerHeight * 0.35);
       targetScale = 1;
-      
-      currentX += (targetX - currentX) * speed;
-      currentY += (targetY - currentY) * speed;
-      currentScale += (targetScale - currentScale) * speed;
-      
-      if (targetX > currentX + 5) flip = -1;
-      else if (targetX < currentX - 5) flip = 1;
     }
+
+    currentX += (targetX - currentX) * speed;
+    currentY += (targetY - currentY) * speed;
+    currentScale += (targetScale - currentScale) * speed;
+
+    if (targetX > currentX + 5) flip = -1;
+    else if (targetX < currentX - 5) flip = 1;
 
     // Changes his idle floating into a bouncy run when climbing
     const wobble = isClimbing ? Math.sin(Date.now() / 150) * 15 : Math.sin(Date.now() / 400) * 6; 
