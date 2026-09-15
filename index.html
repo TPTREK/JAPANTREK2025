@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Japan Trek 2026 | TransPerfect</title>
 
-  <!-- Fonts -->
+  <!-- Fonts: High Fashion Editorial Stack -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&family=VT323&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
 
   <!-- Swiper / Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
@@ -17,640 +17,516 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    /* =============== Base Theme (Day/Zen) =============== */
+    /* =============== Haute Couture Theme =============== */
     :root {
-      --bg: #F9F8F6;
-      --bg-alt: #FFFFFF;
-      --ink: #2C3531;
-      --muted: #5D6B63;
-      --primary: #2A4B3C;
-      --accent: #D87C54;
-      --accent-hover: #C56A43;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --shadow: 0 12px 32px rgba(42, 75, 60, 0.08);
-      --border: rgba(42, 75, 60, 0.12);
-      --r: 16px;
-      --gap: 1.5rem;
-      --content-max: 1080px;
-      --h2: clamp(1.8rem, 4vw, 2.5rem);
-      --scroll-offset: 70px;
-      --font-body: 'Inter', sans-serif;
-      --font-heading: 'Lora', serif;
-
-      /* Trail Backdrop Variables (Day) */
-      --topo-line: rgba(42, 75, 60, 0.08);
-      --trail-base: rgba(216, 124, 84, 0.25);
-      --trail-pulse: #D87C54;
-      --mountain-wire: rgba(42, 75, 60, 0.06);
-      --sun-fill: rgba(216, 124, 84, 0.15);
+      --black: #000000;
+      --white: #ffffff;
+      --grey-light: #f4f4f4;
+      --grey-mid: #e0e0e0;
+      --grey-dark: #666666;
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-sans: 'Inter', sans-serif;
+      --nav-height: 80px;
     }
 
-    /* =============== Vaporwave Theme (Night Mode) =============== */
-    [data-theme="vaporwave"] {
-      --bg: #090a10;
-      --bg-alt: rgba(18, 18, 28, 0.85);
-      --ink: #f0f0f5;
-      --muted: #b967ff;
-      --primary: #ff71ce;
-      --accent: #01cdfe;
-      --accent-hover: #05ffa1;
-      --card-bg: rgba(13, 14, 24, 0.78);
-      --shadow: 0 0 25px rgba(255, 113, 206, 0.22), inset 0 0 12px rgba(1, 205, 254, 0.12);
-      --border: rgba(1, 205, 254, 0.35);
-      --font-heading: 'VT323', monospace;
-
-      /* Trail Backdrop Variables (Night/Vapor) */
-      --topo-line: rgba(1, 205, 254, 0.18);
-      --trail-base: rgba(255, 113, 206, 0.25);
-      --trail-pulse: #ff71ce;
-      --mountain-wire: rgba(1, 205, 254, 0.32);
-      --sun-fill: #ff71ce;
-    }
-
-    /* =============== Dynamic Mountain Trail Backdrop =============== */
-    .trail-backdrop {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-      opacity: 0.9;
-      transition: opacity 0.5s ease;
-    }
-
-    .trail-svg {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Trail animation: Pulses climb upward to the summit */
-    .trail-pulse {
-      stroke-dasharray: 14 26;
-      animation: climbAscent 2.4s linear infinite;
-    }
-
-    @keyframes climbAscent {
-      from { stroke-dashoffset: 80; }
-      to { stroke-dashoffset: 0; }
-    }
-
-    /* Beacon ping at the trail summits */
-    .waypoint-ping {
-      animation: pingGlow 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes pingGlow {
-      from { r: 5px; opacity: 0.6; }
-      to { r: 10px; opacity: 1; }
-    }
-
-    /* =============== Global Setup =============== */
+    /* =============== Reset & Global =============== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: var(--font-body);
-      color: var(--ink);
-      background-color: var(--bg);
+      font-family: var(--font-sans);
+      color: var(--black);
+      background-color: var(--white);
       -webkit-font-smoothing: antialiased;
       line-height: 1.6;
-      transition: background-color 0.5s ease, color 0.5s ease;
-      overflow-x: hidden;
-      position: relative;
+      font-weight: 300;
     }
+
+    h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); font-weight: 400; }
+    a { color: inherit; text-decoration: none; transition: 0.3s ease; }
+    img { max-width: 100%; display: block; height: auto; }
     
-    h1, h2, h3, .serif { 
-      font-family: var(--font-heading); 
-      transition: color 0.3s ease;
-    }
+    /* Editorial Image Treatment: Grayscale until hovered */
+    .editorial-img { filter: grayscale(100%); transition: filter 0.6s ease; }
+    .editorial-img:hover { filter: grayscale(0%); }
+
+    /* =============== Layout Utilities =============== */
+    .shell { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .split { display: grid; gap: 4rem; }
+    @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; } }
     
-    [data-theme="vaporwave"] h1, 
-    [data-theme="vaporwave"] h2 {
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      text-shadow: 2px 2px 0px var(--accent), -2px -2px 0px #b967ff;
-    }
-
-    a { color: inherit; text-decoration: none; transition: 0.2s; }
-    img { max-width: 100%; display: block; height: auto; border-radius: 8px; }
-    [id] { scroll-margin-top: var(--scroll-offset); }
-
-    /* =============== Layout & Utilities =============== */
-    .shell { max-width: var(--content-max); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
-    .section { padding: 4rem 0; position: relative; z-index: 2; }
-    .split { display: grid; gap: 3rem; }
-    @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; align-items: center; } }
-    
-    .badge {
-      display: inline-block; padding: 0.4rem 0.8rem; border-radius: 999px;
-      font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--bg-alt); color: var(--primary); margin-bottom: 1rem;
-      border: 1px solid var(--primary);
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
     }
     
-    .headline { font-size: var(--h2); color: var(--primary); line-height: 1.2; margin-bottom: 1.5rem; }
-    .subtle { color: var(--muted); }
-    
-    .card {
-      background: var(--card-bg); border-radius: var(--r);
-      padding: clamp(1.5rem, 3vw, 2.5rem); box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(14px);
+    .subtitle {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--grey-dark);
+      margin-bottom: 1rem;
+      display: block;
     }
 
-    /* Buttons */
+    /* Buttons - Sharp, stark, high contrast */
     .btn, .btnWide {
-      background: var(--accent); color: #fff;
-      padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600;
-      display: inline-block; transition: all 0.2s ease; border: none; cursor: pointer;
-      text-transform: uppercase; letter-spacing: 1px;
+      display: inline-block;
+      background: var(--black);
+      color: var(--white);
+      padding: 1rem 2.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border: 1px solid var(--black);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.3s ease;
     }
-    .btn:hover, .btnWide:hover { 
-      background: var(--accent-hover); 
-      transform: translateY(-2px); 
-      box-shadow: 0 0 16px var(--accent); 
-    }
-    .btnWide { width: 100%; text-align: center; padding: 1rem; }
+    .btn:hover, .btnWide:hover { background: var(--white); color: var(--black); }
+    .btnWide { width: 100%; }
     
-    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-    .btn-outline:hover { background: var(--primary); color: #fff; box-shadow: 0 0 15px var(--primary); }
+    .btn-outline { background: transparent; color: var(--black); }
+    .btn-outline:hover { background: var(--black); color: var(--white); }
 
     /* =============== NAV =============== */
     nav {
       position: fixed; top: 0; left: 0; width: 100%;
-      background: var(--card-bg); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border); z-index: 120;
-      transition: all 0.3s ease;
-    }
-    .nav-inner {
+      height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.98);
+      border-bottom: 1px solid var(--grey-mid);
+      z-index: 1000;
       display: flex; align-items: center; justify-content: space-between;
-      height: var(--scroll-offset); padding: 0 clamp(1rem, 4vw, 2rem);
+      padding: 0 2rem;
     }
+    .brand { font-family: var(--font-serif); font-size: 1.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .nav-actions { display: flex; align-items: center; gap: 2rem; }
     
-    .brand { display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1.2rem; }
-    .brand img { height: 40px; width: auto; transition: filter 0.3s; }
-    [data-theme="vaporwave"] .brand img { filter: invert(1) hue-rotate(180deg) saturate(3); }
-    
-    .links { display: none; gap: 1.5rem; font-weight: 600; font-size: 0.9rem; }
-    .links a { color: var(--muted); }
-    .links a:hover { color: var(--primary); }
-    .actions { display: none; gap: 1rem; align-items: center; }
-    
-    @media (min-width: 900px) {
-      .links, .actions { display: flex; align-items: center; }
-      #menuBtn { display: none; }
+    .register-link {
+      font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;
+      font-weight: 600; border-bottom: 1px solid transparent;
     }
-
-    #themeToggle { font-size: 1.2rem; cursor: pointer; background: none; border: none; }
-    
-    /* Mobile Menu */
-    .hamburger {
-      background: none; border: none; cursor: pointer; display: flex;
-      flex-direction: column; gap: 4px; padding: 0.5rem;
-    }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--primary); transition: 0.3s; }
-    .mobileMenu {
-      position: fixed; top: var(--scroll-offset); left: 0; width: 100%;
-      background: var(--card-bg); padding: 2rem; box-shadow: var(--shadow);
-      display: flex; flex-direction: column; gap: 1.5rem;
-      transform: translateY(-100%); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 100;
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(15px);
-    }
-    nav.open .mobileMenu { transform: translateY(0); opacity: 1; visibility: visible; }
+    .register-link:hover { border-bottom: 1px solid var(--black); }
 
     /* =============== HERO =============== */
-    header { margin-top: var(--scroll-offset); height: 75vh; position: relative; z-index: 2; }
+    header { height: 100vh; position: relative; padding-top: var(--nav-height); background: var(--grey-light); }
     .swiper { width: 100%; height: 100%; }
-    .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .swiper-slide img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); }
     
-    .heroOverlay {
-      position: absolute; inset: 0; background: rgba(0,0,0, 0.5);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      text-align: center; z-index: 5; padding: 1rem; color: #fff;
+    .hero-overlay {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      text-align: center; z-index: 10; width: 100%; padding: 0 2rem;
     }
-    [data-theme="vaporwave"] .heroOverlay {
-      background: linear-gradient(180deg, rgba(11, 12, 16, 0.4) 0%, rgba(255, 113, 206, 0.2) 100%);
+    .hero-overlay h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .hero-overlay p {
+      font-family: var(--font-sans);
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
-    .heroOverlay h1 { 
-      font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; 
-      text-shadow: 0 4px 12px rgba(0,0,0,0.5); 
-    }
-    .heroOverlay p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; }
-
-    /* =============== SECTIONS =============== */
-    .mission-text p, .event-text p { margin-bottom: 1rem; }
+    /* =============== EDITORIAL ACCORDION =============== */
+    .accordion-container { max-width: 1000px; margin: 6rem auto; border-top: 1px solid var(--black); }
     
-    .eventGrid { display: grid; gap: 2rem; margin-top: 2rem; }
-    @media (min-width: 900px) { .eventGrid { grid-template-columns: 1fr 1fr; } }
-    .eventCol ul { list-style: none; margin-bottom: 1.5rem; }
-    .eventCol li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
-    .eventCol li::before { content: ">"; color: var(--accent); position: absolute; left: 0; font-size: 0.9rem; top: 1px; font-weight: 800; }
+    .accordion-item { border-bottom: 1px solid var(--black); }
     
-    #meetMap { width: 100%; height: 300px; border-radius: var(--r); z-index: 1; border: 2px solid var(--border); }
-    [data-theme="vaporwave"] #meetMap { filter: invert(1) hue-rotate(180deg) contrast(1.2); }
-
-    /* Weather Card */
-    #weatherCard {
-      background: var(--bg); border-radius: var(--r); padding: 1.5rem;
-      display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;
-      border: 1px solid var(--border);
+    .accordion-head {
+      padding: 2.5rem 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
     }
-    .wxTemp { font-size: 2.5rem; font-weight: 800; font-family: var(--font-heading); color: var(--primary); }
-    .wxDetails { display: flex; flex-direction: column; }
+    .accordion-head:hover { padding-left: 1rem; padding-right: 1rem; }
+    
+    .acc-number { font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--grey-dark); margin-right: 2rem; }
+    .acc-title { font-size: clamp(1.5rem, 3vw, 2.5rem); text-transform: uppercase; letter-spacing: 0.05em; flex: 1; }
+    
+    .acc-icon {
+      position: relative; width: 20px; height: 20px;
+    }
+    .acc-icon::before, .acc-icon::after {
+      content: ''; position: absolute; background: var(--black); transition: transform 0.4s ease;
+    }
+    .acc-icon::before { top: 9px; left: 0; width: 20px; height: 2px; }
+    .acc-icon::after { top: 0; left: 9px; width: 2px; height: 20px; }
+    
+    .accordion-item.active .acc-icon::after { transform: rotate(90deg) scaleY(0); }
+    .accordion-item.active .acc-icon::before { transform: rotate(180deg); }
 
-    /* Give Cards */
-    .giveGrid { display: grid; gap: 2rem; }
-    @media (min-width: 900px) { .giveGrid { grid-template-columns: 1fr 1fr; } }
-    .giveCard { display: flex; flex-direction: column; justify-content: space-between; }
-    .giveCard img { border-radius: 8px; margin-bottom: 1.5rem; max-height: 200px; object-fit: contain; background: var(--bg); padding: 1rem; border: 1px solid var(--border); }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .accordion-inner { padding: 0 0 4rem 0; }
 
-    /* =============== APP DOWNLOAD TABS =============== */
-    .appTabsCard { padding: 0; overflow: hidden; max-width: 800px; margin: 2rem auto 0; }
-    .tab-buttons { display: flex; border-bottom: 1px solid var(--border); }
+    /* =============== INNER ACCORDION CONTENT =============== */
+    .content-grid { display: grid; gap: 3rem; }
+    @media (min-width: 800px) { .content-grid { grid-template-columns: 1fr 1fr; } }
+    
+    .text-block p { margin-bottom: 1.5rem; font-size: 1.1rem; line-height: 1.8; color: var(--grey-dark); }
+    .text-block strong { color: var(--black); font-weight: 600; }
+
+    /* Map & Weather (Logistics) */
+    .logistics-list { list-style: none; margin-bottom: 2rem; border-top: 1px solid var(--grey-mid); }
+    .logistics-list li {
+      padding: 1rem 0; border-bottom: 1px solid var(--grey-mid);
+      display: flex; justify-content: space-between; font-size: 0.95rem;
+    }
+    .logistics-list span { font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; }
+    
+    #meetMap { width: 100%; height: 350px; border: 1px solid var(--black); filter: grayscale(100%); }
+    
+    .weather-box {
+      border: 1px solid var(--black); padding: 2rem; text-align: center; margin-top: 2rem;
+    }
+    .wxTemp { font-family: var(--font-serif); font-size: 3.5rem; line-height: 1; margin-bottom: 0.5rem; }
+
+    /* App Tabs */
+    .tab-header { display: flex; border-bottom: 1px solid var(--grey-mid); margin-bottom: 2rem; }
     .tab-btn {
-      flex: 1; padding: 1.25rem 1rem; border: none; background: rgba(0,0,0,0.03);
-      font-weight: 600; cursor: pointer; color: var(--muted);
-      transition: 0.3s; font-family: var(--font-body); font-size: 1.1rem;
+      background: none; border: none; font-family: var(--font-sans); text-transform: uppercase;
+      letter-spacing: 0.15em; font-size: 0.85rem; padding: 1rem 2rem; cursor: pointer; color: var(--grey-dark);
+      transition: 0.3s;
     }
-    [data-theme="vaporwave"] .tab-btn { background: rgba(255,255,255,0.02); }
-    .tab-btn:hover { background: rgba(0,0,0,0.06); }
-    [data-theme="vaporwave"] .tab-btn:hover { background: rgba(255,255,255,0.06); }
-    .tab-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: inset 0 3px 0 var(--accent); }
+    .tab-btn.active { color: var(--black); box-shadow: inset 0 -2px 0 var(--black); }
     
-    .tab-content { display: none; padding: clamp(1.5rem, 4vw, 3rem); }
-    .tab-content.active { display: block; }
-    
-    .accent-text { color: var(--accent); font-weight: 800; margin-bottom: 2.5rem; text-align: center; }
-    .app-steps { list-style: none; counter-reset: step-counter; }
-    .app-steps li { position: relative; padding-left: 2.5rem; margin-bottom: 2.5rem; }
-    .app-steps li:last-child { margin-bottom: 0; }
-    .app-steps li::before {
-      counter-increment: step-counter;
-      content: counter(step-counter);
-      position: absolute; left: 0; top: -4px;
-      font-size: 1.5rem; font-weight: 800; font-family: var(--font-heading);
-      color: var(--primary);
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .step-list { list-style: none; counter-reset: my-sec-counter; }
+    .step-list li { position: relative; padding-left: 3rem; margin-bottom: 3rem; }
+    .step-list li::before {
+      counter-increment: my-sec-counter;
+      content: "0" counter(my-sec-counter);
+      position: absolute; left: 0; top: 0;
+      font-family: var(--font-serif); font-size: 1.5rem;
     }
-    .app-links { margin-top: 1rem; }
     
-    /* Responsive YouTube Embeds */
-    .video-container {
-      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-      margin-top: 1rem; border-radius: 8px; border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
-    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; margin-top: 1.5rem; border: 1px solid var(--black); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; filter: grayscale(100%); transition: 0.5s; }
+    .video-wrap:hover iframe { filter: grayscale(0%); }
 
     /* Staff Grid */
-    .staffGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-    .cardStaff { text-align: center; }
-    .cardStaff img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; box-shadow: var(--shadow); border: 2px solid var(--primary); }
-    .cardStaff .name { font-weight: 800; color: var(--primary); font-family: var(--font-heading); font-size: 1.2rem; }
-    .cardStaff .chip { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .staff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 3rem 1rem; }
+    .staff-member { text-align: center; }
+    .staff-member img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 1px solid var(--grey-mid); }
+    .staff-member h4 { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; }
+    .staff-member p { font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--grey-dark); }
 
-    footer { 
-      position: relative; z-index: 2;
-      background: var(--card-bg); color: var(--primary); text-align: center; 
-      padding: 2rem; font-size: 0.9rem; border-top: 1px solid var(--border); 
-      font-family: var(--font-heading); 
-    }
+    /* Footer */
+    footer { border-top: 1px solid var(--black); padding: 4rem 2rem; text-align: center; margin-top: 4rem; }
+    footer p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; }
   </style>
 </head>
 <body>
 
-<!-- =============== ASCENDING MOUNTAIN TRAIL BACKDROP =============== -->
-<div class="trail-backdrop" aria-hidden="true">
-  <svg class="trail-svg" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <!-- Sun Stripes Pattern -->
-      <pattern id="sunStripes" width="100" height="8" patternUnits="userSpaceOnUse">
-        <rect width="100" height="4" fill="var(--sun-fill)" opacity="0.85" />
-      </pattern>
-      <!-- Filter for Neon Glow in Vaporwave Mode -->
-      <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-
-    <!-- HORIZON STRIPED SUN -->
-    <g transform="translate(720, 240)">
-      <circle cx="0" cy="0" r="110" fill="url(#sunStripes)" />
-    </g>
-
-    <!-- MOUNTAIN WIREFRAME MESH (Tenran & Tonosu Peaks) -->
-    <!-- Distant Ridge Left -->
-    <polygon points="120,600 380,340 580,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5" />
-    <polygon points="240,600 380,340 460,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1" />
-    <line x1="380" y1="340" x2="380" y2="600" stroke="var(--mountain-wire)" stroke-width="1" />
-
-    <!-- Main Central Summit (Wireframe Pyramid from Shirt) -->
-    <polygon points="460,650 720,220 980,650" fill="none" stroke="var(--mountain-wire)" stroke-width="2" />
-    <line x1="720" y1="220" x2="720" y2="650" stroke="var(--mountain-wire)" stroke-width="1.5" />
-    <line x1="720" y1="220" x2="580" y2="650" stroke="var(--mountain-wire)" stroke-width="1" />
-    <line x1="720" y1="220" x2="860" y2="650" stroke="var(--mountain-wire)" stroke-width="1" />
-    <!-- Horizontal Cross Ridges -->
-    <line x1="620" y1="380" x2="820" y2="380" stroke="var(--mountain-wire)" stroke-width="1" />
-    <line x1="540" y1="510" x2="900" y2="510" stroke="var(--mountain-wire)" stroke-width="1" />
-
-    <!-- Distant Ridge Right -->
-    <polygon points="860,600 1060,360 1320,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5" />
-    <polygon points="980,600 1060,360 1180,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1" />
-    <line x1="1060" y1="360" x2="1060" y2="600" stroke="var(--mountain-wire)" stroke-width="1" />
-
-    <!-- TOPOGRAPHIC ELEVATION CONTOUR CURVES -->
-    <path d="M -50,750 Q 320,680 720,700 T 1500,740" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
-    <path d="M -50,830 Q 340,770 720,790 T 1500,820" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
-    <path d="M -50,910 Q 360,860 720,870 T 1500,900" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
-
-    <!-- ASCENDING SWITCHBACK HIKING TRAIL -->
-    <!-- Base Trail Guide Line -->
-    <path id="mountainTrail" 
-          d="M 720,990 
-             C 690,920 620,890 580,840 
-             C 530,780 620,740 680,700 
-             C 760,650 860,620 830,540 
-             C 800,470 650,470 660,390 
-             C 670,330 710,290 720,240"
-          fill="none" 
-          stroke="var(--trail-base)" 
-          stroke-width="5" 
-          stroke-linecap="round"
-          stroke-linejoin="round" />
-
-    <!-- Active Climber Pulse (Running Upward to the Peak) -->
-    <path d="M 720,990 
-             C 690,920 620,890 580,840 
-             C 530,780 620,740 680,700 
-             C 760,650 860,620 830,540 
-             C 800,470 650,470 660,390 
-             C 670,330 710,290 720,240"
-          fill="none" 
-          stroke="var(--trail-pulse)" 
-          stroke-width="4" 
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          filter="url(#neonGlow)"
-          class="trail-pulse" />
-
-    <!-- Summit Waypoint Beacon -->
-    <circle cx="720" cy="240" r="7" fill="var(--trail-pulse)" class="waypoint-ping" filter="url(#neonGlow)" />
-  </svg>
-</div>
-
-<!-- =============== NAV =============== -->
-<nav id="siteNav">
-  <div class="nav-inner">
-    <div class="brand">
-      JAPAN TREK
-    </div>
-    
-    <div class="links">
-      <a href="#mission">Mission</a>
-      <a href="#event">The Trek</a>
-      <a href="#give">Support</a>
-      <a href="#app">Get The App</a>
-    </div>
-
-    <div class="actions">
-      <button id="themeToggle" aria-label="Toggle Night Mode">🌙</button>
-      <a class="btn" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
-    </div>
-
-    <button id="menuBtn" class="hamburger"><span></span><span></span><span></span></button>
-  </div>
-
-  <div id="mobileMenu" class="mobileMenu">
-    <a href="#mission">Mission</a>
-    <a href="#event">The Trek</a>
-    <a href="#give">Support</a>
-    <a href="#app">Get The App</a>
-    <button id="themeToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px;">🌙 Toggle Theme</button>
-    <a class="btnWide" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
+<!-- =============== NAVIGATION =============== -->
+<nav>
+  <div class="brand">Japan Trek '26</div>
+  <div class="nav-actions">
+    <a href="https://forms.office.com/r/hmpPU0rHR3" target="_blank" class="register-link">Register Now</a>
   </div>
 </nav>
 
 <!-- =============== HERO =============== -->
-<header id="hero">
+<header>
   <div class="swiper">
     <div class="swiper-wrapper">
       <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Forest Trail"></div>
       <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit"></div>
     </div>
-    <div class="heroOverlay">
-      <h1>Walk With Purpose</h1>
-      <p>TransPerfect Japan Charity Trek</p>
-      <a href="#event" class="btn">Get Details</a>
+    <div class="hero-overlay">
+      <h1>The Ascent</h1>
+      <p>TransPerfect Charity Trek · Hanno, Japan</p>
     </div>
   </div>
 </header>
 
-<!-- =============== MISSION =============== -->
-<section id="mission" class="section shell split">
-  <div class="mission-text">
-    <span class="badge">The Cause</span>
-    <h2 class="headline">Giving Back, Together</h2>
-    <p>One of the privileges of being a successful business is having the opportunity to give back. We are deeply committed to uplifting local communities and supporting a wide range of non-profit organizations.</p>
-    <p>This year, TransPerfect has partnered with <strong>Relay For Life</strong>, a dynamic movement devoted to supporting cancer patients and their loved ones.</p>
-    <a class="btn btn-outline" style="margin-top: 1rem;" href="https://relayforlife.jp/selfwalk/2025/index.html" target="_blank">Read about Relay For Life</a>
-  </div>
-  <div>
-    <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Charity Banner" style="border-radius: var(--r); box-shadow: var(--shadow);">
-  </div>
-</section>
-
-<!-- =============== EVENT =============== -->
-<section id="event" class="section shell card">
-  <span class="badge">Logistics</span>
-  <h2 class="headline">Tenran-Tonosu Mountain Trail</h2>
-  <p class="subtle">Saturday, November 7th</p>
-
-  <div class="eventGrid">
-    <div class="eventCol">
-      <p>A scenic climb linking Mount Tenran and Mount Tonosu. The path offers switchback forest tracks, natural viewpoints over Hanno, and an accessible ascent suitable for beginners and experienced walkers alike.</p>
-      <br>
-      <h3>Schedule</h3>
-      <ul>
-        <li><strong>Meeting Time:</strong> 10:00 AM</li>
-        <li><strong>Start Time:</strong> 10:30 AM</li>
-        <li><strong>Location:</strong> Hanno Station</li>
-        <li><strong>Fee:</strong> 3,000 JPY (Includes T-shirt, Kids are free)</li>
-      </ul>
-      <p class="subtle" style="font-size: 0.85rem;">Note: Surfaces can be slippery after rain. Wear grip shoes and bring water. Transport costs are self-covered.</p>
-      
-      <div id="weatherCard">
-        <div class="wxTemp" id="wxTempDisplay">--°</div>
-        <div class="wxDetails">
-          <strong id="wxDescDisplay">Loading weather...</strong>
-          <span class="subtle" style="font-size: 0.85rem;">Live from Hanno Station</span>
+<!-- =============== EDITORIAL ACCORDION SYSTEM =============== -->
+<main class="shell">
+  <div class="accordion-container">
+    
+    <!-- 01. THE CAUSE -->
+    <div class="accordion-item">
+      <div class="accordion-head">
+        <span class="acc-number">01</span>
+        <h2 class="acc-title">The Cause</h2>
+        <div class="acc-icon"></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner content-grid">
+          <div class="text-block">
+            <span class="subtitle">Philanthropy</span>
+            <p>One of the privileges of being a successful business is having the opportunity to give back. We are deeply committed to uplifting local communities and supporting a wide range of non-profit organizations.</p>
+            <p>This year, TransPerfect has partnered with <strong>Relay For Life</strong>, a dynamic movement devoted to supporting cancer patients and their loved ones.</p>
+          </div>
+          <div>
+            <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Relay for Life" class="editorial-img" style="border: 1px solid var(--grey-mid);">
+            <a href="https://relayforlife.jp/selfwalk/2025/index.html" target="_blank" class="btn btnWide btn-outline" style="margin-top: 1.5rem;">Discover Relay For Life</a>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="eventCol">
-      <div id="meetMap"></div>
-      <a class="btn btnWide" style="margin-top: 1rem;" href="https://www.google.com/maps/search/?api=1&query=Hanno+Station" target="_blank">Open in Google Maps</a>
-    </div>
-  </div>
-</section>
-
-<!-- =============== GIVE =============== -->
-<section id="give" class="section shell">
-  <div class="giveGrid">
-    <div class="card giveCard">
-      <div>
-        <span class="badge">Donate</span>
-        <h3 class="headline" style="font-size: 1.5rem;">Direct Contribution</h3>
-        <p>Charity-only participation is welcome. 100% of proceeds go directly to Relay for Life to support cancer patients.</p>
+    <!-- 02. THE LOGISTICS -->
+    <div class="accordion-item">
+      <div class="accordion-head">
+        <span class="acc-number">02</span>
+        <h2 class="acc-title">The Itinerary</h2>
+        <div class="acc-icon"></div>
       </div>
-      <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank">Donate via Congrant</a>
-    </div>
+      <div class="accordion-body">
+        <div class="accordion-inner content-grid">
+          <div class="text-block">
+            <span class="subtitle">Expedition Details</span>
+            <p>A scenic climb linking Mount Tenran and Mount Tonosu. The path offers switchback forest tracks, natural viewpoints over Hanno, and an accessible ascent suitable for beginners and experienced walkers alike.</p>
+            
+            <ul class="logistics-list">
+              <li><span>Date</span> Saturday, November 7, 2026</li>
+              <li><span>Rendezvous</span> 10:00 AM</li>
+              <li><span>Departure</span> 10:30 AM</li>
+              <li><span>Location</span> Hanno Station</li>
+              <li><span>Contribution</span> ¥3,000 (Kids gratis)</li>
+            </ul>
 
-    <div class="card giveCard">
-      <div>
-        <span class="badge">Merch</span>
-        <h3 class="headline" style="font-size: 1.5rem;">Charity Goods</h3>
-        <img src="SampleTShirt.png" alt="T-Shirt Preview">
-        <p>Grab the official Trek T-Shirt. All profit goes to our charity partners.</p>
+            <div class="weather-box">
+              <span class="subtitle" style="margin-bottom: 0.5rem;">Current Conditions</span>
+              <div class="wxTemp" id="wxTempDisplay">--°</div>
+              <div id="wxDescDisplay" style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--grey-dark);">Forecasting...</div>
+            </div>
+          </div>
+          
+          <div>
+            <div id="meetMap"></div>
+            <a href="https://www.google.com/maps/search/?api=1&query=Hanno+Station" target="_blank" class="btn btnWide btn-outline" style="margin-top: 1rem; border-color: var(--grey-mid);">Navigate to Basecamp</a>
+          </div>
+        </div>
       </div>
-      <a class="btn btnWide btn-outline" style="margin-top: 1.5rem;" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank">Visit Goods Shop</a>
-    </div>
-  </div>
-</section>
-
-<!-- =============== APP DOWNLOAD SECTION =============== -->
-<section id="app" class="section shell">
-  <h2 class="headline" style="text-align: center;">Download the dedicated app</h2>
-  <p class="subtle" style="text-align: center; margin-bottom: 2rem;">You can participate using the charity walking app "minpo"</p>
-  
-  <div class="card appTabsCard">
-    <div class="tab-buttons">
-      <button class="tab-btn active" data-target="tab-android">▶ Android users</button>
-      <button class="tab-btn" data-target="tab-ios"> iPhone users</button>
-    </div>
-    
-    <!-- ANDROID TAB -->
-    <div id="tab-android" class="tab-content active">
-      <p class="accent-text">Two apps, Google fit and minpo, are required.</p>
-      <ol class="app-steps">
-        <li>
-          <strong>Install Google fit</strong> (if you have already installed it, go to step 2)
-          <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=ja&gl=US&pli=1" target="_blank" class="btn btn-outline">Get Google Fit</a>
-          </div>
-        </li>
-        <li>
-          <strong>Download the step measurement app "minpo"</strong>
-          <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=com.congrant.minpo.app&hl=ja&gl=US" target="_blank" class="btn btn-outline">Get minpo</a>
-          </div>
-        </li>
-        <li>
-          <strong>Register for the event according to the steps in the video</strong>
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/t_ZNkG5uN6Q" allowfullscreen></iframe>
-          </div>
-        </li>
-      </ol>
     </div>
 
-    <!-- IOS TAB -->
-    <div id="tab-ios" class="tab-content">
-      <ol class="app-steps">
-        <li>
-          <strong>Download the step measurement app "minpo"</strong>
-          <div class="app-links">
-            <a href="https://apps.apple.com/us/app/minpo-%E3%83%81%E3%83%A3%E3%83%AA%E3%83%86%E3%82%A3%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA/id1569178883" target="_blank" class="btn btn-outline">Get minpo on the App Store</a>
+    <!-- 03. SUPPORT -->
+    <div class="accordion-item">
+      <div class="accordion-head">
+        <span class="acc-number">03</span>
+        <h2 class="acc-title">Contributions</h2>
+        <div class="acc-icon"></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner content-grid">
+          <div class="text-block" style="border: 1px solid var(--grey-mid); padding: 2rem;">
+            <span class="subtitle">Direct Donation</span>
+            <p>Charity-only participation is highly encouraged. 100% of proceeds go directly to Relay for Life to support cancer patients.</p>
+            <a href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank" class="btn btnWide">Donate via Congrant</a>
           </div>
-        </li>
-        <li>
-          <strong>Register for the event according to the steps in the video</strong>
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/3NjqO_BMQ8M" allowfullscreen></iframe>
+          <div class="text-block" style="border: 1px solid var(--grey-mid); padding: 2rem;">
+            <span class="subtitle">The Collection</span>
+            <img src="SampleTShirt.png" alt="T-Shirt" class="editorial-img" style="margin-bottom: 1.5rem;">
+            <a href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank" class="btn btnWide btn-outline">Acquire Merch</a>
           </div>
-        </li>
-      </ol>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
 
-<!-- =============== STAFF =============== -->
-<section id="staff" class="section shell">
-  <h2 class="headline" style="text-align: center;">The Trek Committee</h2>
-  <div class="staffGrid">
-    <div class="cardStaff"><img src="Waing.jpg" alt="Waing"><div class="name">Waing</div><div class="chip">Strategy</div></div>
-    <div class="cardStaff"><img src="Nana.jpg" alt="Nana"><div class="name">Nana</div><div class="chip">Architect</div></div>
-    <div class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu"><div class="name">Peiyu</div><div class="chip">Inspiration</div></div>
-    <div class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="name">Yujiro</div><div class="chip">Logistics</div></div>
-    <div class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="name">Shin</div><div class="chip">Guru</div></div>
-    <div class="cardStaff"><img src="john.jpg" alt="John"><div class="name">John</div><div class="chip">Trailblazer</div></div>
+    <!-- 04. DIGITAL REGISTRATION -->
+    <div class="accordion-item">
+      <div class="accordion-head">
+        <span class="acc-number">04</span>
+        <h2 class="acc-title">Digital Setup</h2>
+        <div class="acc-icon"></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <div class="text-block" style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+            <span class="subtitle">The Application</span>
+            <p>Participation requires the official charity tracking application, "minpo". Select your operating system below for integration protocols.</p>
+          </div>
+          
+          <div class="tab-header" style="justify-content: center;">
+            <button class="tab-btn active" data-target="os-ios">Apple iOS</button>
+            <button class="tab-btn" data-target="os-android">Google Android</button>
+          </div>
+
+          <!-- iOS Panel -->
+          <div id="os-ios" class="tab-panel active">
+            <div class="content-grid">
+              <ul class="step-list text-block">
+                <li>
+                  <strong>Install the minpo application.</strong><br>
+                  <a href="https://apps.apple.com/us/app/minpo-%E3%83%81%E3%83%A3%E3%83%AA%E3%83%86%E3%82%A3%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA/id1569178883" target="_blank" class="btn" style="margin-top: 1rem;">App Store</a>
+                </li>
+                <li>
+                  <strong>Event Registration</strong><br>
+                  Review the protocol documentation via the adjacent transmission to finalize enrollment.
+                </li>
+              </ul>
+              <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/3NjqO_BMQ8M" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+
+          <!-- Android Panel -->
+          <div id="os-android" class="tab-panel">
+            <div class="content-grid">
+              <ul class="step-list text-block">
+                <li>
+                  <strong>Prerequisite: Google Fit.</strong> Ensure this is installed prior to initialization.<br>
+                  <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=ja&gl=US&pli=1" target="_blank" class="btn btn-outline" style="margin-top: 1rem;">Google Fit</a>
+                </li>
+                <li>
+                  <strong>Install the minpo application.</strong><br>
+                  <a href="https://play.google.com/store/apps/details?id=com.congrant.minpo.app&hl=ja&gl=US" target="_blank" class="btn" style="margin-top: 1rem;">Play Store</a>
+                </li>
+                <li>
+                  <strong>Event Registration</strong> Review the visual guide.
+                </li>
+              </ul>
+              <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/t_ZNkG5uN6Q" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 05. THE COMMITTEE -->
+    <div class="accordion-item">
+      <div class="accordion-head">
+        <span class="acc-number">05</span>
+        <h2 class="acc-title">The Committee</h2>
+        <div class="acc-icon"></div>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-inner">
+          <div class="staff-grid">
+            <div class="staff-member"><img src="Waing.jpg" alt="Waing" class="editorial-img"><h4>Waing</h4><p>Strategy</p></div>
+            <div class="staff-member"><img src="Nana.jpg" alt="Nana" class="editorial-img"><h4>Nana</h4><p>Architecture</p></div>
+            <div class="staff-member"><img src="Peiyu.jpg" alt="Peiyu" class="editorial-img"><h4>Peiyu</h4><p>Vision</p></div>
+            <div class="staff-member"><img src="Yujiro.jpg" alt="Yujiro" class="editorial-img"><h4>Yujiro</h4><p>Logistics</p></div>
+            <div class="staff-member"><img src="Shin-photo-1.jpg" alt="Shin" class="editorial-img"><h4>Shin</h4><p>Guidance</p></div>
+            <div class="staff-member"><img src="john.jpg" alt="John" class="editorial-img"><h4>John</h4><p>Vanguard</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-</section>
+</main>
 
 <footer>
-  <p>JAPAN TREK // SUMMIT PROTOCOL ENGAGED</p>
+  <p>© 2026 TransPerfect. All Rights Reserved.</p>
 </footer>
 
 <script>
-  /* 1. Theme Toggle */
-  const toggleBtn = document.getElementById('themeToggle');
-  const toggleBtnMob = document.getElementById('themeToggleMobile');
-  
-  function toggleTheme() {
-    const isVapor = document.documentElement.getAttribute('data-theme') === 'vaporwave';
-    if (isVapor) {
-      document.documentElement.removeAttribute('data-theme');
-      toggleBtn.textContent = '🌙';
-    } else {
-      document.documentElement.setAttribute('data-theme', 'vaporwave');
-      toggleBtn.textContent = '☀️';
-    }
-  }
-  
-  toggleBtn.addEventListener('click', toggleTheme);
-  toggleBtnMob.addEventListener('click', toggleTheme);
-
-  /* 2. Mobile Menu */
-  const menuBtn = document.getElementById('menuBtn');
-  const nav = document.getElementById('siteNav');
-  menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
-
-  /* 3. Swiper Init */
+  /* 1. Swiper Init */
   new Swiper('.swiper', {
     loop: true,
-    autoplay: { delay: 6000, disableOnInteraction: false },
+    autoplay: { delay: 5000, disableOnInteraction: false },
     effect: 'fade'
   });
-  
-  /* 4. App Download Tabs */
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabContents.forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+  /* 2. Map Setup (Variables scoped globally for accordion resize trigger) */
+  let map;
+  const mapCenter = [35.8506, 139.3188]; // Hanno Station
+
+  function initMap() {
+    map = L.map('meetMap', { scrollWheelZoom: false, zoomControl: false }).setView(mapCenter, 15);
+    // Minimalist black and white map tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CARTO'
+    }).addTo(map);
+    
+    // Custom minimalist marker
+    const markerHtmlStyles = `
+      background-color: black;
+      width: 1rem;
+      height: 1rem;
+      display: block;
+      left: -0.5rem;
+      top: -0.5rem;
+      position: relative;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    `;
+    const icon = L.divIcon({ className: "custom-pin", iconAnchor: [0, 24], labelAnchor: [-6, 0], popupAnchor: [0, -36], html: `<span style="${markerHtmlStyles}" />` });
+    L.marker(mapCenter, {icon: icon}).addTo(map).bindPopup('<span style="font-family:Inter;text-transform:uppercase;letter-spacing:0.1em;font-size:12px;">Hanno Station</span>');
+  }
+  initMap();
+
+  /* 3. Accordion Logic (Smooth height transition & map resizing) */
+  const accordions = document.querySelectorAll('.accordion-item');
+  
+  accordions.forEach(acc => {
+    const head = acc.querySelector('.accordion-head');
+    const body = acc.querySelector('.accordion-body');
+    
+    head.addEventListener('click', () => {
+      const isOpen = acc.classList.contains('active');
+      
+      // Close all others for that clean, single-focus minimal look
+      accordions.forEach(otherAcc => {
+        otherAcc.classList.remove('active');
+        otherAcc.querySelector('.accordion-body').style.maxHeight = null;
+      });
+
+      if (!isOpen) {
+        acc.classList.add('active');
+        // Set max height dynamically based on inner content
+        body.style.maxHeight = body.scrollHeight + "px";
+        
+        // If the map is in this accordion, invalidate size so it renders correctly
+        if (acc.querySelector('#meetMap')) {
+          setTimeout(() => { map.invalidateSize(); }, 300);
+        }
+      }
     });
   });
 
-  /* 5. Map Init (Hanno Station) */
-  const mapCenter = [35.8506, 139.3188]; 
-  const map = L.map('meetMap', { scrollWheelZoom: false }).setView(mapCenter, 15);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap © CARTO'
-  }).addTo(map);
-  L.marker(mapCenter).addTo(map).bindPopup('Hanno Station');
+  /* 4. Tab Logic for Apps */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
 
-  /* 6. Weather Fetch (Hanno coordinates) */
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Find the parent accordion body to recalculate height after tab switch
+      const parentBody = btn.closest('.accordion-body');
+      
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabPanels.forEach(p => p.classList.remove('active'));
+      
+      btn.classList.add('active');
+      document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+      
+      // Recalculate accordion height so it doesn't cut off content
+      if (parentBody) {
+        parentBody.style.maxHeight = "none"; // Temporarily unlock height
+        const newHeight = parentBody.scrollHeight;
+        parentBody.style.maxHeight = newHeight + "px"; // Relock with new height
+      }
+    });
+  });
+
+  /* 5. Weather Fetch (Hanno coordinates) */
   fetch('https://api.open-meteo.com/v1/forecast?latitude=35.8506&longitude=139.3188&current_weather=true&timezone=Asia%2FTokyo')
     .then(r => r.json())
     .then(data => {
@@ -658,13 +534,14 @@
       document.getElementById('wxTempDisplay').textContent = Math.round(w.temperature) + '°C';
       
       const codes = {
-        0: 'Clear Sky', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
-        45: 'Fog', 51: 'Drizzle', 61: 'Rain', 71: 'Snow', 95: 'Thunderstorm'
+        0: 'Clear', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+        45: 'Fog', 51: 'Drizzle', 61: 'Rain', 71: 'Snow', 95: 'Storm'
       };
       document.getElementById('wxDescDisplay').textContent = codes[w.weathercode] || 'Variable';
     }).catch(() => {
-      document.getElementById('wxDescDisplay').textContent = 'Weather offline';
+      document.getElementById('wxDescDisplay').textContent = 'Unavailable';
     });
+
 </script>
 </body>
 </html>
