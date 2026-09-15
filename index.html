@@ -321,7 +321,34 @@
     [data-theme="vaporwave"] .heroOverlay { background: linear-gradient(180deg, rgba(11, 12, 16, 0.4) 0%, rgba(255, 113, 206, 0.2) 100%); }
 
     .heroOverlay h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-    .heroOverlay p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; }
+    .heroOverlay p { font-size: 1.2rem; max-width: 600px; margin-bottom: 1.5rem; }
+
+    /* =============== COUNTDOWN =============== */
+    .hero-countdown {
+      display: flex; gap: 1rem; margin-bottom: 2.5rem;
+    }
+    .cd-box {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px);
+      padding: 0.8rem 1.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
+      min-width: 80px; color: #fff;
+    }
+    .cd-num {
+      font-family: var(--font-heading); font-size: 2rem; font-weight: 800; line-height: 1;
+    }
+    .cd-label {
+      font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.9; margin-top: 0.2rem; font-family: var(--font-body); font-weight: 600;
+    }
+    
+    [data-theme="vaporwave"] .cd-box {
+      background: rgba(13, 14, 24, 0.6);
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(1, 205, 254, 0.2), inset 0 0 10px rgba(1, 205, 254, 0.1);
+      color: var(--accent);
+    }
+    [data-theme="vaporwave"] .cd-num {
+      text-shadow: 0 0 10px var(--accent);
+    }
 
     /* =============== SECTIONS =============== */
     .mission-text p, .event-text p { margin-bottom: 1rem; }
@@ -530,6 +557,15 @@
     <div class="heroOverlay">
       <h1>Walk With Purpose</h1>
       <p>TransPerfect Japan Charity Trek</p>
+      
+      <!-- Added Countdown Element -->
+      <div id="heroCountdown" class="hero-countdown">
+        <div class="cd-box"><span id="cd-d" class="cd-num">00</span><span class="cd-label">Days</span></div>
+        <div class="cd-box"><span id="cd-h" class="cd-num">00</span><span class="cd-label">Hrs</span></div>
+        <div class="cd-box"><span id="cd-m" class="cd-num">00</span><span class="cd-label">Min</span></div>
+        <div class="cd-box"><span id="cd-s" class="cd-num">00</span><span class="cd-label">Sec</span></div>
+      </div>
+
       <a href="#event" class="btn">Get Details</a>
     </div>
   </div>
@@ -899,6 +935,36 @@
     speechEl.innerHTML = mascotHints[0];
     speechEl.classList.add('show');
   }, 2000);
+
+  /* 8. Countdown Timer */
+  const countDate = new Date('2026-11-07T10:00:00+09:00').getTime();
+  const dEl = document.getElementById('cd-d');
+  const hEl = document.getElementById('cd-h');
+  const mEl = document.getElementById('cd-m');
+  const sEl = document.getElementById('cd-s');
+
+  function updateCountdown() {
+    if (!dEl) return;
+    const now = new Date().getTime();
+    const dist = countDate - now;
+    
+    if (dist < 0) {
+      document.getElementById('heroCountdown').innerHTML = "<div class='text-glow' style='font-size:1.5rem; font-weight:bold; margin-bottom: 2rem;'>IT IS TIME</div>";
+      return;
+    }
+    
+    const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+    const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((dist % (1000 * 60)) / 1000);
+    
+    dEl.innerText = d.toString().padStart(2, '0');
+    hEl.innerText = h.toString().padStart(2, '0');
+    mEl.innerText = m.toString().padStart(2, '0');
+    sEl.innerText = s.toString().padStart(2, '0');
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
 </script>
 </body>
 </html>
