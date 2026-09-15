@@ -375,12 +375,23 @@
     .giveCard { display: flex; flex-direction: column; justify-content: space-between; }
     .giveCard img { border-radius: 8px; margin-bottom: 1.5rem; max-height: 200px; object-fit: contain; background: var(--bg); padding: 1rem; border: 1px solid var(--border); }
 
-    /* Staff Grid */
-    .staffGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-    .cardStaff { text-align: center; }
-    .cardStaff img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; box-shadow: var(--shadow); border: 2px solid var(--primary); }
-    .cardStaff .name { font-weight: 800; color: var(--primary); font-family: var(--font-heading); font-size: 1.2rem; }
-    .cardStaff .chip { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    /* Staff Grid (Centered, Single Line) */
+    .staffGrid { 
+      display: flex; flex-wrap: nowrap; gap: 1.5rem; justify-content: flex-start;
+      margin-top: 2rem; padding-bottom: 1.5rem;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;
+    }
+    @media (min-width: 800px) {
+      .staffGrid { justify-content: center; overflow-x: visible; }
+    }
+    .staffGrid::-webkit-scrollbar { display: none; }
+    .cardStaff { flex: 0 0 auto; text-align: center; scroll-snap-align: center; width: 85px; }
+    .cardStaff img { 
+      width: 75px; height: 75px; border-radius: 50%; object-fit: cover; 
+      margin: 0 auto 0.8rem; box-shadow: var(--shadow); border: 2px solid var(--primary); 
+    }
+    .cardStaff .name { font-weight: 800; color: var(--primary); font-family: var(--font-heading); font-size: 1rem; line-height: 1.2; }
+    .cardStaff .chip { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
     footer { 
       position: relative; z-index: 2; background: var(--card-bg); color: var(--primary); text-align: center; 
@@ -439,19 +450,17 @@
 
 <!-- =============== FOREGROUND MOUNTAIN FRAMING (Z-INDEX 3) =============== -->
 <svg class="fg-mountains" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <!-- Left Overlay Mountain - Sharpened -->
-  <g transform="translate(-150, 100)">
-    <polygon points="0,300 250,-50 500,300" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="4"/>
-    <polygon points="125,300 250,-50 375,300" fill="none" stroke="var(--mountain-wire)" stroke-width="2"/>
-    <line x1="250" y1="-50" x2="250" y2="300" stroke="var(--mountain-wire)" stroke-width="2"/>
-    <line x1="160" y1="180" x2="340" y2="180" stroke="var(--mountain-wire)" stroke-width="2"/>
+  <!-- Left Overlay Mountain - Sharpened and Pushed Down -->
+  <g transform="translate(-100, 150)">
+    <polygon points="-200,400 250,-80 700,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="4"/>
+    <polygon points="50,400 250,-80 450,400" fill="none" stroke="var(--mountain-wire)" stroke-width="2"/>
+    <line x1="250" y1="-80" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="2"/>
   </g>
-  <!-- Right Overlay Mountain - Sharpened -->
-  <g transform="translate(1100, 150)">
-    <polygon points="0,250 200,-30 400,250" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="4"/>
-    <polygon points="100,250 200,-30 300,250" fill="none" stroke="var(--mountain-wire)" stroke-width="2"/>
-    <line x1="200" y1="-30" x2="200" y2="250" stroke="var(--mountain-wire)" stroke-width="2"/>
-    <line x1="130" y1="160" x2="270" y2="160" stroke="var(--mountain-wire)" stroke-width="2"/>
+  <!-- Right Overlay Mountain - Sharpened and Pushed Down -->
+  <g transform="translate(1000, 200)">
+    <polygon points="-200,400 200,-50 600,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="4"/>
+    <polygon points="0,400 200,-50 400,400" fill="none" stroke="var(--mountain-wire)" stroke-width="2"/>
+    <line x1="200" y1="-50" x2="200" y2="400" stroke="var(--mountain-wire)" stroke-width="2"/>
   </g>
 </svg>
 
@@ -741,7 +750,56 @@
       document.getElementById('wxDescDisplay').innerHTML = `<span class="en">Weather offline</span><span class="ja">天気情報オフライン</span>`;
     });
 
-  /* 6. Mascot Advanced Rendering Loop & Logic */
+  /* 6. Context-Aware Dynamic Mascot Observer */
+  const sectionHints = {
+    'hero': [
+      "<span class='ja'>一緒に歩こう！</span><span class='en'>Let's walk together!</span>",
+      "<span class='ja'>下へスクロール！</span><span class='en'>Scroll down!</span>"
+    ],
+    'mission': [
+      "<span class='ja'>小さな一歩が、大きな力に！</span><span class='en'>Small steps. Big impact!</span>",
+      "<span class='ja'>教育を支援しよう！</span><span class='en'>Support education!</span>"
+    ],
+    'event': [
+      "<span class='ja'>飯能駅で会いましょう！</span><span class='en'>See you at Hanno Station!</span>",
+      "<span class='ja'>11月7日をお忘れなく！</span><span class='en'>Don't forget Nov 7th!</span>"
+    ],
+    'guide': [
+      "<span class='ja'>日焼け止めを忘れずに！</span><span class='en'>Don't forget sunscreen!</span>",
+      "<span class='ja'>水分補給が大切です！</span><span class='en'>Stay hydrated!</span>"
+    ],
+    'give': [
+      "<span class='ja'>寄付をお願いします！</span><span class='en'>Please donate!</span>",
+      "<span class='ja'>Tシャツをゲットしよう！</span><span class='en'>Grab a T-shirt!</span>"
+    ],
+    'staff': [
+      "<span class='ja'>チームの紹介です！</span><span class='en'>Meet the team!</span>",
+      "<span class='ja'>準備万端です！</span><span class='en'>We are ready!</span>"
+    ]
+  };
+
+  let activeSection = 'hero';
+  let hintIndex = 0;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+        const newSection = entry.target.id;
+        if(newSection !== activeSection && sectionHints[newSection]) {
+           activeSection = newSection;
+           hintIndex = 0; 
+           if (!isClimbing && !isPreparingClimb) {
+             speechEl.innerHTML = sectionHints[activeSection][0];
+             speechEl.classList.add('show');
+           }
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('header, section').forEach(sec => observer.observe(sec));
+
+  /* 7. Mascot Advanced Rendering Loop & Logic */
   const turtleWrap = document.getElementById('turtleMascot');
   const turtleImg = document.getElementById('turtleImg');
   const tokoContainer = document.getElementById('tokoContainer');
@@ -910,30 +968,18 @@
   }
   animateTurtle();
 
-  /* 7. Mascot Cycling Hints (JP + EN ONLY) */
-  const mascotHints = [
-    "<span class='ja'>スクロールしてね！</span><span class='en'>Scroll down!</span>",
-    "<span class='ja'>寄付をお願いします！</span><span class='en'>Please donate!</span>",
-    "<span class='ja'>一緒に歩こう！</span><span class='en'>Let's walk together!</span>",
-    "<span class='ja'>日焼け止めを忘れずに！</span><span class='en'>Don't forget sunscreen!</span>"
-  ];
-  let hintIndex = 0;
-  
+  /* Mascot Cycling Hints (JP + EN ONLY) triggered by Observer context */
   setInterval(() => {
     if (!isClimbing && !isPreparingClimb) {
       speechEl.classList.remove('show');
       setTimeout(() => {
-        hintIndex = (hintIndex + 1) % mascotHints.length;
-        speechEl.innerHTML = mascotHints[hintIndex];
+        const hints = sectionHints[activeSection] || sectionHints['hero'];
+        hintIndex = (hintIndex + 1) % hints.length;
+        speechEl.innerHTML = hints[hintIndex];
         speechEl.classList.add('show');
       }, 400);
     }
   }, 7000);
-  
-  setTimeout(() => {
-    speechEl.innerHTML = mascotHints[0];
-    speechEl.classList.add('show');
-  }, 2000);
 </script>
 </body>
 </html>
