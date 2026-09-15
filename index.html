@@ -102,8 +102,8 @@
       transition: filter 0.5s ease;
     }
     [data-theme="vaporwave"] .turtle-img {
-      /* Perfect neon pink silhouette to match the trail path */
-      filter: brightness(0) saturate(100%) invert(64%) sepia(61%) saturate(5185%) hue-rotate(293deg) brightness(101%) contrast(106%) drop-shadow(0 0 15px rgba(255, 113, 206, 0.8));
+      /* Reverted color removal, added heavy pink aura instead */
+      filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.8));
     }
 
     /* Backflip Animation */
@@ -418,7 +418,7 @@
 
 <!-- =============== BACKGROUND MOUNTAIN TRAIL (Z-INDEX 1) =============== -->
 <div class="trail-backdrop" aria-hidden="true">
-  <svg class="trail-svg" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+  <svg class="trail-svg" id="trailSvgLayer" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <pattern id="sunStripes" width="100" height="8" patternUnits="userSpaceOnUse">
         <rect width="100" height="4" fill="var(--sun-fill)" opacity="0.85" />
@@ -769,7 +769,7 @@
       document.getElementById('wxDescDisplay').textContent = 'Weather offline';
     });
 
-  /* 7. Mascot Advanced Rendering Loop & Logic */
+  /* 7. Mascot Advanced Rendering Loop & SVG Path Logic */
   const turtleWrap = document.getElementById('turtleMascot');
   const turtleImg = document.getElementById('turtleImg');
   const tokoContainer = document.getElementById('tokoContainer');
@@ -778,8 +778,9 @@
   let currentScale = 1;
   let targetScale = 1;
   let isClimbing = false;
-  let waypoints = [];
-  let currentWaypoint = 0;
+  let trailPath = null;
+  let pathLength = 0;
+  let climbDistance = 0;
   
   let mouseX = window.innerWidth / 2;
   let mouseY = window.innerHeight / 2;
@@ -790,7 +791,7 @@
   let isAttracted = false;
   let flip = 1;
 
-  // Execute backflip and start climbing sequence on click
+  // Execute backflip and start true SVG path climbing sequence on click
   turtleImg.addEventListener('click', () => {
     if (isClimbing) return;
     isClimbing = true;
@@ -807,22 +808,22 @@
     const flipWrap = document.getElementById('turtleFlipWrap');
     flipWrap.classList.add('do-backflip');
     
+    // Grab the exact SVG path data for perfect alignment
+    trailPath = document.getElementById('mountainTrail');
+    pathLength = trailPath.getTotalLength();
+    climbDistance = 0;
+    
     setTimeout(() => {
       flipWrap.classList.remove('do-backflip');
       
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+      // Teleport turtle exactly to the base of the SVG trail path
+      const pt = trailPath.getPointAtLength(0);
+      const scale = Math.max(window.innerWidth / 1440, window.innerHeight / 1000);
+      const offsetX = (window.innerWidth - 1440 * scale) / 2;
       
-      waypoints = [
-        { x: w * 0.50, y: h * 1.05, s: 1.0 },
-        { x: w * 0.50, y: h * 0.95, s: 0.95 },
-        { x: w * 0.40, y: h * 0.84, s: 0.8 },
-        { x: w * 0.47, y: h * 0.70, s: 0.65 },
-        { x: w * 0.58, y: h * 0.54, s: 0.5 },
-        { x: w * 0.46, y: h * 0.39, s: 0.35 },
-        { x: w * 0.50, y: h * 0.24, s: 0.1 }
-      ];
-      currentWaypoint = 0;
+      currentX = pt.x * scale + offsetX;
+      currentY = pt.y * scale;
+      currentScale = 1;
     }, 600);
   });
 
@@ -840,50 +841,70 @@
     
     let speed = 0.015;
 
-    if (isClimbing && waypoints.length > 0) {
-      speed = 0.04;
-      targetX = waypoints[currentWaypoint].x;
-      targetY = waypoints[currentWaypoint].y;
-      targetScale = waypoints[currentWaypoint].s;
+    if (isClimbing && trailPath) {
+      // Calculate exact coordinates along the SVG curve
+      climbDistance += 4; // Climb speed
+      if (climbDistance >= pathLength) {
+         // Reached the summit
+         isClimbing = false;
+         turtleWrap.style.transition = 'opacity 1s ease';
+         turtleWrap.style.opacity = '0';
+         setTimeout(() => {
+           currentScale = 1;
+           targetScale = 1;
+           currentX = -200;
+           currentY = -200;
+           turtleWrap.style.opacity = '1';
+           turtleWrap.style.transition = 'none';
+           // Exit Cinema Mode
+           document.body.classList.remove('cinema-mode');
+         }, 1500);
+      } else {
+         const pt = trailPath.getPointAtLength(climbDistance);
+         
+         // Map internal SVG coordinates exactly to the current browser viewport size
+         const scale = Math.max(window.innerWidth / 1440, window.innerHeight / 1000);
+         const offsetX = (window.innerWidth - 1440 * scale) / 2;
+         
+         targetX = pt.x * scale + offsetX;
+         targetY = pt.y * scale; 
+         targetScale = 1 - (climbDistance / pathLength) * 0.9;
+         
+         // Look-ahead slightly for smooth flipping on switchbacks
+         const ptAhead = trailPath.getPointAtLength(Math.min(climbDistance + 10, pathLength));
+         const targetAheadX = ptAhead.x * scale + offsetX;
+         if (targetAheadX > targetX + 1) flip = -1;
+         else if (targetAheadX < targetX - 1) flip = 1;
 
-      const dist = Math.hypot(targetX - currentX, targetY - currentY);
-      if (dist < 30) {
-        if (currentWaypoint < waypoints.length - 1) {
-          currentWaypoint++;
-        } else {
-          // Reached the summit
-          isClimbing = false;
-          turtleWrap.style.transition = 'opacity 1s ease';
-          turtleWrap.style.opacity = '0';
-          setTimeout(() => {
-            currentScale = 1;
-            targetScale = 1;
-            currentX = -200;
-            currentY = -200;
-            turtleWrap.style.opacity = '1';
-            turtleWrap.style.transition = 'none';
-            // Exit Cinema Mode
-            document.body.classList.remove('cinema-mode');
-          }, 1500);
-        }
+         // Instantly update current position to perfectly hug the path vector
+         currentX = targetX;
+         currentY = targetY;
+         currentScale = targetScale;
       }
     } else if (isAttracted) {
       targetX = mouseX;
       targetY = mouseY + 40; 
       targetScale = 1;
+      
+      currentX += (targetX - currentX) * speed;
+      currentY += (targetY - currentY) * speed;
+      currentScale += (targetScale - currentScale) * speed;
+      
+      if (targetX > currentX + 5) flip = -1;
+      else if (targetX < currentX - 5) flip = 1;
     } else {
       const scrollP = window.scrollY / (document.body.scrollHeight - window.innerHeight || 1);
       targetX = window.innerWidth * 0.5 + Math.sin(scrollP * Math.PI * 4) * (window.innerWidth * 0.4);
       targetY = window.innerHeight * 0.5 + Math.cos(scrollP * Math.PI * 3) * (window.innerHeight * 0.35);
       targetScale = 1;
+      
+      currentX += (targetX - currentX) * speed;
+      currentY += (targetY - currentY) * speed;
+      currentScale += (targetScale - currentScale) * speed;
+      
+      if (targetX > currentX + 5) flip = -1;
+      else if (targetX < currentX - 5) flip = 1;
     }
-
-    currentX += (targetX - currentX) * speed;
-    currentY += (targetY - currentY) * speed;
-    currentScale += (targetScale - currentScale) * speed;
-
-    if (targetX > currentX + 5) flip = -1;
-    else if (targetX < currentX - 5) flip = 1;
 
     // Changes his idle floating into a bouncy run when climbing
     const wobble = isClimbing ? Math.sin(Date.now() / 150) * 15 : Math.sin(Date.now() / 400) * 6; 
