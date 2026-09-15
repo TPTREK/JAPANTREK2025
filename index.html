@@ -45,6 +45,12 @@
       text-shadow: 0 0 4px rgba(255, 113, 206, 0.25);
     }
 
+    /* Soft black drop shadow for mission text and prep intro in night mode */
+    [data-theme="vaporwave"] .mission-text p,
+    [data-theme="vaporwave"] #guide .subtle {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+    }
+
     h1, h2, h3, .serif { font-family: var(--font-heading); transition: color 0.3s ease; }
     [data-theme="vaporwave"] h1, [data-theme="vaporwave"] h2, [data-theme="vaporwave"] .headline { text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; text-shadow: 2px 2px 0px rgba(1, 205, 254, 0.6), -2px -2px 0px rgba(185, 103, 255, 0.6); }
     a { color: inherit; text-decoration: none; transition: 0.3s; }
@@ -202,17 +208,15 @@
 </div>
 
 <!-- =============== FOREGROUND MOUNTAIN FRAMING (Z-INDEX 3) =============== -->
-<!-- Pyramids made 70 percent sharper (narrower bases / steeper slopes, scaled peaks) -->
+<!-- Pyramids made 70 percent sharper: narrow base, high steep peak -->
 <svg class="fg-mountains" id="fgMountains" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <g>
-    <polygon points="50,400 250,-180 450,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
-    <polygon points="150,400 250,-180 350,400" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5"/>
-    <line x1="250" y1="-180" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    <polygon points="180,400 250,-260 320,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+    <line x1="250" y1="-260" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
   </g>
   <g>
-    <polygon points="1000,400 1200,-150 1400,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
-    <polygon points="1100,400 1200,-150 1300,400" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5"/>
-    <line x1="1200" y1="-150" x2="1200" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    <polygon points="1130,400 1200,-230 1270,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+    <line x1="1200" y1="-230" x2="1200" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
   </g>
 </svg>
 
@@ -238,7 +242,7 @@
     </div>
     <div class="links">
       <a href="#mission"><span class="en">Mission</span><span class="ja">ミッション</span></a>
-      <a href="#event"><span class="en">The Trek</span><span class="ja">トレック詳細</span></a>
+      <a href="#event"><span class="en">Trek</span><span class="ja">トレック詳細</span></a>
       <a href="#guide"><span class="en">Preparation</span><span class="ja">準備</span></a>
       <a href="#give"><span class="en">Support</span><span class="ja">サポート</span></a>
     </div>
@@ -251,7 +255,7 @@
   </div>
   <div id="mobileMenu" class="mobileMenu">
     <a href="#mission"><span class="en">Mission</span><span class="ja">ミッション</span></a>
-    <a href="#event"><span class="en">The Trek</span><span class="ja">トレック詳細</span></a>
+    <a href="#event"><span class="en">Trek</span><span class="ja">トレック詳細</span></a>
     <a href="#guide"><span class="en">Preparation</span><span class="ja">準備</span></a>
     <a href="#give"><span class="en">Support</span><span class="ja">サポート</span></a>
     <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
@@ -365,7 +369,7 @@
       <div>
         <span class="badge"><span class="en">Donate</span><span class="ja">寄付</span></span>
         <h3 class="headline" style="font-size: 1.5rem;"><span class="en">Direct Contribution</span><span class="ja">直接寄付</span></h3>
-        <p><span class="en">100% of proceeds go directly to P.U.S. JAPAN to support children's education.</span><span class="ja">収益の100%は、子供たちの教育支援のためP.U.S. JAPANへ直接寄付されます。</span></p>
+        <p><span class="en">Working together as a company to support P.U.S. JAPAN embodies everything we value. Standing shoulder to shoulder to empower these kids is genuinely awesome, turning our shared momentum into real, lasting change for education.</span><span class="ja">P.U.S. JAPANを支援するための企業としての団結は、私たちが大切にするすべての価値観を体現しています。子供たちをエンパワーするために共に立ち上がることは本当に素晴らしく、私たちの歩みを教育のための本物の変化へと変えてくれます。</span></p>
       </div>
       <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://www.pusjapan.org/" target="_blank"><span class="en">Donate to P.U.S. Japan</span><span class="ja">P.U.S. JAPANに寄付する</span></a>
     </div>
@@ -383,7 +387,7 @@
 
 <!-- =============== STAFF =============== -->
 <section id="staff" class="section shell">
-  <h2 class="headline" style="text-align: center;"><span class="en">The Trek Committee</span><span class="ja">トレック実行委員会</span></h2>
+  <h2 class="headline" style="text-align: center;"><span class="en">Trek Committee</span><span class="ja">トレック実行委員会</span></h2>
   <div class="staffGrid">
     <div class="cardStaff"><img src="Waing.jpg" alt="Waing"><div class="name">Waing</div><div class="chip"><span class="en">Strategy</span><span class="ja">戦略</span></div></div>
     <div class="cardStaff"><img src="Nana.jpg" alt="Nana"><div class="name">Nana</div><div class="chip"><span class="en">Architect</span><span class="ja">設計</span></div></div>
