@@ -1,16 +1,3 @@
-My bad, I took "go ham" straight to Paris Fashion Week and completely nuked the vibe. Let's reel it back.
-
-We are reverting to the v2.5 cyber-summit build (the ascending trail, the vaporwave toggle, the stacked layout) but we are keeping 10% of that high-end polish.
-
-Here is what that looks like in the code:
-
-1. **No More Pixel Font:** The `VT323` retro font is dead. The typography stays sleek and legible using `Inter` and `Lora`, so it looks professional even when glowing neon pink.
-2. **Editorial Touches:** The staff photos and secondary images use that clean grayscale-to-color hover effect from the fashion build. It gives a sharp, corporate-chic contrast to the wild synthwave background.
-3. **Flawless Execution:** The accordion is gone. The layout flows naturally again. The tabs, the weather API, the map, and the ascending SVG trail are all locked in and tested.
-
-Drop this into `index.html` and hit the night mode switch. This is the sweet spot.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +5,7 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Japan Trek 2026 | TransPerfect</title>
 
-  <!-- Fonts: Clean Editorial Stack (No pixel fonts) -->
+  <!-- Fonts: Clean Editorial Stack -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
@@ -30,7 +17,7 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    /* =============== Base Theme (Day/Zen + 10% Chanel) =============== */
+    /* =============== Base Theme (Day/Zen + Editorial Polish) =============== */
     :root {
       --bg: #F9F8F6;
       --bg-alt: #FFFFFF;
@@ -39,10 +26,10 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
       --primary: #2A4B3C;
       --accent: #D87C54;
       --accent-hover: #C56A43;
-      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-bg: rgba(255, 255, 255, 0.95);
       --shadow: 0 12px 32px rgba(42, 75, 60, 0.08);
       --border: rgba(42, 75, 60, 0.12);
-      --r: 8px; /* Sharper corners for that professional edge */
+      --r: 8px;
       --gap: 1.5rem;
       --content-max: 1080px;
       --h2: clamp(1.8rem, 4vw, 2.5rem);
@@ -67,11 +54,11 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
       --primary: #ff71ce;
       --accent: #01cdfe;
       --accent-hover: #05ffa1;
-      --card-bg: rgba(13, 14, 24, 0.78);
+      --card-bg: rgba(13, 14, 24, 0.82);
       --shadow: 0 0 25px rgba(255, 113, 206, 0.15), inset 0 0 12px rgba(1, 205, 254, 0.1);
       --border: rgba(1, 205, 254, 0.35);
 
-      /* Trail Backdrop Variables (Night/Vapor) */
+      /* Trail Backdrop Variables (Night) */
       --topo-line: rgba(1, 205, 254, 0.18);
       --trail-base: rgba(255, 113, 206, 0.25);
       --trail-pulse: #ff71ce;
@@ -83,20 +70,19 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     [data-theme="vaporwave"]::before {
       content: ""; position: fixed; bottom: -10vh; left: 0; right: 0; height: 60vh;
       background:
-        linear-gradient(transparent 49%, rgba(255, 113, 206, 0.5) 50%, transparent 51%),
-        linear-gradient(90deg, transparent 49%, rgba(1, 205, 254, 0.5) 50%, transparent 51%);
+        linear-gradient(transparent 49%, rgba(255, 113, 206, 0.3) 50%, transparent 51%),
+        linear-gradient(90deg, transparent 49%, rgba(1, 205, 254, 0.3) 50%, transparent 51%);
       background-size: 60px 60px;
       transform: perspective(600px) rotateX(75deg);
-      z-index: -1; pointer-events: none;
+      z-index: 0; pointer-events: none;
       animation: gridMove 10s linear infinite;
     }
-
     @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 60px; } }
 
     /* =============== Dynamic Mountain Trail Backdrop =============== */
     .trail-backdrop {
       position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none;
-      z-index: 1; overflow: hidden; opacity: 0.9; transition: opacity 0.5s ease;
+      z-index: 0; overflow: hidden; opacity: 0.9; transition: opacity 0.5s ease;
     }
     .trail-svg { width: 100%; height: 100%; object-fit: cover; }
     .trail-pulse { stroke-dasharray: 14 26; animation: climbAscent 2.4s linear infinite; }
@@ -116,7 +102,7 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     h1, h2, h3, .serif { font-family: var(--font-heading); transition: color 0.3s ease; }
     
     [data-theme="vaporwave"] h1, [data-theme="vaporwave"] h2, [data-theme="vaporwave"] .headline {
-      text-shadow: 2px 2px 0px rgba(1, 205, 254, 0.5), -2px -2px 0px rgba(185, 103, 255, 0.5);
+      text-shadow: 2px 2px 0px rgba(1, 205, 254, 0.4), -2px -2px 0px rgba(185, 103, 255, 0.4);
     }
 
     a { color: inherit; text-decoration: none; transition: 0.2s; }
@@ -130,9 +116,9 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     [data-theme="vaporwave"] .editorial-img:hover { filter: grayscale(0%); }
 
     /* =============== Layout & Utilities =============== */
-    .shell { max-width: var(--content-max); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
-    .section { padding: 4rem 0; position: relative; z-index: 2; }
-    .split { display: grid; gap: 3rem; }
+    .shell { max-width: var(--content-max); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); position: relative; z-index: 10; }
+    .section { padding: 5rem 0; position: relative; z-index: 10; }
+    .split { display: grid; gap: 4rem; }
     @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; align-items: center; } }
     
     .badge {
@@ -147,11 +133,11 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     
     .card {
       background: var(--card-bg); border-radius: var(--r);
-      padding: clamp(1.5rem, 3vw, 2.5rem); box-shadow: var(--shadow);
+      padding: clamp(2rem, 4vw, 3rem); box-shadow: var(--shadow);
       border: 1px solid var(--border); backdrop-filter: blur(14px);
     }
 
-    /* Buttons (Sleek, high contrast) */
+    /* Buttons */
     .btn, .btnWide {
       background: var(--primary); color: var(--bg);
       padding: 0.8rem 2rem; border-radius: 4px; font-weight: 600;
@@ -178,8 +164,8 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     /* =============== NAV =============== */
     nav {
       position: fixed; top: 0; left: 0; width: 100%;
-      background: var(--card-bg); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border); z-index: 120;
+      background: var(--card-bg); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border); z-index: 100;
       transition: all 0.3s ease;
     }
     .nav-inner {
@@ -191,10 +177,10 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     .brand img { height: 32px; width: auto; transition: filter 0.3s; }
     [data-theme="vaporwave"] .brand img { filter: invert(1) hue-rotate(180deg) saturate(3); }
     
-    .links { display: none; gap: 2rem; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .links { display: none; gap: 2.5rem; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
     .links a { color: var(--muted); }
     .links a:hover { color: var(--primary); }
-    .actions { display: none; gap: 1rem; align-items: center; }
+    .actions { display: none; gap: 1.5rem; align-items: center; }
     
     @media (min-width: 900px) {
       .links, .actions { display: flex; align-items: center; }
@@ -211,45 +197,45 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
       position: fixed; top: var(--scroll-offset); left: 0; width: 100%;
       background: var(--card-bg); padding: 2rem; box-shadow: var(--shadow);
       display: flex; flex-direction: column; gap: 1.5rem;
-      transform: translateY(-100%); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 100;
+      transform: translateY(-100%); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 90;
       border-bottom: 1px solid var(--border); backdrop-filter: blur(15px);
     }
     nav.open .mobileMenu { transform: translateY(0); opacity: 1; visibility: visible; }
 
     /* =============== HERO =============== */
-    header { margin-top: var(--scroll-offset); height: 75vh; position: relative; z-index: 2; }
+    header { margin-top: var(--scroll-offset); height: 75vh; position: relative; z-index: 10; }
     .swiper { width: 100%; height: 100%; }
     .swiper-slide img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(40%); }
     
     .heroOverlay {
-      position: absolute; inset: 0; background: rgba(0,0,0, 0.5);
+      position: absolute; inset: 0; background: rgba(0,0,0, 0.4);
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      text-align: center; z-index: 5; padding: 1rem; color: #fff;
+      text-align: center; z-index: 10; padding: 1rem; color: #fff;
     }
     [data-theme="vaporwave"] .heroOverlay { background: linear-gradient(180deg, rgba(11, 12, 16, 0.4) 0%, rgba(255, 113, 206, 0.2) 100%); }
-    .heroOverlay h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-    .heroOverlay p { font-size: 1.1rem; max-width: 600px; margin-bottom: 2rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .heroOverlay h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0,0,0,0.5); font-family: var(--font-heading); }
+    .heroOverlay p { font-size: 1.1rem; max-width: 600px; margin-bottom: 2.5rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
     /* =============== SECTIONS =============== */
-    .mission-text p, .event-text p { margin-bottom: 1rem; font-size: 1.05rem; }
+    .mission-text p, .event-text p { margin-bottom: 1.2rem; font-size: 1.05rem; }
     
-    .eventGrid { display: grid; gap: 2rem; margin-top: 2rem; }
+    .eventGrid { display: grid; gap: 3rem; margin-top: 2rem; }
     @media (min-width: 900px) { .eventGrid { grid-template-columns: 1fr 1fr; } }
     .eventCol ul { list-style: none; margin-bottom: 1.5rem; }
     .eventCol li { margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative; font-size: 1.05rem; }
     .eventCol li::before { content: "►"; color: var(--accent); position: absolute; left: 0; font-size: 0.7rem; top: 6px; }
     
-    #meetMap { width: 100%; height: 300px; border-radius: var(--r); z-index: 1; border: 1px solid var(--border); filter: grayscale(100%); transition: 0.4s; }
+    #meetMap { width: 100%; height: 350px; border-radius: var(--r); z-index: 1; border: 1px solid var(--border); filter: grayscale(100%); transition: 0.4s; }
     #meetMap:hover { filter: grayscale(0%); }
     [data-theme="vaporwave"] #meetMap { filter: invert(1) hue-rotate(180deg) contrast(1.2); }
 
     /* Weather Card */
     #weatherCard {
       background: var(--bg); border-radius: var(--r); padding: 1.5rem;
-      display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;
+      display: flex; align-items: center; gap: 1.5rem; margin-top: 2rem;
       border: 1px solid var(--border);
     }
-    .wxTemp { font-size: 2.5rem; font-weight: 800; font-family: var(--font-heading); color: var(--primary); line-height: 1; }
+    .wxTemp { font-size: 3rem; font-weight: 800; font-family: var(--font-heading); color: var(--primary); line-height: 1; }
 
     /* Give Cards */
     .giveGrid { display: grid; gap: 2rem; }
@@ -258,50 +244,50 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     .giveCard img { margin-bottom: 1.5rem; max-height: 220px; object-fit: contain; background: var(--bg); padding: 1rem; border: 1px solid var(--border); }
 
     /* =============== APP DOWNLOAD TABS =============== */
-    .appTabsCard { padding: 0; overflow: hidden; max-width: 800px; margin: 2rem auto 0; }
+    .appTabsCard { padding: 0; overflow: hidden; max-width: 800px; margin: 3rem auto 0; }
     .tab-buttons { display: flex; border-bottom: 1px solid var(--border); }
     .tab-btn {
-      flex: 1; padding: 1.25rem 1rem; border: none; background: transparent;
+      flex: 1; padding: 1.5rem 1rem; border: none; background: transparent;
       font-weight: 600; cursor: pointer; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;
-      transition: 0.3s; font-family: var(--font-body); font-size: 0.9rem;
+      transition: 0.3s; font-family: var(--font-body); font-size: 0.95rem;
     }
     .tab-btn:hover { background: rgba(0,0,0,0.02); color: var(--primary); }
     [data-theme="vaporwave"] .tab-btn:hover { background: rgba(255,255,255,0.05); }
     .tab-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: inset 0 -3px 0 var(--accent); }
     
-    .tab-content { display: none; padding: clamp(1.5rem, 4vw, 3rem); }
+    .tab-content { display: none; padding: clamp(2rem, 5vw, 4rem); }
     .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     
-    .accent-text { color: var(--primary); font-weight: 600; margin-bottom: 2rem; text-align: center; }
+    .accent-text { color: var(--primary); font-weight: 600; margin-bottom: 2.5rem; text-align: center; }
     [data-theme="vaporwave"] .accent-text { color: var(--accent); }
     
     .app-steps { list-style: none; counter-reset: step-counter; }
-    .app-steps li { position: relative; padding-left: 3rem; margin-bottom: 2.5rem; font-size: 1.05rem; }
+    .app-steps li { position: relative; padding-left: 3.5rem; margin-bottom: 3rem; font-size: 1.05rem; }
     .app-steps li:last-child { margin-bottom: 0; }
     .app-steps li::before {
       counter-increment: step-counter; content: "0" counter(step-counter);
-      position: absolute; left: 0; top: -2px;
-      font-size: 1.2rem; font-weight: 800; font-family: var(--font-heading); color: var(--muted);
+      position: absolute; left: 0; top: -4px;
+      font-size: 1.5rem; font-weight: 800; font-family: var(--font-heading); color: var(--muted);
     }
-    .app-links { margin-top: 1rem; }
+    .app-links { margin-top: 1.5rem; }
     
     .video-container {
       position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-      margin-top: 1.5rem; border-radius: var(--r); border: 1px solid var(--border); box-shadow: var(--shadow);
+      margin-top: 2rem; border-radius: var(--r); border: 1px solid var(--border); box-shadow: var(--shadow);
     }
     .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
     /* Staff Grid (Editorial Grayscale treatment) */
-    .staffGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 2rem; margin-top: 2rem; }
+    .staffGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 3rem 2rem; margin-top: 3rem; }
     .cardStaff { text-align: center; }
-    .cardStaff img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    .cardStaff .name { font-weight: 800; color: var(--primary); font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 0.2rem; }
+    .cardStaff img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.2rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .cardStaff .name { font-weight: 800; color: var(--primary); font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.3rem; }
     .cardStaff .chip { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
 
     footer { 
-      position: relative; z-index: 2; background: var(--card-bg); color: var(--muted); text-align: center; 
-      padding: 3rem 2rem; font-size: 0.8rem; border-top: 1px solid var(--border); letter-spacing: 0.1em; text-transform: uppercase;
+      position: relative; z-index: 10; background: var(--card-bg); color: var(--muted); text-align: center; 
+      padding: 4rem 2rem; font-size: 0.8rem; border-top: 1px solid var(--border); letter-spacing: 0.1em; text-transform: uppercase;
     }
   </style>
 </head>
@@ -323,10 +309,8 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
       </filter>
     </defs>
 
-    <!-- HORIZON STRIPED SUN -->
     <g transform="translate(720, 240)"><circle cx="0" cy="0" r="110" fill="url(#sunStripes)" /></g>
 
-    <!-- MOUNTAIN WIREFRAME MESH -->
     <polygon points="120,600 380,340 580,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5" />
     <polygon points="240,600 380,340 460,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1" />
     <line x1="380" y1="340" x2="380" y2="600" stroke="var(--mountain-wire)" stroke-width="1" />
@@ -340,12 +324,10 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     <polygon points="980,600 1060,360 1180,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1" />
     <line x1="1060" y1="360" x2="1060" y2="600" stroke="var(--mountain-wire)" stroke-width="1" />
 
-    <!-- TOPOGRAPHIC CURVES -->
     <path d="M -50,750 Q 320,680 720,700 T 1500,740" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
     <path d="M -50,830 Q 340,770 720,790 T 1500,820" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
     <path d="M -50,910 Q 360,860 720,870 T 1500,900" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
 
-    <!-- ASCENDING SWITCHBACK TRAIL -->
     <path d="M 720,990 C 690,920 620,890 580,840 C 530,780 620,740 680,700 C 760,650 860,620 830,540 C 800,470 650,470 660,390 C 670,330 710,290 720,240" fill="none" stroke="var(--trail-base)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M 720,990 C 690,920 620,890 580,840 C 530,780 620,740 680,700 C 760,650 860,620 830,540 C 800,470 650,470 660,390 C 670,330 710,290 720,240" fill="none" stroke="var(--trail-pulse)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlow)" class="trail-pulse" />
     <circle cx="720" cy="240" r="7" fill="var(--trail-pulse)" class="waypoint-ping" filter="url(#neonGlow)" />
@@ -418,19 +400,19 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
     <div class="eventCol">
       <p>A scenic climb linking Mount Tenran and Mount Tonosu. The path offers switchback forest tracks, natural viewpoints over Hanno, and an accessible ascent suitable for beginners and experienced walkers alike.</p>
       <br>
-      <h3 style="margin-bottom: 0.5rem;">Schedule</h3>
+      <h3 style="margin-bottom: 0.5rem; font-family: var(--font-heading);">Schedule</h3>
       <ul>
         <li><strong>Meeting Time:</strong> 10:00 AM</li>
         <li><strong>Start Time:</strong> 10:30 AM</li>
         <li><strong>Location:</strong> Hanno Station</li>
         <li><strong>Fee:</strong> 3,000 JPY (Includes T-shirt, Kids are free)</li>
       </ul>
-      <p class="subtle" style="font-size: 0.85rem;">Note: Surfaces can be slippery after rain. Wear grip shoes and bring water. Transport costs are self-covered.</p>
+      <p class="subtle" style="font-size: 0.85rem; margin-top: 1.5rem;">Note: Surfaces can be slippery after rain. Wear grip shoes and bring water. Transport costs are self-covered.</p>
       
       <div id="weatherCard">
         <div class="wxTemp" id="wxTempDisplay">--°</div>
         <div class="wxDetails">
-          <strong id="wxDescDisplay">Loading weather...</strong>
+          <strong id="wxDescDisplay" style="font-size: 1.1rem;">Loading weather...</strong><br>
           <span class="subtle" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Live from Hanno Station</span>
         </div>
       </div>
@@ -438,7 +420,7 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
 
     <div class="eventCol">
       <div id="meetMap"></div>
-      <a class="btn btnWide" style="margin-top: 1rem;" href="https://www.google.com/maps/search/?api=1&query=Hanno+Station" target="_blank">Open in Google Maps</a>
+      <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://www.google.com/maps/search/?api=1&query=Hanno+Station" target="_blank">Open in Google Maps</a>
     </div>
   </div>
 </section>
@@ -597,5 +579,3 @@ Drop this into `index.html` and hit the night mode switch. This is the sweet spo
 </script>
 </body>
 </html>
-
-```
