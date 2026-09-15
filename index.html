@@ -39,6 +39,12 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-body); color: var(--ink); background-color: var(--bg); -webkit-font-smoothing: antialiased; line-height: 1.6; transition: background-color 0.5s ease, color 0.5s ease; overflow-x: hidden; position: relative; }
+    
+    /* Subtle pink glow on main text in dark mode */
+    [data-theme="vaporwave"] body, [data-theme="vaporwave"] p, [data-theme="vaporwave"] li, [data-theme="vaporwave"] span {
+      text-shadow: 0 0 4px rgba(255, 113, 206, 0.25);
+    }
+
     h1, h2, h3, .serif { font-family: var(--font-heading); transition: color 0.3s ease; }
     [data-theme="vaporwave"] h1, [data-theme="vaporwave"] h2, [data-theme="vaporwave"] .headline { text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; text-shadow: 2px 2px 0px rgba(1, 205, 254, 0.6), -2px -2px 0px rgba(185, 103, 255, 0.6); }
     a { color: inherit; text-decoration: none; transition: 0.3s; }
@@ -196,17 +202,17 @@
 </div>
 
 <!-- =============== FOREGROUND MOUNTAIN FRAMING (Z-INDEX 3) =============== -->
+<!-- Pyramids made 70 percent sharper (narrower bases / steeper slopes, scaled peaks) -->
 <svg class="fg-mountains" id="fgMountains" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <!-- Rebuilt constraints so peaks mathematically cannot clip -->
   <g>
-    <polygon points="-100,400 250,50 600,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
-    <polygon points="100,400 250,50 400,400" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5"/>
-    <line x1="250" y1="50" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    <polygon points="50,400 250,-180 450,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+    <polygon points="150,400 250,-180 350,400" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    <line x1="250" y1="-180" x2="250" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
   </g>
   <g>
-    <polygon points="800,400 1200,80 1540,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
-    <polygon points="1000,400 1200,80 1400,400" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5"/>
-    <line x1="1200" y1="80" x2="1200" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    <polygon points="1000,400 1200,-150 1400,400" fill="var(--bg)" stroke="var(--mountain-wire)" stroke-width="3"/>
+    <polygon points="1100,400 1200,-150 1300,400" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5"/>
+    <line x1="1200" y1="-150" x2="1200" y2="400" stroke="var(--mountain-wire)" stroke-width="1.5"/>
   </g>
 </svg>
 
@@ -384,8 +390,8 @@
     <div class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu"><div class="name">Peiyu</div><div class="chip"><span class="en">Inspiration</span><span class="ja">インスピレーション</span></div></div>
     <div class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="name">Yujiro</div><div class="chip"><span class="en">Logistics</span><span class="ja">ロジスティクス</span></div></div>
     <div class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="name">Shin</div><div class="chip"><span class="en">Guru</span><span class="ja">グル</span></div></div>
-    <div class="cardStaff"><img src="john.jpg" alt="John"><div class="name">John</div><div class="chip"><span class="en">Trailblazer</span><span class="ja">トレイルブレイ</span></div></div>
-    <div class="cardStaff"><img src="turtle.png" alt="Daniel"><div class="name">Daniel</div><div class="chip"><span class="en">Support</span><span class="ja">サポート</span></div></div>
+    <div class="cardStaff"><img src="john.jpg" alt="John"><div class="name">John</div><div class="chip"><span class="en">Trailblazer</span><span class="ja">トレイルブレイザー</span></div></div>
+    <div class="cardStaff"><img src="turtle.png" alt="Daniel"><div class="name">Daniel</div><div class="chip"><span class="en">Design</span><span class="ja">デザイン</span></div></div>
   </div>
 </section>
 
@@ -521,22 +527,6 @@
   let isAttracted = false, flip = 1;
 
   if (turtleImg && speechEl) {
-    turtleImg.addEventListener('mouseenter', () => {
-      const scrollY = window.scrollY;
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      if (scrollY < (maxScroll - 800) && scrollY >= 200 && !window.isClimbing && !window.isPreparingClimb) {
-        window.isHovered = true;
-        speechEl.innerHTML = "<span class='ja'>寄付する！</span><span class='en'>DONATE!</span>";
-        speechEl.style.pointerEvents = 'none';
-        speechEl.classList.add('show');
-      }
-    });
-
-    turtleImg.addEventListener('mouseleave', () => {
-      window.isHovered = false;
-      if (!window.isClimbing && !window.isPreparingClimb) speechEl.classList.remove('show');
-    });
-
     turtleImg.addEventListener('click', (e) => {
       e.preventDefault();
       if (window.isClimbing || window.isPreparingClimb) return;
