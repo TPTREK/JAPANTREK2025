@@ -71,6 +71,8 @@
     /* =============== Localization Toggle Logic =============== */
     :root[lang="en"] .ja { display: none !important; }
     :root[lang="ja"] .en { display: none !important; }
+    
+    #langToggle { font-style: normal; font-family: var(--font-body); font-weight: 800; }
 
     /* =============== Dynamic Mountain Trail Backdrop (Z-Index 1) =============== */
     .trail-backdrop {
@@ -106,7 +108,6 @@
       transition: filter 0.5s ease;
     }
     [data-theme="vaporwave"] .turtle-img {
-      /* Removed the brightness/invert filter, leaving only the neon pink shadow */
       filter: drop-shadow(0 0 15px rgba(255, 113, 206, 0.8));
     }
 
@@ -240,7 +241,7 @@
     }
 
     /* =============== Buttons & Rollovers =============== */
-    .btn, .btnWide, .tab-btn, .btn-outline {
+    .btn, .btnWide, .btn-outline {
       font-style: italic;
     }
 
@@ -371,41 +372,6 @@
     .giveCard { display: flex; flex-direction: column; justify-content: space-between; }
     .giveCard img { border-radius: 8px; margin-bottom: 1.5rem; max-height: 200px; object-fit: contain; background: var(--bg); padding: 1rem; border: 1px solid var(--border); }
 
-    /* =============== APP DOWNLOAD TABS =============== */
-    .appTabsCard { padding: 0; overflow: hidden; max-width: 800px; margin: 0 auto; }
-    .tab-buttons { display: flex; border-bottom: 1px solid var(--border); }
-    .tab-btn {
-      flex: 1; padding: 1.25rem 1rem; border: none; background: rgba(0,0,0,0.03);
-      font-weight: 600; cursor: pointer; color: var(--muted);
-      transition: 0.3s; font-family: var(--font-body); font-size: 1.1rem;
-    }
-    [data-theme="vaporwave"] .tab-btn { background: rgba(255,255,255,0.02); }
-    
-    .tab-btn:hover { background: rgba(0,0,0,0.06); color: var(--accent); }
-    [data-theme="vaporwave"] .tab-btn:hover { background: rgba(255,255,255,0.06); color: var(--accent); text-shadow: 0 0 8px var(--accent); }
-    
-    .tab-btn.active { background: var(--card-bg); color: var(--accent); box-shadow: inset 0 3px 0 var(--accent); }
-    
-    .tab-content { display: none; padding: clamp(1.5rem, 4vw, 3rem); }
-    .tab-content.active { display: block; }
-    
-    .accent-text { color: var(--accent); font-weight: 800; margin-bottom: 2.5rem; text-align: center; }
-    .app-steps { list-style: none; counter-reset: step-counter; }
-    .app-steps li { position: relative; padding-left: 2.5rem; margin-bottom: 2.5rem; }
-    .app-steps li:last-child { margin-bottom: 0; }
-    .app-steps li::before {
-      counter-increment: step-counter; content: counter(step-counter);
-      position: absolute; left: 0; top: -4px;
-      font-size: 1.5rem; font-weight: 800; font-family: var(--font-heading); color: var(--primary);
-    }
-    .app-links { margin-top: 1rem; }
-    
-    .video-container {
-      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
-      margin-top: 1rem; border-radius: 8px; border: 1px solid var(--border); box-shadow: var(--shadow);
-    }
-    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
     /* Staff Grid */
     .staffGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
     .cardStaff { text-align: center; }
@@ -526,7 +492,7 @@
     <a href="#guide"><span class="en">Preparation</span><span class="ja">準備</span></a>
     <a href="#give"><span class="en">Support</span><span class="ja">サポート</span></a>
     <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
-      <button id="langToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; font-style: normal; font-size: 1.2rem; flex: 1;" id="langToggleMobile">🇯🇵</button>
+      <button id="langToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; font-style: normal; font-size: 1.2rem; flex: 1;">🇯🇵</button>
       <button id="themeToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px; font-size: 1.2rem; flex: 1;">☀️</button>
     </div>
     <a class="btnWide" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank"><span class="en">Register</span><span class="ja">登録する</span></a>
@@ -613,7 +579,7 @@
   </div>
 </section>
 
-<!-- =============== HOW TO TREK (Guide + App) =============== -->
+<!-- =============== HOW TO TREK =============== -->
 <section id="guide" class="section shell">
   <h2 class="headline" style="text-align: center;">
     <span class="en">How to Trek</span>
@@ -621,13 +587,13 @@
   </h2>
   <div style="text-align: center; margin-bottom: 3rem;">
     <p class="subtle text-glow">
-      <span class="en">Preparation, gear, and digital setup for the ascent.</span>
-      <span class="ja">登山の準備、装備、アプリの設定。</span>
+      <span class="en">Preparation and gear for the ascent.</span>
+      <span class="ja">登山の準備と装備。</span>
     </p>
   </div>
 
   <!-- SURVIVAL GUIDE CARD -->
-  <div class="card" style="margin-bottom: 3rem;">
+  <div class="card">
     <span class="badge"><span class="en">Survival Guide</span><span class="ja">サバイバルガイド</span></span>
     <p class="subtle" style="margin-bottom: 1.5rem;"><span class="en">Proper gear and hydration for the ascent.</span><span class="ja">登山のための適切な装備と水分補給。</span></p>
 
@@ -645,67 +611,6 @@
           <li><span class="en"><strong>Gear:</strong> Walking sticks are not required, but highly recommended for inclines.</span><span class="ja"><strong>装備:</strong> トレッキングポールは必須ではありませんが、あると便利です。</span></li>
         </ul>
       </div>
-    </div>
-  </div>
-  
-  <!-- APP TABS CARD -->
-  <div class="card appTabsCard" id="appCard">
-    <div style="padding: 2rem 2rem 1rem; text-align: center; border-bottom: 1px solid var(--border);">
-        <span class="badge"><span class="en">Digital Setup</span><span class="ja">デジタル設定</span></span>
-        <h3 class="headline" style="font-size: 1.5rem; margin-bottom: 0.5rem;"><span class="en">Download the dedicated app</span><span class="ja">専用アプリのダウンロード</span></h3>
-        <p class="subtle"><span class="en">You can participate using the charity walking app "minpo"</span><span class="ja">チャリティーウォーキングアプリ「minpo」を使って参加できます</span></p>
-    </div>
-    <div class="tab-buttons">
-      <button class="tab-btn active" data-target="tab-android"><span class="en">▶ Android users</span><span class="ja">▶ Androidの方</span></button>
-      <button class="tab-btn" data-target="tab-ios"><span class="en"> iPhone users</span><span class="ja"> iPhoneの方</span></button>
-    </div>
-    
-    <!-- ANDROID TAB -->
-    <div id="tab-android" class="tab-content active">
-      <p class="accent-text"><span class="en">Two apps, Google fit and minpo, are required.</span><span class="ja">Google Fitとminpoの2つのアプリが必要です。</span></p>
-      <ol class="app-steps">
-        <li>
-          <span class="en"><strong>Install Google fit</strong> (if you have already installed it, go to step 2)</span>
-          <span class="ja"><strong>Google Fitをインストール</strong> (すでにインストール済みの場合はステップ2へ)</span>
-          <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=ja&gl=US&pli=1" target="_blank" class="btn btn-outline"><span class="en">Get Google Fit</span><span class="ja">Google Fitを入手</span></a>
-          </div>
-        </li>
-        <li>
-          <span class="en"><strong>Download the step measurement app "minpo"</strong></span>
-          <span class="ja"><strong>歩数計アプリ「minpo」をダウンロード</strong></span>
-          <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=com.congrant.minpo.app&hl=ja&gl=US" target="_blank" class="btn btn-outline"><span class="en">Get minpo</span><span class="ja">minpoを入手</span></a>
-          </div>
-        </li>
-        <li>
-          <span class="en"><strong>Register for the event according to the steps in the video</strong></span>
-          <span class="ja"><strong>動画の手順に従ってイベントに登録</strong></span>
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/t_ZNkG5uN6Q" allowfullscreen></iframe>
-          </div>
-        </li>
-      </ol>
-    </div>
-
-    <!-- IOS TAB -->
-    <div id="tab-ios" class="tab-content">
-      <ol class="app-steps">
-        <li>
-          <span class="en"><strong>Download the step measurement app "minpo"</strong></span>
-          <span class="ja"><strong>歩数計アプリ「minpo」をダウンロード</strong></span>
-          <div class="app-links">
-            <a href="https://apps.apple.com/us/app/minpo-%E3%83%81%E3%83%A3%E3%83%AA%E3%83%86%E3%82%A3%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA/id1569178883" target="_blank" class="btn btn-outline"><span class="en">Get minpo on the App Store</span><span class="ja">App Storeでminpoを入手</span></a>
-          </div>
-        </li>
-        <li>
-          <span class="en"><strong>Register for the event according to the steps in the video</strong></span>
-          <span class="ja"><strong>動画の手順に従ってイベントに登録</strong></span>
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/3NjqO_BMQ8M" allowfullscreen></iframe>
-          </div>
-        </li>
-      </ol>
     </div>
   </div>
 </section>
@@ -802,21 +707,8 @@
     autoplay: { delay: 6000, disableOnInteraction: false },
     effect: 'fade'
   });
-  
-  /* 4. App Download Tabs */
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabContents.forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.getAttribute('data-target')).classList.add('active');
-    });
-  });
-
-  /* 5. Map Init (Hanno Station) */
+  /* 4. Map Init (Hanno Station) */
   const mapCenter = [35.8506, 139.3188]; 
   const map = L.map('meetMap', { scrollWheelZoom: false }).setView(mapCenter, 15);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -824,7 +716,7 @@
   }).addTo(map);
   L.marker(mapCenter).addTo(map).bindPopup('Hanno Station');
 
-  /* 6. Weather Fetch (Hanno coordinates) with i18n support */
+  /* 5. Weather Fetch (Hanno coordinates) with i18n support */
   const wxCodesEn = {
     0: 'Clear Sky', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
     45: 'Fog', 51: 'Drizzle', 61: 'Rain', 71: 'Snow', 95: 'Thunderstorm'
@@ -846,7 +738,7 @@
       document.getElementById('wxDescDisplay').innerHTML = `<span class="en">Weather offline</span><span class="ja">天気情報オフライン</span>`;
     });
 
-  /* 7. Mascot Advanced Rendering Loop & Logic */
+  /* 6. Mascot Advanced Rendering Loop & Logic */
   const turtleWrap = document.getElementById('turtleMascot');
   const turtleImg = document.getElementById('turtleImg');
   const tokoContainer = document.getElementById('tokoContainer');
@@ -930,7 +822,7 @@
       if (climbProgress >= 1) {
         if (!hasReachedSummit) {
           hasReachedSummit = true;
-          speechEl.innerHTML = "お疲れ様！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Otsukaresama! / Great job!</span>";
+          speechEl.innerHTML = "お疲れ様！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Great job!</span>";
           speechEl.classList.add('show');
           
           // Wait to display message before fading out
@@ -1006,12 +898,12 @@
   }
   animateTurtle();
 
-  /* Mascot Cycling Hints (JP + Romaji + EN) */
+  /* 7. Mascot Cycling Hints (JP + EN ONLY) */
   const mascotHints = [
-    "スクロールしてね！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Sukurōru shite ne! / Scroll down!</span>",
-    "寄付をお願いします！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Kifu o onegaishimasu! / Please donate!</span>",
-    "一緒に歩こう！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Issho ni arukou! / Let's walk together!</span>",
-    "日焼け止めを忘れずに！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Hiyakedome o wasurezuni! / Don't forget sunscreen!</span>"
+    "スクロールしてね！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Scroll down!</span>",
+    "寄付をお願いします！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Please donate!</span>",
+    "一緒に歩こう！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Let's walk together!</span>",
+    "日焼け止めを忘れずに！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Don't forget sunscreen!</span>"
   ];
   let hintIndex = 0;
   
