@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Japan Trek 2025 | TransPerfect</title>
+  <title>Japan Trek 2026 | TransPerfect</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&family=VT323&display=swap" rel="stylesheet" />
 
   <!-- Swiper / Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
@@ -17,105 +17,172 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-    /* =============== Theme v1.5 =============== */
+    /* =============== Base Theme (Day/Zen) =============== */
     :root {
-      --bg: #F9F8F6;          /* Soft off-white */
-      --bg-alt: #FFFFFF;      /* Pure white for cards */
-      --ink: #2C3531;         /* Deep charcoal/forest */
-      --muted: #5D6B63;       /* Softer text */
-      --forest: #2A4B3C;      /* Brand primary */
-      --forest-light: #3D6954;
-      --clay: #D87C54;        /* Accent/Action */
-      --clay-hover: #C56A43;
-      --sand: #E3DCC2;        /* Subtle backgrounds */
+      --bg: #F9F8F6;
+      --bg-alt: #FFFFFF;
+      --ink: #2C3531;
+      --muted: #5D6B63;
+      --primary: #2A4B3C;
+      --accent: #D87C54;
+      --accent-hover: #C56A43;
+      --card-bg: var(--bg-alt);
       --shadow: 0 12px 32px rgba(42, 75, 60, 0.08);
-      --r: 16px;              /* Radius */
+      --border: rgba(42, 75, 60, 0.1);
+      --r: 16px;
       --gap: 1.5rem;
       --content-max: 1080px;
       --h2: clamp(1.8rem, 4vw, 2.5rem);
       --scroll-offset: 70px;
+      --font-body: 'Inter', sans-serif;
+      --font-heading: 'Lora', serif;
     }
 
-    /* =============== Base =============== */
+    /* =============== Vaporwave Theme (Night Mode) =============== */
+    [data-theme="vaporwave"] {
+      --bg: #0b0c10;
+      --bg-alt: rgba(20, 20, 30, 0.85);
+      --ink: #e0e0e0;
+      --muted: #b967ff; /* synth purple */
+      --primary: #ff71ce; /* neon pink */
+      --accent: #01cdfe; /* cyan */
+      --accent-hover: #05ffa1; /* neon green */
+      --card-bg: rgba(15, 15, 25, 0.7);
+      --shadow: 0 0 20px rgba(255, 113, 206, 0.2), inset 0 0 10px rgba(1, 205, 254, 0.1);
+      --border: rgba(1, 205, 254, 0.4);
+      --font-heading: 'VT323', monospace;
+    }
+
+    /* Vaporwave Grid Background Effect */
+    [data-theme="vaporwave"]::before {
+      content: "";
+      position: fixed;
+      bottom: -10vh; left: 0; right: 0; height: 60vh;
+      background:
+        linear-gradient(transparent 49%, rgba(255, 113, 206, 0.8) 50%, transparent 51%),
+        linear-gradient(90deg, transparent 49%, rgba(1, 205, 254, 0.8) 50%, transparent 51%);
+      background-size: 60px 60px;
+      transform: perspective(600px) rotateX(75deg);
+      z-index: -1;
+      pointer-events: none;
+      animation: gridMove 10s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 60px; }
+    }
+
+    /* =============== Global Setup =============== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       color: var(--ink);
       background-color: var(--bg);
       -webkit-font-smoothing: antialiased;
       line-height: 1.6;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      overflow-x: hidden;
     }
-    h1, h2, h3, .serif { font-family: 'Lora', serif; }
-    a { color: inherit; text-decoration: none; transition: 0.2s; }
-    img { max-width: 100%; display: block; height: auto; }
-    [id] { scroll-margin-top: var(--scroll-offset); }
-    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
     
+    h1, h2, h3, .serif { 
+      font-family: var(--font-heading); 
+      transition: color 0.3s ease;
+    }
+    
+    [data-theme="vaporwave"] h1, 
+    [data-theme="vaporwave"] h2 {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-shadow: 2px 2px 0px var(--accent), -2px -2px 0px #b967ff;
+    }
+
+    a { color: inherit; text-decoration: none; transition: 0.2s; }
+    img { max-width: 100%; display: block; height: auto; border-radius: 8px; }
+    [id] { scroll-margin-top: var(--scroll-offset); }
+
     /* =============== Layout & Utilities =============== */
     .shell { max-width: var(--content-max); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
-    .section { padding: 4rem 0; }
+    .section { padding: 4rem 0; position: relative; z-index: 2; }
     .split { display: grid; gap: 3rem; }
     @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; align-items: center; } }
     
     .badge {
       display: inline-block; padding: 0.4rem 0.8rem; border-radius: 999px;
       font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--sand); color: var(--forest); margin-bottom: 1rem;
+      background: var(--bg-alt); color: var(--primary); margin-bottom: 1rem;
+      border: 1px solid var(--primary);
     }
-    .headline { font-size: var(--h2); color: var(--forest); line-height: 1.2; margin-bottom: 1.5rem; }
+    
+    .headline { font-size: var(--h2); color: var(--primary); line-height: 1.2; margin-bottom: 1.5rem; }
     .subtle { color: var(--muted); }
+    
     .card {
-      background: var(--bg-alt); border-radius: var(--r);
+      background: var(--card-bg); border-radius: var(--r);
       padding: clamp(1.5rem, 3vw, 2.5rem); box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
     }
 
     /* Buttons */
     .btn, .btnWide {
-      background: var(--clay); color: #fff;
+      background: var(--accent); color: #fff;
       padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600;
       display: inline-block; transition: all 0.2s ease; border: none; cursor: pointer;
+      text-transform: uppercase; letter-spacing: 1px;
     }
-    .btn:hover, .btnWide:hover { background: var(--clay-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(216, 124, 84, 0.3); }
+    .btn:hover, .btnWide:hover { 
+      background: var(--accent-hover); 
+      transform: translateY(-2px); 
+      box-shadow: 0 0 15px var(--accent); 
+    }
     .btnWide { width: 100%; text-align: center; padding: 1rem; }
-    .btn-outline { background: transparent; border: 2px solid var(--forest); color: var(--forest); }
-    .btn-outline:hover { background: var(--forest); color: #fff; }
+    
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .btn-outline:hover { background: var(--primary); color: #fff; box-shadow: 0 0 15px var(--primary); }
 
     /* =============== NAV =============== */
     nav {
       position: fixed; top: 0; left: 0; width: 100%;
-      background: rgba(249, 248, 246, 0.95); backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(42, 75, 60, 0.1); z-index: 120;
+      background: var(--card-bg); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border); z-index: 120;
       transition: all 0.3s ease;
     }
     .nav-inner {
       display: flex; align-items: center; justify-content: space-between;
       height: var(--scroll-offset); padding: 0 clamp(1rem, 4vw, 2rem);
     }
-    .brand img { height: 40px; width: auto; filter: brightness(0.2); }
     
-    #countBox { font-family: 'Inter', sans-serif; font-weight: 800; color: var(--clay); display: flex; gap: 0.2rem; }
+    .brand { display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1.2rem; }
+    .brand img { height: 40px; width: auto; transition: filter 0.3s; }
+    [data-theme="vaporwave"] .brand img { filter: invert(1) hue-rotate(180deg) saturate(3); }
+    
     .links { display: none; gap: 1.5rem; font-weight: 600; font-size: 0.9rem; }
     .links a { color: var(--muted); }
-    .links a:hover, .links a.is-active { color: var(--forest); }
-    .actions { display: none; gap: 1rem; }
+    .links a:hover { color: var(--primary); }
+    .actions { display: none; gap: 1rem; align-items: center; }
     
     @media (min-width: 900px) {
       .links, .actions { display: flex; align-items: center; }
       #menuBtn { display: none; }
     }
 
+    #themeToggle { font-size: 1.2rem; cursor: pointer; background: none; border: none; }
+    
     /* Mobile Menu */
     .hamburger {
       background: none; border: none; cursor: pointer; display: flex;
       flex-direction: column; gap: 4px; padding: 0.5rem;
     }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--forest); transition: 0.3s; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--primary); transition: 0.3s; }
     .mobileMenu {
       position: fixed; top: var(--scroll-offset); left: 0; width: 100%;
-      background: var(--bg-alt); padding: 2rem; box-shadow: var(--shadow);
+      background: var(--card-bg); padding: 2rem; box-shadow: var(--shadow);
       display: flex; flex-direction: column; gap: 1.5rem;
       transform: translateY(-100%); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 100;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(15px);
     }
     nav.open .mobileMenu { transform: translateY(0); opacity: 1; visibility: visible; }
 
@@ -123,48 +190,94 @@
     header { margin-top: var(--scroll-offset); height: 75vh; position: relative; }
     .swiper { width: 100%; height: 100%; }
     .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+    
     .heroOverlay {
-      position: absolute; inset: 0; background: rgba(42, 75, 60, 0.4);
+      position: absolute; inset: 0; background: rgba(0,0,0, 0.5);
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       text-align: center; z-index: 5; padding: 1rem; color: #fff;
     }
-    .heroOverlay h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    [data-theme="vaporwave"] .heroOverlay {
+      background: linear-gradient(180deg, rgba(11, 12, 16, 0.4) 0%, rgba(255, 113, 206, 0.2) 100%);
+    }
+
+    .heroOverlay h1 { 
+      font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; 
+      text-shadow: 0 4px 12px rgba(0,0,0,0.5); 
+    }
     .heroOverlay p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; }
 
     /* =============== SECTIONS =============== */
     .mission-text p, .event-text p { margin-bottom: 1rem; }
     
-    /* Event & Map Grid */
     .eventGrid { display: grid; gap: 2rem; margin-top: 2rem; }
     @media (min-width: 900px) { .eventGrid { grid-template-columns: 1fr 1fr; } }
     .eventCol ul { list-style: none; margin-bottom: 1.5rem; }
     .eventCol li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
-    .eventCol li::before { content: "•"; color: var(--clay); position: absolute; left: 0; font-weight: bold; }
-    #meetMap { width: 100%; height: 300px; border-radius: var(--r); z-index: 1; }
+    .eventCol li::before { content: "►"; color: var(--accent); position: absolute; left: 0; font-size: 0.8rem; top: 4px; }
+    
+    #meetMap { width: 100%; height: 300px; border-radius: var(--r); z-index: 1; border: 2px solid var(--border); }
+    [data-theme="vaporwave"] #meetMap { filter: invert(1) hue-rotate(180deg) contrast(1.2); }
 
     /* Weather Card */
     #weatherCard {
-      background: var(--sand); border-radius: var(--r); padding: 1.5rem;
+      background: var(--bg); border-radius: var(--r); padding: 1.5rem;
       display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;
+      border: 1px solid var(--border);
     }
-    .wxTemp { font-size: 2.5rem; font-weight: 800; font-family: 'Lora', serif; color: var(--forest); }
+    .wxTemp { font-size: 2.5rem; font-weight: 800; font-family: var(--font-heading); color: var(--primary); }
     .wxDetails { display: flex; flex-direction: column; }
 
     /* Give Cards */
     .giveGrid { display: grid; gap: 2rem; }
     @media (min-width: 900px) { .giveGrid { grid-template-columns: 1fr 1fr; } }
     .giveCard { display: flex; flex-direction: column; justify-content: space-between; }
-    .giveCard img { border-radius: 8px; margin-bottom: 1.5rem; max-height: 200px; object-fit: contain; background: var(--bg); padding: 1rem; }
+    .giveCard img { border-radius: 8px; margin-bottom: 1.5rem; max-height: 200px; object-fit: contain; background: var(--bg); padding: 1rem; border: 1px solid var(--border); }
+
+    /* =============== APP DOWNLOAD TABS =============== */
+    .appTabsCard { padding: 0; overflow: hidden; max-width: 800px; margin: 2rem auto 0; }
+    .tab-buttons { display: flex; border-bottom: 1px solid var(--border); }
+    .tab-btn {
+      flex: 1; padding: 1.25rem 1rem; border: none; background: rgba(0,0,0,0.03);
+      font-weight: 600; cursor: pointer; color: var(--muted);
+      transition: 0.3s; font-family: var(--font-body); font-size: 1.1rem;
+    }
+    [data-theme="vaporwave"] .tab-btn { background: rgba(255,255,255,0.02); }
+    .tab-btn:hover { background: rgba(0,0,0,0.06); }
+    [data-theme="vaporwave"] .tab-btn:hover { background: rgba(255,255,255,0.06); }
+    .tab-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: inset 0 3px 0 var(--accent); }
+    
+    .tab-content { display: none; padding: clamp(1.5rem, 4vw, 3rem); }
+    .tab-content.active { display: block; }
+    
+    .accent-text { color: var(--accent); font-weight: 800; margin-bottom: 2.5rem; text-align: center; }
+    .app-steps { list-style: none; counter-reset: step-counter; }
+    .app-steps li { position: relative; padding-left: 2.5rem; margin-bottom: 2.5rem; }
+    .app-steps li:last-child { margin-bottom: 0; }
+    .app-steps li::before {
+      counter-increment: step-counter;
+      content: counter(step-counter);
+      position: absolute; left: 0; top: -4px;
+      font-size: 1.5rem; font-weight: 800; font-family: var(--font-heading);
+      color: var(--primary);
+    }
+    .app-links { margin-top: 1rem; }
+    
+    /* Responsive YouTube Embeds */
+    .video-container {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      margin-top: 1rem; border-radius: 8px; border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
     /* Staff Grid */
     .staffGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
     .cardStaff { text-align: center; }
-    .cardStaff img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; box-shadow: var(--shadow); }
-    .cardStaff .name { font-weight: 800; color: var(--forest); }
-    .cardStaff .chip { font-size: 0.75rem; color: var(--muted); }
+    .cardStaff img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; box-shadow: var(--shadow); border: 2px solid var(--primary); }
+    .cardStaff .name { font-weight: 800; color: var(--primary); font-family: var(--font-heading); font-size: 1.2rem; }
+    .cardStaff .chip { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-    /* Footer */
-    footer { background: var(--forest); color: var(--sand); text-align: center; padding: 2rem; font-size: 0.9rem; }
+    footer { background: var(--card-bg); color: var(--primary); text-align: center; padding: 2rem; font-size: 0.9rem; border-top: 1px solid var(--border); font-family: var(--font-heading); }
   </style>
 </head>
 <body>
@@ -172,17 +285,19 @@
 <!-- =============== NAV =============== -->
 <nav id="siteNav">
   <div class="nav-inner">
-    <div class="brand"><img src="TPLOGO.png" alt="TransPerfect Logo"></div>
+    <div class="brand">
+      JAPAN TREK
+    </div>
     
     <div class="links">
-      <a href="#mission">Our Mission</a>
+      <a href="#mission">Mission</a>
       <a href="#event">The Trek</a>
       <a href="#give">Support</a>
-      <a href="#staff">Community</a>
+      <a href="#app">Get The App</a>
     </div>
 
     <div class="actions">
-      <div id="countBox"></div>
+      <button id="themeToggle" aria-label="Toggle Night Mode">🌙</button>
       <a class="btn" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
     </div>
 
@@ -190,10 +305,11 @@
   </div>
 
   <div id="mobileMenu" class="mobileMenu">
-    <a href="#mission">Our Mission</a>
+    <a href="#mission">Mission</a>
     <a href="#event">The Trek</a>
     <a href="#give">Support</a>
-    <a href="#staff">Community</a>
+    <a href="#app">Get The App</a>
+    <button id="themeToggleMobile" class="btn-outline" style="padding: 0.8rem; border-radius: 8px;">🌙 Toggle Theme</button>
     <a class="btnWide" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
   </div>
 </nav>
@@ -207,13 +323,13 @@
     </div>
     <div class="heroOverlay">
       <h1>Walk With Purpose</h1>
-      <p>TransPerfect Japan Charity Trek 2025</p>
-      <a href="#mission" class="btn btn-outline" style="color:white; border-color:white;">Discover Why</a>
+      <p>TransPerfect Japan Charity Trek</p>
+      <a href="#event" class="btn">Get Details</a>
     </div>
   </div>
 </header>
 
-<!-- =============== MISSION (Moved to top) =============== -->
+<!-- =============== MISSION =============== -->
 <section id="mission" class="section shell split">
   <div class="mission-text">
     <span class="badge">The Cause</span>
@@ -230,8 +346,8 @@
 <!-- =============== EVENT =============== -->
 <section id="event" class="section shell card">
   <span class="badge">Logistics</span>
-  <h2 class="headline">The Kamakura Daibutsu Trail</h2>
-  <p class="subtle">Saturday, November 8, 2025</p>
+  <h2 class="headline">Tenran-Tonosu Mountain Trail</h2>
+  <p class="subtle">Saturday, November 7th</p>
 
   <div class="eventGrid">
     <div class="eventCol">
@@ -241,7 +357,7 @@
       <ul>
         <li><strong>Meeting Time:</strong> 10:00 AM</li>
         <li><strong>Start Time:</strong> 10:30 AM</li>
-        <li><strong>Location:</strong> Koma Bridge (降魔橋) near Kita-Kamakura Station</li>
+        <li><strong>Location:</strong> Hanno Station</li>
         <li><strong>Fee:</strong> 3,000 JPY (Includes T-shirt, Kids are free)</li>
       </ul>
       <p class="subtle" style="font-size: 0.85rem;">Note: Surfaces can be slippery after rain. Wear grip shoes and bring water. Transport costs are self-covered.</p>
@@ -250,14 +366,14 @@
         <div class="wxTemp" id="wxTempDisplay">--°</div>
         <div class="wxDetails">
           <strong id="wxDescDisplay">Loading weather...</strong>
-          <span class="subtle" style="font-size: 0.85rem;">Live from Kamakura</span>
+          <span class="subtle" style="font-size: 0.85rem;">Live from Hanno Station</span>
         </div>
       </div>
     </div>
 
     <div class="eventCol">
       <div id="meetMap"></div>
-      <a class="btn btnWide" style="margin-top: 1rem;" href="https://www.google.com/maps/search/?api=1&query=%E9%99%8D%E9%AD%94%E6%A9%8B%20%E5%8C%97%E9%8E%8C%E5%80%89" target="_blank">Open in Google Maps</a>
+      <a class="btn btnWide" style="margin-top: 1rem;" href="https://www.google.com/maps/search/?api=1&query=Hanno+Station" target="_blank">Open in Google Maps</a>
     </div>
   </div>
 </section>
@@ -279,9 +395,65 @@
         <span class="badge">Merch</span>
         <h3 class="headline" style="font-size: 1.5rem;">Charity Goods</h3>
         <img src="SampleTShirt.png" alt="T-Shirt Preview">
-        <p>Grab the official 2025 Trek T-Shirt. All profit goes to our charity partners.</p>
+        <p>Grab the official Trek T-Shirt. All profit goes to our charity partners.</p>
       </div>
       <a class="btn btnWide btn-outline" style="margin-top: 1.5rem;" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank">Visit Goods Shop</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============== APP DOWNLOAD SECTION =============== -->
+<section id="app" class="section shell">
+  <h2 class="headline" style="text-align: center;">Download the dedicated app</h2>
+  <p class="subtle" style="text-align: center; margin-bottom: 2rem;">You can participate using the charity walking app "minpo"</p>
+  
+  <div class="card appTabsCard">
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-target="tab-android">▶ Android users</button>
+      <button class="tab-btn" data-target="tab-ios"> iPhone users</button>
+    </div>
+    
+    <!-- ANDROID TAB -->
+    <div id="tab-android" class="tab-content active">
+      <p class="accent-text">Two apps, Google fit and minpo, are required.</p>
+      <ol class="app-steps">
+        <li>
+          <strong>Install Google fit</strong> (if you have already installed it, go to step 2)
+          <div class="app-links">
+            <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.fitness&hl=ja&gl=US&pli=1" target="_blank" class="btn btn-outline">Get Google Fit</a>
+          </div>
+        </li>
+        <li>
+          <strong>Download the step measurement app "minpo"</strong>
+          <div class="app-links">
+            <a href="https://play.google.com/store/apps/details?id=com.congrant.minpo.app&hl=ja&gl=US" target="_blank" class="btn btn-outline">Get minpo</a>
+          </div>
+        </li>
+        <li>
+          <strong>Register for the event according to the steps in the video</strong>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/t_ZNkG5uN6Q" allowfullscreen></iframe>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- IOS TAB -->
+    <div id="tab-ios" class="tab-content">
+      <ol class="app-steps">
+        <li>
+          <strong>Download the step measurement app "minpo"</strong>
+          <div class="app-links">
+            <a href="https://apps.apple.com/us/app/minpo-%E3%83%81%E3%83%A3%E3%83%AA%E3%83%86%E3%82%A3%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E3%82%A2%E3%83%97%E3%83%AA/id1569178883" target="_blank" class="btn btn-outline">Get minpo on the App Store</a>
+          </div>
+        </li>
+        <li>
+          <strong>Register for the event according to the steps in the video</strong>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/3NjqO_BMQ8M" allowfullscreen></iframe>
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
 </section>
@@ -300,43 +472,66 @@
 </section>
 
 <footer>
-  <p>© 2025 TransPerfect Japan Trek. Built with purpose.</p>
+  <p>JAPAN TREK 2026 // SYSTEM ONLINE</p>
 </footer>
 
 <script>
-  /* 1. Mobile Menu */
+  /* 1. Theme Toggle */
+  const toggleBtn = document.getElementById('themeToggle');
+  const toggleBtnMob = document.getElementById('themeToggleMobile');
+  
+  function toggleTheme() {
+    const isVapor = document.documentElement.getAttribute('data-theme') === 'vaporwave';
+    if (isVapor) {
+      document.documentElement.removeAttribute('data-theme');
+      toggleBtn.textContent = '🌙';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'vaporwave');
+      toggleBtn.textContent = '☀️';
+    }
+  }
+  
+  toggleBtn.addEventListener('click', toggleTheme);
+  toggleBtnMob.addEventListener('click', toggleTheme);
+
+  /* 2. Mobile Menu */
   const menuBtn = document.getElementById('menuBtn');
   const nav = document.getElementById('siteNav');
   menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
 
-  /* 2. Swiper Init */
+  /* 3. Swiper Init */
   new Swiper('.swiper', {
     loop: true,
     autoplay: { delay: 6000, disableOnInteraction: false },
     effect: 'fade'
   });
+  
+  /* 4. App Download Tabs */
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
 
-  /* 3. Countdown */
-  const cb = document.getElementById('countBox');
-  const deadline = new Date('2025-11-08T09:30:00+09:00');
-  function tick() {
-    const r = deadline - Date.now();
-    if (r <= 0) { cb.textContent = 'Event Day!'; return; }
-    const d = Math.floor(r / 864e5), h = Math.floor(r / 36e5) % 24;
-    cb.textContent = `${d}d ${h}h left`;
-  }
-  setInterval(tick, 60000); tick();
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active from all
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      
+      // Add active to clicked
+      btn.classList.add('active');
+      document.getElementById(btn.getAttribute('data-target')).classList.add('active');
+    });
+  });
 
-  /* 4. Map Init */
-  const mapCenter = [35.33806, 139.54444];
+  /* 5. Map Init (Hanno Station) */
+  const mapCenter = [35.8506, 139.3188]; 
   const map = L.map('meetMap', { scrollWheelZoom: false }).setView(mapCenter, 15);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CARTO'
   }).addTo(map);
-  L.marker(mapCenter).addTo(map).bindPopup('Koma Bridge (降魔橋)');
+  L.marker(mapCenter).addTo(map).bindPopup('Hanno Station');
 
-  /* 5. Weather Fetch */
-  fetch('https://api.open-meteo.com/v1/forecast?latitude=35.33806&longitude=139.54444&current_weather=true&timezone=Asia%2FTokyo')
+  /* 6. Weather Fetch (Hanno coordinates) */
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=35.8506&longitude=139.3188&current_weather=true&timezone=Asia%2FTokyo')
     .then(r => r.json())
     .then(data => {
       const w = data.current_weather;
