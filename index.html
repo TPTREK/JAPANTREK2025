@@ -71,6 +71,8 @@
     /* =============== Localization Toggle Logic =============== */
     :root[lang="en"] .ja { display: none !important; }
     :root[lang="ja"] .en { display: none !important; }
+    
+    #langToggle { font-style: normal; font-family: var(--font-body); font-weight: 800; }
 
     /* =============== Dynamic Mountain Trail Backdrop (Z-Index 1) =============== */
     .trail-backdrop {
@@ -532,10 +534,10 @@
 <section id="mission" class="section shell split">
   <div class="mission-text">
     <span class="badge"><span class="en">The Cause</span><span class="ja">目的</span></span>
-    <h2 class="headline"><span class="en">Giving Back, Together</span><span class="ja">共に社会へ還元する</span></h2>
-    <p><span class="en">One of the privileges of being a successful business is having the opportunity to give back. We are deeply committed to uplifting local communities and supporting a wide range of non-profit organizations.</span><span class="ja">成功した企業の特権の一つは、社会へ還元する機会を持てることです。私たちは、地域社会の向上と幅広い非営利団体の支援に深くコミットしています。</span></p>
-    <p><span class="en">This year, TransPerfect has partnered with <strong>Relay For Life</strong>, a dynamic movement devoted to supporting cancer patients and their loved ones.</span><span class="ja">今年、トランスパーフェクトは、がん患者とそのご家族を支援する活動である「<strong>リレー・フォー・ライフ</strong>」と提携しました。</span></p>
-    <a class="btn btn-outline" style="margin-top: 1rem;" href="https://relayforlife.jp/selfwalk/2025/index.html" target="_blank"><span class="en">Read about Relay For Life</span><span class="ja">リレー・フォー・ライフについて</span></a>
+    <h2 class="headline"><span class="en">Hike for Education</span><span class="ja">教育のためのハイキング</span></h2>
+    <p><span class="en">Since 1985, <strong>P.U.S. JAPAN</strong> has been supporting children who are unable to attend school in Bangladesh, Nepal, and Myanmar. They have already built 40 schools.</span><span class="ja"><strong>P.U.S. JAPAN</strong>は1985年以来、バングラデシュ、ネパール、ミャンマーで学校に通えない子供たちを支援しており、すでに40校の学校を建設しています。</span></p>
+    <p><span class="en">Small Steps. Big Impact. With approximately 2,000 JPY per month, one child can attend school. Based on past donation amounts, we could potentially help send dozens of children to school, and building a new school together may not be out of reach!</span><span class="ja">小さな一歩が、大きな力に。月額約2,000円で1人の子供が学校に通うことができます。過去の寄付実績から、何十人もの子供たちを学校へ送り出すことができ、さらには新しい学校を共に建設することも夢ではありません！</span></p>
+    <a class="btn btn-outline" style="margin-top: 1rem;" href="https://www.pusjapan.org/" target="_blank"><span class="en">Read about P.U.S. JAPAN</span><span class="ja">P.U.S. JAPANについて</span></a>
   </div>
   <div>
     <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Charity Banner" class="charity-banner">
@@ -622,7 +624,7 @@
       <div>
         <span class="badge"><span class="en">Donate</span><span class="ja">寄付</span></span>
         <h3 class="headline" style="font-size: 1.5rem;"><span class="en">Direct Contribution</span><span class="ja">直接寄付</span></h3>
-        <p><span class="en">Charity-only participation is welcome. 100% of proceeds go directly to Relay for Life to support cancer patients.</span><span class="ja">チャリティーのみの参加も歓迎します。収益の100%は、がん患者支援のためリレー・フォー・ライフへ直接寄付されます。</span></p>
+        <p><span class="en"><strong>Small Steps. Big Impact.</strong> Every step helps a child learn. Every ¥2,000 helps one child attend school for one month. 100% of proceeds go directly to P.U.S. JAPAN.</span><span class="ja"><strong>小さな一歩が、大きな力に。</strong>皆様の一歩が子供の学びを助けます。2,000円で1人の子供が1ヶ月学校に通えます。収益の100%はP.U.S. JAPANへ直接寄付されます。</span></p>
       </div>
       <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank"><span class="en">Donate via Congrant</span><span class="ja">Congrantから寄付する</span></a>
     </div>
@@ -832,7 +834,7 @@
       if (climbProgress >= 1) {
         if (!hasReachedSummit) {
           hasReachedSummit = true;
-          speechEl.innerHTML = "お疲れ様！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Great job!</span>";
+          speechEl.innerHTML = "<span class='ja'>お疲れ様！</span><span class='en'>Great job!</span>";
           speechEl.classList.add('show');
           
           // Wait to display message before fading out
@@ -910,10 +912,10 @@
 
   /* 7. Mascot Cycling Hints (JP + EN ONLY) */
   const mascotHints = [
-    "スクロールしてね！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Scroll down!</span>",
-    "寄付をお願いします！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Please donate!</span>",
-    "一緒に歩こう！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Let's walk together!</span>",
-    "日焼け止めを忘れずに！<br><span style='font-size:0.65rem; opacity:0.8; display:block; margin-top:0.2rem; font-weight:600;'>Don't forget sunscreen!</span>"
+    "<span class='ja'>スクロールしてね！</span><span class='en'>Scroll down!</span>",
+    "<span class='ja'>寄付をお願いします！</span><span class='en'>Please donate!</span>",
+    "<span class='ja'>一緒に歩こう！</span><span class='en'>Let's walk together!</span>",
+    "<span class='ja'>日焼け止めを忘れずに！</span><span class='en'>Don't forget sunscreen!</span>"
   ];
   let hintIndex = 0;
   
