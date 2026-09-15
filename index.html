@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Japan Trek 2025 | TransPerfect</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <!-- Swiper / Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/swiper@10/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    /* =============== Theme v1.5 =============== */
+    :root {
+      --bg: #F9F8F6;          /* Soft off-white */
+      --bg-alt: #FFFFFF;      /* Pure white for cards */
+      --ink: #2C3531;         /* Deep charcoal/forest */
+      --muted: #5D6B63;       /* Softer text */
+      --forest: #2A4B3C;      /* Brand primary */
+      --forest-light: #3D6954;
+      --clay: #D87C54;        /* Accent/Action */
+      --clay-hover: #C56A43;
+      --sand: #E3DCC2;        /* Subtle backgrounds */
+      --shadow: 0 12px 32px rgba(42, 75, 60, 0.08);
+      --r: 16px;              /* Radius */
+      --gap: 1.5rem;
+      --content-max: 1080px;
+      --h2: clamp(1.8rem, 4vw, 2.5rem);
+      --scroll-offset: 70px;
+    }
+
+    /* =============== Base =============== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      background-color: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+    h1, h2, h3, .serif { font-family: 'Lora', serif; }
+    a { color: inherit; text-decoration: none; transition: 0.2s; }
+    img { max-width: 100%; display: block; height: auto; }
+    [id] { scroll-margin-top: var(--scroll-offset); }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+    
+    /* =============== Layout & Utilities =============== */
+    .shell { max-width: var(--content-max); margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2rem); }
+    .section { padding: 4rem 0; }
+    .split { display: grid; gap: 3rem; }
+    @media (min-width: 900px) { .split { grid-template-columns: 1fr 1fr; align-items: center; } }
+    
+    .badge {
+      display: inline-block; padding: 0.4rem 0.8rem; border-radius: 999px;
+      font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--sand); color: var(--forest); margin-bottom: 1rem;
+    }
+    .headline { font-size: var(--h2); color: var(--forest); line-height: 1.2; margin-bottom: 1.5rem; }
+    .subtle { color: var(--muted); }
+    .card {
+      background: var(--bg-alt); border-radius: var(--r);
+      padding: clamp(1.5rem, 3vw, 2.5rem); box-shadow: var(--shadow);
+    }
+
+    /* Buttons */
+    .btn, .btnWide {
+      background: var(--clay); color: #fff;
+      padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600;
+      display: inline-block; transition: all 0.2s ease; border: none; cursor: pointer;
+    }
+    .btn:hover, .btnWide:hover { background: var(--clay-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(216, 124, 84, 0.3); }
+    .btnWide { width: 100%; text-align: center; padding: 1rem; }
+    .btn-outline { background: transparent; border: 2px solid var(--forest); color: var(--forest); }
+    .btn-outline:hover { background: var(--forest); color: #fff; }
+
+    /* =============== NAV =============== */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: rgba(249, 248, 246, 0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(42, 75, 60, 0.1); z-index: 120;
+      transition: all 0.3s ease;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: var(--scroll-offset); padding: 0 clamp(1rem, 4vw, 2rem);
+    }
+    .brand img { height: 40px; width: auto; filter: brightness(0.2); }
+    
+    #countBox { font-family: 'Inter', sans-serif; font-weight: 800; color: var(--clay); display: flex; gap: 0.2rem; }
+    .links { display: none; gap: 1.5rem; font-weight: 600; font-size: 0.9rem; }
+    .links a { color: var(--muted); }
+    .links a:hover, .links a.is-active { color: var(--forest); }
+    .actions { display: none; gap: 1rem; }
+    
+    @media (min-width: 900px) {
+      .links, .actions { display: flex; align-items: center; }
+      #menuBtn { display: none; }
+    }
+
+    /* Mobile Menu */
+    .hamburger {
+      background: none; border: none; cursor: pointer; display: flex;
+      flex-direction: column; gap: 4px; padding: 0.5rem;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--forest); transition: 0.3s; }
+    .mobileMenu {
+      position: fixed; top: var(--scroll-offset); left: 0; width: 100%;
+      background: var(--bg-alt); padding: 2rem; box-shadow: var(--shadow);
+      display: flex; flex-direction: column; gap: 1.5rem;
+      transform: translateY(-100%); opacity: 0; visibility: hidden; transition: 0.3s; z-index: 100;
+    }
+    nav.open .mobileMenu { transform: translateY(0); opacity: 1; visibility: visible; }
+
+    /* =============== HERO =============== */
+    header { margin-top: var(--scroll-offset); height: 75vh; position: relative; }
+    .swiper { width: 100%; height: 100%; }
+    .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .heroOverlay {
+      position: absolute; inset: 0; background: rgba(42, 75, 60, 0.4);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; z-index: 5; padding: 1rem; color: #fff;
+    }
+    .heroOverlay h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; text-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .heroOverlay p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; }
+
+    /* =============== SECTIONS =============== */
+    .mission-text p, .event-text p { margin-bottom: 1rem; }
+    
+    /* Event & Map Grid */
+    .eventGrid { display: grid; gap: 2rem; margin-top: 2rem; }
+    @media (min-width: 900px) { .eventGrid { grid-template-columns: 1fr 1fr; } }
+    .eventCol ul { list-style: none; margin-bottom: 1.5rem; }
+    .eventCol li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
+    .eventCol li::before { content: "•"; color: var(--clay); position: absolute; left: 0; font-weight: bold; }
+    #meetMap { width: 100%; height: 300px; border-radius: var(--r); z-index: 1; }
+
+    /* Weather Card */
+    #weatherCard {
+      background: var(--sand); border-radius: var(--r); padding: 1.5rem;
+      display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;
+    }
+    .wxTemp { font-size: 2.5rem; font-weight: 800; font-family: 'Lora', serif; color: var(--forest); }
+    .wxDetails { display: flex; flex-direction: column; }
+
+    /* Give Cards */
+    .giveGrid { display: grid; gap: 2rem; }
+    @media (min-width: 900px) { .giveGrid { grid-template-columns: 1fr 1fr; } }
+    .giveCard { display: flex; flex-direction: column; justify-content: space-between; }
+    .giveCard img { border-radius: 8px; margin-bottom: 1.5rem; max-height: 200px; object-fit: contain; background: var(--bg); padding: 1rem; }
+
+    /* Staff Grid */
+    .staffGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .cardStaff { text-align: center; }
+    .cardStaff img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 1rem; box-shadow: var(--shadow); }
+    .cardStaff .name { font-weight: 800; color: var(--forest); }
+    .cardStaff .chip { font-size: 0.75rem; color: var(--muted); }
+
+    /* Footer */
+    footer { background: var(--forest); color: var(--sand); text-align: center; padding: 2rem; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<!-- =============== NAV =============== -->
+<nav id="siteNav">
+  <div class="nav-inner">
+    <div class="brand"><img src="TPLOGO.png" alt="TransPerfect Logo"></div>
+    
+    <div class="links">
+      <a href="#mission">Our Mission</a>
+      <a href="#event">The Trek</a>
+      <a href="#give">Support</a>
+      <a href="#staff">Community</a>
+    </div>
+
+    <div class="actions">
+      <div id="countBox"></div>
+      <a class="btn" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
+    </div>
+
+    <button id="menuBtn" class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+
+  <div id="mobileMenu" class="mobileMenu">
+    <a href="#mission">Our Mission</a>
+    <a href="#event">The Trek</a>
+    <a href="#give">Support</a>
+    <a href="#staff">Community</a>
+    <a class="btnWide" href="https://forms.office.com/r/hmpPU0rHR3" target="_blank">Register</a>
+  </div>
+</nav>
+
+<!-- =============== HERO =============== -->
+<header id="hero">
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="20241109_c2_041.jpg" alt="Forest Trail"></div>
+      <div class="swiper-slide"><img src="20241109_c2_052.jpg" alt="Summit"></div>
+    </div>
+    <div class="heroOverlay">
+      <h1>Walk With Purpose</h1>
+      <p>TransPerfect Japan Charity Trek 2025</p>
+      <a href="#mission" class="btn btn-outline" style="color:white; border-color:white;">Discover Why</a>
+    </div>
+  </div>
+</header>
+
+<!-- =============== MISSION (Moved to top) =============== -->
+<section id="mission" class="section shell split">
+  <div class="mission-text">
+    <span class="badge">The Cause</span>
+    <h2 class="headline">Giving Back, Together</h2>
+    <p>One of the privileges of being a successful business is having the opportunity to give back. We are deeply committed to uplifting local communities and supporting a wide range of non-profit organizations.</p>
+    <p>This year, TransPerfect has partnered with <strong>Relay For Life</strong>, a dynamic movement devoted to supporting cancer patients and their loved ones.</p>
+    <a class="btn btn-outline" style="margin-top: 1rem;" href="https://relayforlife.jp/selfwalk/2025/index.html" target="_blank">Read about Relay For Life</a>
+  </div>
+  <div>
+    <img src="54592b06831316e137faccd90187a44534f03028349ace05aadece2b352baccf.png" alt="Charity Banner" style="border-radius: var(--r); box-shadow: var(--shadow);">
+  </div>
+</section>
+
+<!-- =============== EVENT =============== -->
+<section id="event" class="section shell card">
+  <span class="badge">Logistics</span>
+  <h2 class="headline">The Kamakura Daibutsu Trail</h2>
+  <p class="subtle">Saturday, November 8, 2025</p>
+
+  <div class="eventGrid">
+    <div class="eventCol">
+      <p>A beautiful trek full of history and nature. The trail is beginner-friendly, offering a fun challenge for everyone and a chance to connect outside the office.</p>
+      <br>
+      <h3>Schedule</h3>
+      <ul>
+        <li><strong>Meeting Time:</strong> 10:00 AM</li>
+        <li><strong>Start Time:</strong> 10:30 AM</li>
+        <li><strong>Location:</strong> Koma Bridge (降魔橋) near Kita-Kamakura Station</li>
+        <li><strong>Fee:</strong> 3,000 JPY (Includes T-shirt, Kids are free)</li>
+      </ul>
+      <p class="subtle" style="font-size: 0.85rem;">Note: Surfaces can be slippery after rain. Wear grip shoes and bring water. Transport costs are self-covered.</p>
+      
+      <div id="weatherCard">
+        <div class="wxTemp" id="wxTempDisplay">--°</div>
+        <div class="wxDetails">
+          <strong id="wxDescDisplay">Loading weather...</strong>
+          <span class="subtle" style="font-size: 0.85rem;">Live from Kamakura</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eventCol">
+      <div id="meetMap"></div>
+      <a class="btn btnWide" style="margin-top: 1rem;" href="https://www.google.com/maps/search/?api=1&query=%E9%99%8D%E9%AD%94%E6%A9%8B%20%E5%8C%97%E9%8E%8C%E5%80%89" target="_blank">Open in Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============== GIVE =============== -->
+<section id="give" class="section shell">
+  <div class="giveGrid">
+    <div class="card giveCard">
+      <div>
+        <span class="badge">Donate</span>
+        <h3 class="headline" style="font-size: 1.5rem;">Direct Contribution</h3>
+        <p>Charity-only participation is welcome. 100% of proceeds go directly to Relay for Life to support cancer patients.</p>
+      </div>
+      <a class="btn btnWide" style="margin-top: 1.5rem;" href="https://congrant.com/project/selfwalk/19450/form/step1" target="_blank">Donate via Congrant</a>
+    </div>
+
+    <div class="card giveCard">
+      <div>
+        <span class="badge">Merch</span>
+        <h3 class="headline" style="font-size: 1.5rem;">Charity Goods</h3>
+        <img src="SampleTShirt.png" alt="T-Shirt Preview">
+        <p>Grab the official 2025 Trek T-Shirt. All profit goes to our charity partners.</p>
+      </div>
+      <a class="btn btnWide btn-outline" style="margin-top: 1.5rem;" href="https://buy.stripe.com/4gM28jfDDdnU6ro8WcbbG04" target="_blank">Visit Goods Shop</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============== STAFF =============== -->
+<section id="staff" class="section shell">
+  <h2 class="headline" style="text-align: center;">The Trek Committee</h2>
+  <div class="staffGrid">
+    <div class="cardStaff"><img src="Waing.jpg" alt="Waing"><div class="name">Waing</div><div class="chip">Strategy</div></div>
+    <div class="cardStaff"><img src="Nana.jpg" alt="Nana"><div class="name">Nana</div><div class="chip">Architect</div></div>
+    <div class="cardStaff"><img src="Peiyu.jpg" alt="Peiyu"><div class="name">Peiyu</div><div class="chip">Inspiration</div></div>
+    <div class="cardStaff"><img src="Yujiro.jpg" alt="Yujiro"><div class="name">Yujiro</div><div class="chip">Logistics</div></div>
+    <div class="cardStaff"><img src="Shin-photo-1.jpg" alt="Shin"><div class="name">Shin</div><div class="chip">Guru</div></div>
+    <div class="cardStaff"><img src="john.jpg" alt="John"><div class="name">John</div><div class="chip">Trailblazer</div></div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 TransPerfect Japan Trek. Built with purpose.</p>
+</footer>
+
+<script>
+  /* 1. Mobile Menu */
+  const menuBtn = document.getElementById('menuBtn');
+  const nav = document.getElementById('siteNav');
+  menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
+
+  /* 2. Swiper Init */
+  new Swiper('.swiper', {
+    loop: true,
+    autoplay: { delay: 6000, disableOnInteraction: false },
+    effect: 'fade'
+  });
+
+  /* 3. Countdown */
+  const cb = document.getElementById('countBox');
+  const deadline = new Date('2025-11-08T09:30:00+09:00');
+  function tick() {
+    const r = deadline - Date.now();
+    if (r <= 0) { cb.textContent = 'Event Day!'; return; }
+    const d = Math.floor(r / 864e5), h = Math.floor(r / 36e5) % 24;
+    cb.textContent = `${d}d ${h}h left`;
+  }
+  setInterval(tick, 60000); tick();
+
+  /* 4. Map Init */
+  const mapCenter = [35.33806, 139.54444];
+  const map = L.map('meetMap', { scrollWheelZoom: false }).setView(mapCenter, 15);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap © CARTO'
+  }).addTo(map);
+  L.marker(mapCenter).addTo(map).bindPopup('Koma Bridge (降魔橋)');
+
+  /* 5. Weather Fetch */
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=35.33806&longitude=139.54444&current_weather=true&timezone=Asia%2FTokyo')
+    .then(r => r.json())
+    .then(data => {
+      const w = data.current_weather;
+      document.getElementById('wxTempDisplay').textContent = Math.round(w.temperature) + '°C';
+      
+      const codes = {
+        0: 'Clear Sky', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+        45: 'Fog', 51: 'Drizzle', 61: 'Rain', 71: 'Snow', 95: 'Thunderstorm'
+      };
+      document.getElementById('wxDescDisplay').textContent = codes[w.weathercode] || 'Variable';
+    }).catch(() => {
+      document.getElementById('wxDescDisplay').textContent = 'Weather offline';
+    });
+</script>
+</body>
+</html>
