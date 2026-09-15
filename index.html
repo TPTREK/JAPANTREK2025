@@ -26,9 +26,9 @@
       --primary: #2A4B3C;
       --accent: #D87C54;
       --accent-hover: #C56A43;
-      --card-bg: var(--bg-alt);
+      --card-bg: rgba(255, 255, 255, 0.88);
       --shadow: 0 12px 32px rgba(42, 75, 60, 0.08);
-      --border: rgba(42, 75, 60, 0.1);
+      --border: rgba(42, 75, 60, 0.12);
       --r: 16px;
       --gap: 1.5rem;
       --content-max: 1080px;
@@ -36,41 +36,75 @@
       --scroll-offset: 70px;
       --font-body: 'Inter', sans-serif;
       --font-heading: 'Lora', serif;
+
+      /* Trail Backdrop Variables (Day) */
+      --topo-line: rgba(42, 75, 60, 0.08);
+      --trail-base: rgba(216, 124, 84, 0.25);
+      --trail-pulse: #D87C54;
+      --mountain-wire: rgba(42, 75, 60, 0.06);
+      --sun-fill: rgba(216, 124, 84, 0.15);
     }
 
     /* =============== Vaporwave Theme (Night Mode) =============== */
     [data-theme="vaporwave"] {
-      --bg: #0b0c10;
-      --bg-alt: rgba(20, 20, 30, 0.85);
-      --ink: #e0e0e0;
-      --muted: #b967ff; /* synth purple */
-      --primary: #ff71ce; /* neon pink */
-      --accent: #01cdfe; /* cyan */
-      --accent-hover: #05ffa1; /* neon green */
-      --card-bg: rgba(15, 15, 25, 0.7);
-      --shadow: 0 0 20px rgba(255, 113, 206, 0.2), inset 0 0 10px rgba(1, 205, 254, 0.1);
-      --border: rgba(1, 205, 254, 0.4);
+      --bg: #090a10;
+      --bg-alt: rgba(18, 18, 28, 0.85);
+      --ink: #f0f0f5;
+      --muted: #b967ff;
+      --primary: #ff71ce;
+      --accent: #01cdfe;
+      --accent-hover: #05ffa1;
+      --card-bg: rgba(13, 14, 24, 0.78);
+      --shadow: 0 0 25px rgba(255, 113, 206, 0.22), inset 0 0 12px rgba(1, 205, 254, 0.12);
+      --border: rgba(1, 205, 254, 0.35);
       --font-heading: 'VT323', monospace;
+
+      /* Trail Backdrop Variables (Night/Vapor) */
+      --topo-line: rgba(1, 205, 254, 0.18);
+      --trail-base: rgba(255, 113, 206, 0.25);
+      --trail-pulse: #ff71ce;
+      --mountain-wire: rgba(1, 205, 254, 0.32);
+      --sun-fill: #ff71ce;
     }
 
-    /* Vaporwave Grid Background Effect */
-    [data-theme="vaporwave"]::before {
-      content: "";
+    /* =============== Dynamic Mountain Trail Backdrop =============== */
+    .trail-backdrop {
       position: fixed;
-      bottom: -10vh; left: 0; right: 0; height: 60vh;
-      background:
-        linear-gradient(transparent 49%, rgba(255, 113, 206, 0.8) 50%, transparent 51%),
-        linear-gradient(90deg, transparent 49%, rgba(1, 205, 254, 0.8) 50%, transparent 51%);
-      background-size: 60px 60px;
-      transform: perspective(600px) rotateX(75deg);
-      z-index: -1;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
-      animation: gridMove 10s linear infinite;
+      z-index: 1;
+      overflow: hidden;
+      opacity: 0.9;
+      transition: opacity 0.5s ease;
     }
 
-    @keyframes gridMove {
-      0% { background-position: 0 0; }
-      100% { background-position: 0 60px; }
+    .trail-svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Trail animation: Pulses climb upward to the summit */
+    .trail-pulse {
+      stroke-dasharray: 14 26;
+      animation: climbAscent 2.4s linear infinite;
+    }
+
+    @keyframes climbAscent {
+      from { stroke-dashoffset: 80; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Beacon ping at the trail summits */
+    .waypoint-ping {
+      animation: pingGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes pingGlow {
+      from { r: 5px; opacity: 0.6; }
+      to { r: 10px; opacity: 1; }
     }
 
     /* =============== Global Setup =============== */
@@ -84,6 +118,7 @@
       line-height: 1.6;
       transition: background-color 0.5s ease, color 0.5s ease;
       overflow-x: hidden;
+      position: relative;
     }
     
     h1, h2, h3, .serif { 
@@ -122,7 +157,7 @@
       background: var(--card-bg); border-radius: var(--r);
       padding: clamp(1.5rem, 3vw, 2.5rem); box-shadow: var(--shadow);
       border: 1px solid var(--border);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
     }
 
     /* Buttons */
@@ -135,7 +170,7 @@
     .btn:hover, .btnWide:hover { 
       background: var(--accent-hover); 
       transform: translateY(-2px); 
-      box-shadow: 0 0 15px var(--accent); 
+      box-shadow: 0 0 16px var(--accent); 
     }
     .btnWide { width: 100%; text-align: center; padding: 1rem; }
     
@@ -145,7 +180,7 @@
     /* =============== NAV =============== */
     nav {
       position: fixed; top: 0; left: 0; width: 100%;
-      background: var(--card-bg); backdrop-filter: blur(10px);
+      background: var(--card-bg); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border); z-index: 120;
       transition: all 0.3s ease;
     }
@@ -187,7 +222,7 @@
     nav.open .mobileMenu { transform: translateY(0); opacity: 1; visibility: visible; }
 
     /* =============== HERO =============== */
-    header { margin-top: var(--scroll-offset); height: 75vh; position: relative; }
+    header { margin-top: var(--scroll-offset); height: 75vh; position: relative; z-index: 2; }
     .swiper { width: 100%; height: 100%; }
     .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
     
@@ -213,7 +248,7 @@
     @media (min-width: 900px) { .eventGrid { grid-template-columns: 1fr 1fr; } }
     .eventCol ul { list-style: none; margin-bottom: 1.5rem; }
     .eventCol li { margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; }
-    .eventCol li::before { content: "►"; color: var(--accent); position: absolute; left: 0; font-size: 0.8rem; top: 4px; }
+    .eventCol li::before { content: ">"; color: var(--accent); position: absolute; left: 0; font-size: 0.9rem; top: 1px; font-weight: 800; }
     
     #meetMap { width: 100%; height: 300px; border-radius: var(--r); z-index: 1; border: 2px solid var(--border); }
     [data-theme="vaporwave"] #meetMap { filter: invert(1) hue-rotate(180deg) contrast(1.2); }
@@ -277,10 +312,98 @@
     .cardStaff .name { font-weight: 800; color: var(--primary); font-family: var(--font-heading); font-size: 1.2rem; }
     .cardStaff .chip { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-    footer { background: var(--card-bg); color: var(--primary); text-align: center; padding: 2rem; font-size: 0.9rem; border-top: 1px solid var(--border); font-family: var(--font-heading); }
+    footer { 
+      position: relative; z-index: 2;
+      background: var(--card-bg); color: var(--primary); text-align: center; 
+      padding: 2rem; font-size: 0.9rem; border-top: 1px solid var(--border); 
+      font-family: var(--font-heading); 
+    }
   </style>
 </head>
 <body>
+
+<!-- =============== ASCENDING MOUNTAIN TRAIL BACKDROP =============== -->
+<div class="trail-backdrop" aria-hidden="true">
+  <svg class="trail-svg" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Sun Stripes Pattern -->
+      <pattern id="sunStripes" width="100" height="8" patternUnits="userSpaceOnUse">
+        <rect width="100" height="4" fill="var(--sun-fill)" opacity="0.85" />
+      </pattern>
+      <!-- Filter for Neon Glow in Vaporwave Mode -->
+      <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <!-- HORIZON STRIPED SUN -->
+    <g transform="translate(720, 240)">
+      <circle cx="0" cy="0" r="110" fill="url(#sunStripes)" />
+    </g>
+
+    <!-- MOUNTAIN WIREFRAME MESH (Tenran & Tonosu Peaks) -->
+    <!-- Distant Ridge Left -->
+    <polygon points="120,600 380,340 580,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5" />
+    <polygon points="240,600 380,340 460,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1" />
+    <line x1="380" y1="340" x2="380" y2="600" stroke="var(--mountain-wire)" stroke-width="1" />
+
+    <!-- Main Central Summit (Wireframe Pyramid from Shirt) -->
+    <polygon points="460,650 720,220 980,650" fill="none" stroke="var(--mountain-wire)" stroke-width="2" />
+    <line x1="720" y1="220" x2="720" y2="650" stroke="var(--mountain-wire)" stroke-width="1.5" />
+    <line x1="720" y1="220" x2="580" y2="650" stroke="var(--mountain-wire)" stroke-width="1" />
+    <line x1="720" y1="220" x2="860" y2="650" stroke="var(--mountain-wire)" stroke-width="1" />
+    <!-- Horizontal Cross Ridges -->
+    <line x1="620" y1="380" x2="820" y2="380" stroke="var(--mountain-wire)" stroke-width="1" />
+    <line x1="540" y1="510" x2="900" y2="510" stroke="var(--mountain-wire)" stroke-width="1" />
+
+    <!-- Distant Ridge Right -->
+    <polygon points="860,600 1060,360 1320,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1.5" />
+    <polygon points="980,600 1060,360 1180,600" fill="none" stroke="var(--mountain-wire)" stroke-width="1" />
+    <line x1="1060" y1="360" x2="1060" y2="600" stroke="var(--mountain-wire)" stroke-width="1" />
+
+    <!-- TOPOGRAPHIC ELEVATION CONTOUR CURVES -->
+    <path d="M -50,750 Q 320,680 720,700 T 1500,740" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
+    <path d="M -50,830 Q 340,770 720,790 T 1500,820" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
+    <path d="M -50,910 Q 360,860 720,870 T 1500,900" fill="none" stroke="var(--topo-line)" stroke-width="1.5" />
+
+    <!-- ASCENDING SWITCHBACK HIKING TRAIL -->
+    <!-- Base Trail Guide Line -->
+    <path id="mountainTrail" 
+          d="M 720,990 
+             C 690,920 620,890 580,840 
+             C 530,780 620,740 680,700 
+             C 760,650 860,620 830,540 
+             C 800,470 650,470 660,390 
+             C 670,330 710,290 720,240"
+          fill="none" 
+          stroke="var(--trail-base)" 
+          stroke-width="5" 
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+
+    <!-- Active Climber Pulse (Running Upward to the Peak) -->
+    <path d="M 720,990 
+             C 690,920 620,890 580,840 
+             C 530,780 620,740 680,700 
+             C 760,650 860,620 830,540 
+             C 800,470 650,470 660,390 
+             C 670,330 710,290 720,240"
+          fill="none" 
+          stroke="var(--trail-pulse)" 
+          stroke-width="4" 
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          filter="url(#neonGlow)"
+          class="trail-pulse" />
+
+    <!-- Summit Waypoint Beacon -->
+    <circle cx="720" cy="240" r="7" fill="var(--trail-pulse)" class="waypoint-ping" filter="url(#neonGlow)" />
+  </svg>
+</div>
 
 <!-- =============== NAV =============== -->
 <nav id="siteNav">
@@ -351,7 +474,7 @@
 
   <div class="eventGrid">
     <div class="eventCol">
-      <p>A beautiful trek full of history and nature. The trail is beginner-friendly, offering a fun challenge for everyone and a chance to connect outside the office.</p>
+      <p>A scenic climb linking Mount Tenran and Mount Tonosu. The path offers switchback forest tracks, natural viewpoints over Hanno, and an accessible ascent suitable for beginners and experienced walkers alike.</p>
       <br>
       <h3>Schedule</h3>
       <ul>
@@ -472,7 +595,7 @@
 </section>
 
 <footer>
-  <p>JAPAN TREK 2026 // SYSTEM ONLINE</p>
+  <p>JAPAN TREK // SUMMIT PROTOCOL ENGAGED</p>
 </footer>
 
 <script>
@@ -512,11 +635,8 @@
 
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Remove active from all
       tabBtns.forEach(b => b.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
-      
-      // Add active to clicked
       btn.classList.add('active');
       document.getElementById(btn.getAttribute('data-target')).classList.add('active');
     });
